@@ -529,7 +529,7 @@ a{
     aspect-ratio: 4/3;
     object-fit: cover;
     object-position: 0%;
-    width: 27vw;
+    width: 26vw;
     border-radius: 3px;
 }
 
@@ -1591,4 +1591,12 @@ code {
 
 .weight {
     font-weight: 400;
+}
+
+.badge {
+    aspect-ratio: 3/3;
+    object-fit: cover;
+    object-position: 0%;
+    width: 23vw;
+    border-radius: 3px;
 }
