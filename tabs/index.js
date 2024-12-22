@@ -1,8 +1,8 @@
-console.log("Tejas' Codes :)");
+console.log("Gunjesh' Codes :)");
 
 var body = document.getElementById("body");
 function copy() {
-    navigator.clipboard.writeText("tejasgupta.netlify.app");
+    navigator.clipboard.writeText("gunjesh.netlify.app");
     document.getElementById("copy").innerHTML = "Copied!&nbsp;✓";
 }
 function show2() {
