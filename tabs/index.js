@@ -91,3 +91,26 @@ window.addEventListener("scroll", function () {
     progress_bar()
 });
 
+document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    fetch('/', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => {
+        if (response.ok) {
+            document.getElementById('formMessage').style.display = 'block';
+            form.reset(); // Reset the form fields
+        } else {
+            alert('There was an error sending your message.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error sending your message.');
+    });
+});
