@@ -348,22 +348,6 @@ footer {
     border-radius: 15px;
 }
 
-.footer-container {
-    position: relative;
-    width: 100%;
-    margin-top: 50px;
-    padding: 20px 0;
-    text-align: center;
-    background-color: #171923;
-}
-
-.footer {
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    z-index: 999;
-}
-
 .social {
     height: 30px;
     margin-left: 10px;
@@ -389,7 +373,7 @@ footer {
 
 form {
     position: absolute;
-    top: 20px;
+    top: 5px;
     background-color: #1d1e2b;
     padding: 15px;
     display: flex;
@@ -397,7 +381,7 @@ form {
     right: 1vw;
     width: 18vw;
     z-index: -10;
-    border-radius: 2px;
+    border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.5);
 }
 
@@ -489,7 +473,6 @@ input:hover::-webkit-input-placeholder {
     margin-top: 10px;
     position: absolute;
     margin-left: -22.5vw;
-    padding: 10px 20px;
 }
 
 #move:hover {
@@ -529,7 +512,7 @@ a{
     aspect-ratio: 4/3;
     object-fit: cover;
     object-position: 0%;
-    width: 26vw;
+    width: 27vw;
     border-radius: 3px;
 }
 
@@ -605,6 +588,10 @@ tr:hover{
     margin-right: 5px;
 }
 
+.skills_table img{
+    filter: saturate(0.7);
+}
+
 .python {
     background-color: #F29111;
 }
@@ -646,8 +633,6 @@ tr:hover{
     position: absolute;
     bottom: 3vw;
     left: 2vw;
-    margin: 10px;
-    padding: 10px 20px;
 }
 
 #return:hover {
@@ -1430,6 +1415,9 @@ code {
 
     #skill {
         margin-top: 20px;
+    }
+    #skills_div{
+        margin-left: 5vw;
     }
 
     #type {
