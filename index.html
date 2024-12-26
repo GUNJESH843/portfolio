@@ -255,7 +255,7 @@
                                     </div>
                                     <div class="indent">
                                         <div class="expinfo">
-                                            <div class="date">October 2024 - Present</div>
+                                            <div class="date">Oct 2024 - Present</div>
                                             <div class="country">Remote, India</div>
                                         </div>
                                         <br>- Helping Students understand Better about Technology.
@@ -269,7 +269,7 @@
                                     </div>
                                     <div class="indent">
                                         <div class="expinfo">
-                                            <div class="date">October 2024 - November 2024</div>
+                                            <div class="date">Oct 2024 - Nov 2024</div>
                                             <div class="country">Remote, India</div>
                                         </div>
                                         <br>- Mentored few Contributors about Open-Source Projects.
@@ -278,7 +278,7 @@
                                         <br>
                                         <div class="role">Contributor | GSSOC (Girl Script Summer of Code)</div>
                                         <div class="expinfo">
-                                            <div class="date">May 2024 - August 2024</div>
+                                            <div class="date">May 2024 - Aug 2024</div>
                                             <div class="country">Remote, India</div>
                                         </div>
                                         <br>- Contributed to many Open-Source Projects.
@@ -293,8 +293,8 @@
                                     </div>
                                     <div class="indent">
                                         <div class="expinfo">
-                                            <div class="date">October 2024 - Present</div>
-                                            <div class="country">Visakhapatnam</div>
+                                            <div class="date">Oct 2024 - Present</div>
+                                            <div class="country">Vizag, India</div>
                                         </div>
                                         <br>- Helping Students understand Better about Cyber Technology.
                                         <br>- Conducted Seminars and workshops on Cybersecurity and Blockchain.
@@ -314,7 +314,7 @@
                                     </div>
                                     <div class="indent">
                                         <div class="expinfo">
-                                            <div class="date">July 2022 - Jan 2023</div>
+                                            <div class="date">Jul 2022 - Jan 2023</div>
                                             <div class="country">India</div>
                                         </div>
                                         <br>- Worked with Microsoft Office.
@@ -432,6 +432,29 @@
         </div>
     </footer>
     <script src="tabs/index.js"></script>
-</body>
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
 
+        const formMessage = document.getElementById('formMessage');
+        formMessage.style.display = 'block';
+        formMessage.innerText = 'Will connect soon!';
+        
+        // Inline styling to highlight the message
+        formMessage.style.color = 'yellow';
+        formMessage.style.backgroundColor = 'black';
+        formMessage.style.padding = '10px';
+        formMessage.style.borderRadius = '5px';
+        formMessage.style.textAlign = 'center';
+        formMessage.style.fontSize = '18px';
+        formMessage.style.fontWeight = 'bold';
+        formMessage.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+
+        setTimeout(function() {
+            window.location.href = 'index.html'; // Redirect to the home page
+        }, 2000); // Wait for 2 seconds before redirecting
+    });
+</script>
+
+</body>
 </html>
