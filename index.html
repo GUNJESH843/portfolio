@@ -7,6 +7,18 @@
     <link rel="icon" class="favicon" type="image/x-icon" href="images/favicon.png">
     <title>Gunjesh Kumar | Portfolio</title>
     <link rel="stylesheet" href="tabs/style.css">
+    <style>
+        #formMessage {
+            color: yellow;
+            background-color: black;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 <div class="infinity">
     <p class="chat">Hey! I'm <b>Bravos°</b>.<br>Gunjesh's AI assistant.</p>
@@ -399,12 +411,13 @@
         <div class="l2 letter"></div>
     </div>
     <footer>
-        <form name="Gunjesh Portfolio Contact" action="POST" netlify>
+        <form name="Gunjesh Portfolio Contact" method="POST" data-netlify="true" id="contactForm">
+            <input type="hidden" name="form-name" value="Gunjesh Portfolio Contact">
             <div class="contact"><b>Let's Connect!</b></div>
             <br>
-            <input type="text" name="Name" placeholder="&nbsp;&nbsp;Your Name">
-            <input type="email" name="Email" placeholder="&nbsp;&nbsp;Your E-mail ID">
-            <input type="text" name="Message" placeholder="&nbsp;&nbsp;Your Message">
+            <input type="text" name="Name" placeholder="&nbsp;&nbsp;Your Name" required>
+            <input type="email" name="Email" placeholder="&nbsp;&nbsp;Your E-mail ID" required>
+            <input type="text" name="Message" placeholder="&nbsp;&nbsp;Your Message" required>
             <button type="submit" class="send">Send!</button>
         </form>
         <div id="formMessage" style="display:none;">Message sent successfully!</div>
@@ -436,23 +449,38 @@
     document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent the default form submission
 
-        const formMessage = document.getElementById('formMessage');
-        formMessage.style.display = 'block';
-        formMessage.innerText = 'Will connect soon!';
-        
-        // Inline styling to highlight the message
-        formMessage.style.color = 'yellow';
-        formMessage.style.backgroundColor = 'black';
-        formMessage.style.padding = '10px';
-        formMessage.style.borderRadius = '5px';
-        formMessage.style.textAlign = 'center';
-        formMessage.style.fontSize = '18px';
-        formMessage.style.fontWeight = 'bold';
-        formMessage.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+        const form = event.target;
+        const formData = new FormData(form);
 
-        setTimeout(function() {
-            window.location.href = 'index.html'; // Redirect to the home page
-        }, 2000); // Wait for 2 seconds before redirecting
+        fetch('/', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (response.ok) {
+                const formMessage = document.getElementById('formMessage');
+                formMessage.style.display = 'block';
+                formMessage.innerText = 'Will connect soon!';
+                
+                // Inline styling to highlight the message
+                formMessage.style.color = 'yellow';
+                formMessage.style.backgroundColor = 'black';
+                formMessage.style.padding = '10px';
+                formMessage.style.borderRadius = '5px';
+                formMessage.style.textAlign = 'center';
+                formMessage.style.fontSize = '18px';
+                formMessage.style.fontWeight = 'bold';
+                formMessage.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+
+                form.reset(); // Reset the form fields
+            } else {
+                alert('There was an error sending your message.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error sending your message.');
+        });
     });
 </script>
 
