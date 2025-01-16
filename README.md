@@ -8,7 +8,7 @@ Welcome to the official portfolio of **Gunjesh Kumar's**. This website showcases
 
 You can explore my portfolio and learn more about my expertise and projects by clicking the link below:
 
-[View My Portfolio](gunjesh.netlify.app)
+[View My Portfolio](https://gunjesh.netlify.app)
 
 ### Technologies Used:
 - **HTML**: Structuring the web pages
