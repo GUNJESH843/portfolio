@@ -276,7 +276,33 @@
             </button>
         </div>
     </header>
+    <!-- Add this right after the header closing tag -->
+<div id="mobile-menu" class="fixed inset-0 bg-slate-900/95 backdrop-blur-lg z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="flex justify-end p-6">
+        <button id="close-mobile-menu" class="text-white hover:text-cyan-400 transition-colors">
+            <i data-lucide="x" class="w-7 h-7"></i>
+        </button>
+    </div>
     
+    <div class="flex flex-col items-center justify-center h-full gap-8 -mt-16">
+        <a href="#experience" class="text-2xl text-white hover:text-cyan-400 transition-colors font-medium">
+            Experience
+        </a>
+        <a href="#education" class="text-2xl text-white hover:text-cyan-400 transition-colors font-medium">
+            Education
+        </a>
+        <a href="#skills" class="text-2xl text-white hover:text-cyan-400 transition-colors font-medium">
+            Skills
+        </a>
+        <a href="#hobbies" class="text-2xl text-white hover:text-cyan-400 transition-colors font-medium">
+            Hobbies
+        </a>
+        <a href="#contact" class="mt-4 bg-gradient-to-r from-cyan-500 to-fuchsia-600 px-8 py-3 rounded-full font-medium text-white shadow-lg shadow-fuchsia-500/20 transition-transform hover:scale-105">
+            Contact
+        </a>
+    </div>
+</div>
+
     <!-- Hero section -->
     <section class="relative py-28 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1474,5 +1500,35 @@
             }
         });
     </script>
+    <!-- Add this JavaScript at the end of your script section -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mobile menu functionality
+        const mobileMenuButton = document.querySelector('.md\\:hidden');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMenuButton = document.getElementById('close-mobile-menu');
+        
+        // Open menu when hamburger is clicked
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.remove('translate-x-full');
+            document.body.classList.add('overflow-hidden');
+        });
+        
+        // Close menu when X is clicked
+        closeMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.add('translate-x-full');
+            document.body.classList.remove('overflow-hidden');
+        });
+        
+        // Close menu when a link is clicked
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.add('translate-x-full');
+                document.body.classList.remove('overflow-hidden');
+            });
+        });
+    });
+</script>
 </body>
 </html>
