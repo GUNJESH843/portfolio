@@ -179,3 +179,150 @@
             height: 100%;
             z-index: -1;
         }
+        
+        /* Tab styling */
+        .tab-active {
+            background: linear-gradient(to right, #22d3ee, #e879f9);
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* Container for both sliders */
+        .slider-container {
+            position: relative;
+            padding: 1rem 0;
+        }
+        
+        /* Hide slider by default */
+        .slider-container.hidden {
+            display: none;
+        }
+        
+        /* Card styling for certificates and badges */
+        .certificate-card, .badge-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .certificate-card img, .badge-card img {
+            transition: transform 0.3s ease;
+        }
+        
+        .certificate-card:hover img, .badge-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Touch-friendly slider containers */
+        #certificates-container, #badges-container {
+            touch-action: pan-y; /* Allow vertical scrolling but capture horizontal gestures */
+            user-select: none; /* Prevent text selection during swipe */
+        }
+        
+        /* Visual feedback for swipe */
+        .swipe-hint {
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 20;
+        }
+        
+        .swipe-hint-left {
+            left: 20px;
+            transform: translateY(-50%);
+        }
+        
+        .swipe-hint-right {
+            right: 20px;
+            transform: translateY(-50%);
+        }
+        
+        .swiping-left .swipe-hint-left,
+        .swiping-right .swipe-hint-right {
+            opacity: 1;
+        }
+        
+        /* Hide slider buttons for swipe-only navigation */
+#cert-slide-left, #cert-slide-right,
+#badge-slide-left, #badge-slide-right {
+    display: none;
+}
+
+/* Add swipe indicator on hover */
+.slider-container:hover::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    width: 30px;
+    height: 30px;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    border-left: 2px solid rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) rotate(-45deg);
+    opacity: 0.7;
+    pointer-events: none;
+    animation: pulse-hint 1.5s infinite alternate;
+}
+
+.slider-container:hover::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    border-top: 2px solid rgba(255, 255, 255, 0.3);
+    border-right: 2px solid rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) rotate(45deg);
+    opacity: 0.7;
+    pointer-events: none;
+    animation: pulse-hint 1.5s infinite alternate;
+}
+
+@keyframes pulse-hint {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+}
+
+/* Make sure all certificate cards have consistent spacing */
+.flex-shrink-0 {
+    padding: 0.75rem;
+}
+
+/* Add cursor styles to show the slides are swipeable */
+#certificates-container, #badges-container {
+    cursor: grab;
+}
+
+#certificates-container:active, #badges-container:active {
+    cursor: grabbing;
+}
+
+/* Ensure proper spacing and overflow behavior */
+.overflow-hidden {
+    overflow: hidden;
+}
+
+/* Style indicators */
+.slider-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.slider-indicator.active {
+    background-color: rgba(34, 211, 238, 1);
+    transform: scale(1.2);
+}

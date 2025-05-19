@@ -416,3 +416,177 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+// Certificates and Badges Slider functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching for certificates and badges
+    const certTab = document.getElementById('cert-tab');
+    const badgeTab = document.getElementById('badge-tab');
+    const certSlider = document.getElementById('certificates-slider');
+    const badgeSlider = document.getElementById('badges-slider');
+    
+    if (certTab && badgeTab) {
+        certTab.addEventListener('click', () => {
+            certTab.classList.add('tab-active');
+            badgeTab.classList.remove('tab-active');
+            certSlider.classList.remove('hidden');
+            badgeSlider.classList.add('hidden');
+        });
+        
+        badgeTab.addEventListener('click', () => {
+            badgeTab.classList.add('tab-active');
+            certTab.classList.remove('tab-active');
+            badgeSlider.classList.remove('hidden');
+            certSlider.classList.add('hidden');
+        });
+    }
+    
+    // Certificate slider functionality
+    setupSlider('certificates-container', 'cert-slide-left', 'cert-slide-right', 8, 'certificates');
+    
+    // Badge slider functionality
+    setupSlider('badges-container', 'badge-slide-left', 'badge-slide-right', 8, 'badges');
+    
+    // Generic slider setup function
+    function setupSlider(containerId, leftBtnId, rightBtnId, itemCount, sliderName) {
+        const container = document.getElementById(containerId);
+        const slideLeftBtn = document.getElementById(leftBtnId);
+        const slideRightBtn = document.getElementById(rightBtnId);
+        const indicators = document.querySelectorAll(`.slider-indicator[data-slider="${sliderName}"]`);
+        
+        if (!container || indicators.length === 0) return;
+        
+        let currentSlide = 0;
+        
+        // Count the actual number of items in the slider
+        const actualItemCount = container.querySelectorAll('.flex-shrink-0').length;
+        
+        // Function to update slider position
+        function updateSlider() {
+            const itemsPerView = getItemsPerView();
+            const itemWidth = 100 / itemsPerView;
+            
+            // Calculate the maximum possible slide index
+            const maxSlideIndex = Math.max(0, Math.ceil(actualItemCount / itemsPerView) - 1);
+            
+            // Clamp current slide to valid range
+            currentSlide = Math.min(currentSlide, maxSlideIndex);
+            
+            // Special handling for the last slide to show all items
+            let translateValue;
+            if (currentSlide === maxSlideIndex && actualItemCount % itemsPerView !== 0) {
+                // On the last slide with a partial group, adjust the position
+                const remainingItems = actualItemCount % itemsPerView;
+                translateValue = -((actualItemCount - remainingItems) * itemWidth / itemsPerView);
+            } else {
+                // Normal slide calculation
+                translateValue = -(currentSlide * 100);
+            }
+            
+            // Apply the transform with a smooth transition
+            container.style.transform = `translateX(${translateValue}%)`;
+            
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                if (index <= maxSlideIndex) {
+                    indicator.style.display = 'block';
+                    indicator.classList.toggle('active', index === currentSlide);
+                } else {
+                    indicator.style.display = 'none';
+                }
+            });
+        }
+        
+        function getItemsPerView() {
+            if (window.innerWidth < 640) return 1; // Mobile: 1 item
+            if (window.innerWidth < 768) return 2; // Tablet: 2 items
+            if (window.innerWidth < 1024) return 3; // Small desktop: 3 items
+            return 4; // Large desktop: 4 items
+        }
+        
+        // Add swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const swipeThreshold = 50; // Minimum distance required for a swipe
+        
+        // Touch events for mobile devices
+        container.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        container.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+        
+        // Mouse events for trackpad swipes and desktop
+        let isMouseDown = false;
+        container.addEventListener('mousedown', e => {
+            isMouseDown = true;
+            touchStartX = e.screenX;
+            container.style.cursor = 'grabbing';
+        });
+        
+        container.addEventListener('mouseup', e => {
+            if (isMouseDown) {
+                touchEndX = e.screenX;
+                handleSwipe();
+                isMouseDown = false;
+                container.style.cursor = 'grab';
+            }
+        });
+        
+        container.addEventListener('mouseleave', e => {
+            if (isMouseDown) {
+                touchEndX = e.screenX;
+                handleSwipe();
+                isMouseDown = false;
+                container.style.cursor = 'grab';
+            }
+        });
+        
+        function handleSwipe() {
+            const swipeDistance = touchEndX - touchStartX;
+            
+            // Calculate the max slide index
+            const itemsPerView = getItemsPerView();
+            const maxSlideIndex = Math.max(0, Math.ceil(actualItemCount / itemsPerView) - 1);
+            
+            if (swipeDistance > swipeThreshold) {
+                // Swiped right (previous slide)
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlider();
+                }
+            } else if (swipeDistance < -swipeThreshold) {
+                // Swiped left (next slide)
+                if (currentSlide < maxSlideIndex) {
+                    currentSlide++;
+                    updateSlider();
+                }
+            }
+        }
+        
+        // Event listeners for indicators
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentSlide = index;
+                updateSlider();
+            });
+        });
+        
+        // Initialize slider
+        updateSlider();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            updateSlider();
+        });
+    }
+});
+
+// Add swipe support for certificates and badges
+document.addEventListener('DOMContentLoaded', function() {
+    addSwipeSupport('certificates-container', 'certificates');
+    addSwipeSupport('badges-container', 'badges');
+});
