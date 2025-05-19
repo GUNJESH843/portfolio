@@ -7,14 +7,178 @@
     <link rel="icon" class="favicon" type="image/x-icon" href="../images/CS50.png">
     <title>Gunjesh | Certificates</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #232634 100%);
+            color: #e0e7ef;
+            min-height: 100vh;
+            font-family: 'Manrope', 'Segoe UI', Arial, sans-serif;
+        }
+
+        .heading {
+            font-family: 'Orbitron', 'Manrope', Arial, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #06b6d4, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .glass {
+            border: 1.5px solid #334155;
+            background: linear-gradient(120deg, rgba(36, 41, 54, 0.85) 80%, rgba(6, 182, 212, 0.08));
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .glass:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 40px 0 rgba(6, 182, 212, 0.18), 0 1.5px 8px 0 #d946ef33;
+        }
+
+        .ss {
+            border: 2px solid #06b6d4;
+            background: #181b26;
+            box-shadow: 0 2px 12px #06b6d455;
+        }
+
+        .details {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0.7rem 0 0.2rem 0;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .tags p {
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 8px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            background: #232634;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        #mysqltag {
+            background: linear-gradient(90deg, #06b6d4 30%, #f59e42 100%);
+            color: #fff;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        #pythontag {
+            background: linear-gradient(90deg, #0ea5e9 30%, #fde047 100%);
+            color: #fff;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        #blendertag {
+            background: linear-gradient(90deg, #fbbf24 30%, #fb7185 100%);
+            color: #fff;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #06b6d4 60%, #d946ef 100%);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            padding: 7px 18px;
+            margin-left: 6px;
+            margin-top: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px #06b6d433;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        .btn:hover,
+        #return:hover {
+            background: #fff;
+            color: #0f172a;
+            transform: scale(1.04);
+        }
+
+        #return {
+            background: #232634;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 7px 18px;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border: 1.5px solid #06b6d4;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        .footer-container {
+            background: #181b26;
+            border-top: 1.5px solid #334155;
+            margin-top: 2.5rem;
+            padding: 1.5rem 0 0.5rem 0;
+            text-align: center;
+            box-shadow: 0 -2px 16px #06b6d422;
+        }
+
+        .footer {
+            margin-bottom: 0.5rem;
+        }
+
+        .bgcerti {
+            opacity: 0.12;
+            filter: blur(1px);
+            pointer-events: none;
+        }
+
+        @media (max-width: 900px) {
+            .heading {
+                font-size: 2rem;
+            }
+
+            .glass {
+                width: 90vw !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+
+            .ss {
+                width: 90vw !important;
+            }
+
+            .items {
+                flex-direction: column !important;
+                align-items: center !important;
+                overflow-x: hidden !important;
+            }
+
+            .tags {
+                width: 90vw !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <h1 class="heading">Certificates & Courses</h1>
     <div class="items">
         <hr class="design-line">
+        <!-- Certificate Cards -->
         <div class="glass">
-            <!--cs50x certificate-->
             <img class="ss" src="../images/CS50x.png">
             <p class="details">CS50x | HARVARD</p>
             <div class="tags">
@@ -26,7 +190,6 @@
                 <a href="https://cs50.harvard.edu/certificates/7f55ae1f-3570-4ae9-ac18-2fdf7a267136"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--Github Foundation certificate-->
         <div class="glass">
             <img class="ss" src="../images/GITHUB_Foundation.png">
             <p class="details">GitHub Foundations | GitHub</p>
@@ -39,7 +202,6 @@
                 <a href="https://www.credly.com/badges/f9e1bbc7-6276-45b5-a5c8-f9959ece8e0c"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--AWS MACHINE LEARNING FOUNDATION-->
         <div class="glass">
             <img class="ss" src="../images/aws.png">
             <p class="details">AWS ML Foundation | AWS</p>
@@ -52,7 +214,6 @@
                 <a href="https://www.credly.com/badges/d6d4dea1-3567-40b3-a27d-dfa05218f1b3/public_url"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--NPTEL SOFTWARE ENGINEERING-->
         <div class="glass">
             <img class="ss" src="../images/Software Engineering NPTEL.jpg">
             <p class="details">Software Engineering | NPTEL</p>
@@ -62,11 +223,9 @@
             <font size="2" class="project_info">November 2024</font>
             <div class="buttons">
                 <a href="../resources/Software Engineering_NPTEL.pdf"><button class="btn">Open File</button></a>
-                <a href="https://nptel.ac.in/noc/E_Certificate/NPTEL24CS119S105290117603871196"><button
-                        class="btn">View Details</button></a>
+                <a href="https://nptel.ac.in/noc/E_Certificate/NPTEL24CS119S105290117603871196"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--Postman-->
         <div class="glass">
             <img class="ss" src="../images/Postman.jpeg">
             <p class="details">API Fundamentals | Postman</p>
@@ -76,11 +235,9 @@
             <font size="2" class="project_info">August 2024</font>
             <div class="buttons">
                 <a href="../resources/Postman.pdf"><button class="btn">Open File</button></a>
-                <a href="https://api.badgr.io/public/assertions/CxPoW1V3RQ-KbVyjBntqag?identity__email=gunjesh843%40gmail.com"><button class="btn">View
-                        Details</button></a>
+                <a href="https://api.badgr.io/public/assertions/CxPoW1V3RQ-KbVyjBntqag?identity__email=gunjesh843%40gmail.com"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--Google Play Academy-->
         <div class="glass">
             <img class="ss" src="../images/google_play_academy.png">
             <p class="details">Store Listing Certificates | Google Play Store</p>
@@ -90,12 +247,9 @@
             <font size="2" class="project_info">December 2023 - December 2026</font>
             <div class="buttons">
                 <a href="../resources/Google Play Academy.pdf"><button class="btn">Open File</button></a>
-                <a
-                    href="https://www.credential.net/19f89513-ffe4-4a4c-8484-78e9a1e8d789"><button
-                        class="btn">View Details</button></a>
+                <a href="https://www.credential.net/19f89513-ffe4-4a4c-8484-78e9a1e8d789"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--AI for Everyone IBM Edx-->
         <div class="glass">
             <img class="ss" src="../images/AI_IBM_edx.png">
             <p class="details">AI for Everyone - IBM | edX</p>
@@ -105,11 +259,9 @@
             <font size="2" class="project_info">April 2024</font>
             <div class="buttons">
                 <a href="../resources/edxIBM.pdf"><button class="btn">Open File</button></a>
-                <a href="https://courses.edx.org/certificates/357baf51617342418b3604e14a75210f"><button
-                        class="btn">View Details</button></a>
+                <a href="https://courses.edx.org/certificates/357baf51617342418b3604e14a75210f"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--ISRO AI ML MOOCS Course-->
         <div class="glass">
             <img class="ss" src="../images/ML_ISRO.png">
             <p class="details">Get Started with Python- Google | Coursera</p>
@@ -123,11 +275,10 @@
             </div>
         </div>
     </div>
-<!-------------------------------------------------2nd ROW------------------------------------------------------>
-<h1 class="heading">Badges</h1>
+    <h1 class="heading">Badges</h1>
     <div class="items">
         <hr class="design-line">
-        <!--Solutions Challenge Badge-->
+        <!-- Badge Cards -->
         <div class="glass">
             <img class="ss badge" src="../images/solution_challenge.png">
             <p class="details">Solution Challenge | Google</p>
@@ -139,7 +290,6 @@
                 <a href="https://g.dev/gunjesh07"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--GitHub Foundation Certification-->
         <div class="glass">
             <img class="ss badge" src="../images/github-foundations.png">
             <p class="details">GitHub Foundations | GitHub</p>
@@ -151,7 +301,6 @@
                 <a href="https://www.credly.com/badges/f9e1bbc7-6276-45b5-a5c8-f9959ece8e0c"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--Microsoft Ai Skills challenge-->
         <div class="glass">
             <img class="ss badge" src="../images/ai-skills-challenge-april-2024.png">
             <p class="details">AI Skills Challenge | Microsoft</p>
@@ -163,7 +312,6 @@
                 <a href="https://learn.microsoft.com/en-us/users/gunjeshkumar-1959/achievements/uxyky8w3?ref=https%3A%2F%2Fwww.linkedin.com%2F"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--AWS ML FOUNDATION BADGE-->
         <div class="glass">
             <img class="ss badge" src="../images/aws-academy-graduate-aws-academy-machine-learning-foundations.png">
             <p class="details">AWS ML FOUNDATION | AWS</p>
@@ -172,13 +320,9 @@
             </div>
             <font size="2" class="project_info">March 2025</font>
             <div class="buttons">
-
-                <a
-                    href="https://www.credly.com/badges/d6d4dea1-3567-40b3-a27d-dfa05218f1b3/public_url"><button
-                        class="btn">View Details</button></a>
+                <a href="https://www.credly.com/badges/d6d4dea1-3567-40b3-a27d-dfa05218f1b3/public_url"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--google play academy badge-->
         <div class="glass">
             <img class="ss badge" src="../images/GOOGLE PALY ACADEMY.png">
             <p class="details">Store Listing Badge | Google Play Store</p>
@@ -187,13 +331,9 @@
             </div>
             <font size="2" class="project_info">December 2023 - December 2026</font>
             <div class="buttons">
-
-                <a
-                    href="https://www.credential.net/19f89513-ffe4-4a4c-8484-78e9a1e8d789"><button
-                        class="btn">View Details</button></a>
+                <a href="https://www.credential.net/19f89513-ffe4-4a4c-8484-78e9a1e8d789"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--microsoft learn challenge badge-->
         <div class="glass">
             <img class="ss badge" src="../images/MICROSOFT.png">
             <p class="details">Learn Challenge | Microsoft</p>
@@ -202,11 +342,9 @@
             </div>
             <font size="2" class="project_info">June 2022</font>
             <div class="buttons">
-                <a href="https://learn.microsoft.com/en-us/users/gunjeshkumar-1959/achievements?tab=credentials-tab"><button class="btn">View
-                        Details</button></a>
+                <a href="https://learn.microsoft.com/en-us/users/gunjeshkumar-1959/achievements?tab=credentials-tab"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--microsoft learn student ambassador program alpha badge-->
         <div class="glass">
             <img class="ss badge" src="../images/mlsa _logo.png">
             <p class="details">MLSA Alpha Badge | Microsoft Students Ambassador</p>
@@ -215,12 +353,9 @@
             </div>
             <font size="2" class="project_info">October 2024</font>
             <div class="buttons">
-                <a
-                    href="https://mvp.microsoft.com/en-US/studentambassadors/profile/3c3ca556-ac37-4999-998b-d2ece7ffa532"><button
-                        class="btn">View Details</button></a>
+                <a href="https://mvp.microsoft.com/en-US/studentambassadors/profile/3c3ca556-ac37-4999-998b-d2ece7ffa532"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--gdsc core team member badge-->
         <div class="glass">
             <img class="ss badge" src="../images/gdsc_badge.png">
             <p class="details">Core Team Badge | GDSC</p>
@@ -229,11 +364,9 @@
             </div>
             <font size="2" class="project_info">August 2023</font>
             <div class="buttons">
-                <a href="https://developers.google.com/profile/u/gunjesh07"><button
-                        class="btn">View Details</button></a>
+                <a href="https://developers.google.com/profile/u/gunjesh07"><button class="btn">View Details</button></a>
             </div>
         </div>
-        <!--postman badge-->
         <div class="glass">
             <img class="ss badge" src="../images/postman_badge.png">
             <p class="details">API Fundamentals | POSTMAN</p>
@@ -242,17 +375,18 @@
             </div>
             <font size="2" class="project_info">August 2024</font>
             <div class="buttons">
-                <a
-                    href="https://api.badgr.io/public/assertions/CxPoW1V3RQ-KbVyjBntqag?identity__email=gunjesh843%40gmail.com"><button
-                        class="btn">View Details</button></a>
+                <a href="https://api.badgr.io/public/assertions/CxPoW1V3RQ-KbVyjBntqag?identity__email=gunjesh843%40gmail.com"><button class="btn">View Details</button></a>
             </div>
         </div>
     </div>
-        <img src="https://png.pngtree.com/png-vector/20230222/ourmid/pngtree-abstract-network-digital-lines-dots-technology-geometric-big-data-laser-electronic-png-image_6604988.png"
+    <img src="https://png.pngtree.com/png-vector/20230222/ourmid/pngtree-abstract-network-digital-lines-dots-technology-geometric-big-data-laser-electronic-png-image_6604988.png"
         class="bgcerti">
     <div class="footer-container">
         <div class="footer">
             <a href="../index.html"><button class="btn" id="return">Go Back</button></a>
+        </div>
+        <div style="color:#6ee7b7;font-size:0.95rem;margin-top:0.5rem;">
+            &copy; 2025 Gunjesh Kumar. All rights reserved.
         </div>
     </div>
 </body>

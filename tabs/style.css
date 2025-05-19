@@ -449,3 +449,119 @@
   background: #22d3ee;
   transform: scale(1.2);
 }
+
+/* Use these styles for your certificates section */
+/* Card glass effect */
+.glass {
+    background-color: #232634a5;
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 15px;
+    backdrop-filter: blur(4px);
+    width: 23vw;
+    z-index: 3;
+    box-shadow: 10px 0px 40px rgb(0, 0, 0), 10px 0px 40px rgb(0, 0, 0);
+    border-radius: 5px;
+}
+
+/* Responsive for mobile */
+@media screen and (max-width: 900px) {
+    .glass {
+        width: 80vw;
+        backdrop-filter: blur(9px);
+        background-color: #181b2687;
+        border-radius: 5px;
+    }
+    .items {
+        flex-direction: column;
+        justify-content: center;
+        margin-left: -1vw;
+        overflow-x: hidden;
+    }
+    .items > .glass {
+        width: 80vw;
+    }
+    .ss {
+        width: 90vw;
+    }
+}
+
+/* Card image */
+.ss {
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    object-position: 0%;
+    width: 27vw;
+    border-radius: 3px;
+}
+@media screen and (max-width: 900px) {
+    .ss {
+        width: 90vw;
+    }
+}
+
+/* Card tags */
+.tags {
+    display: flex;
+    width: 23vw;
+    overflow-wrap: break-word;
+    flex-wrap: wrap;
+}
+.tags p {
+    margin-right: 10px;
+    font-size: 0.7rem;
+    margin-top: -1rem;
+    margin-bottom: 20px;
+}
+
+/* Tag gradients */
+#mysqltag {
+    background: linear-gradient(to right, teal, orange);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+#pythontag {
+    background: linear-gradient(to right, rgb(0, 149, 255), yellow);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+#blendertag {
+    background: linear-gradient(to right, rgb(255, 247, 0), orange);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Card buttons */
+.btn {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 15px;
+    background: #13151d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 7px;
+    transition-duration: 0.3s;
+}
+.btn:hover {
+    color: #1b1d29;
+    background: white;
+}
+
+/* Card layout */
+.items {
+    font-size: 20px;
+    display: flex;
+    overflow: scroll;
+    flex-direction: row;
+}
+.items > .glass {
+    margin-left: 3vw;
+    margin-right: 3vw;
+}
+
+/* Section heading */
+.heading {
+    font-weight: 400;
+    margin-top: 40px;
+    text-align: center;
+}
