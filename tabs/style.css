@@ -307,11 +307,6 @@
     cursor: grabbing;
 }
 
-/* Ensure proper spacing and overflow behavior */
-.overflow-hidden {
-    overflow: hidden;
-}
-
 /* Style indicators */
 .slider-indicator {
     width: 10px;
@@ -325,4 +320,132 @@
 .slider-indicator.active {
     background-color: rgba(34, 211, 238, 1);
     transform: scale(1.2);
+}
+
+/* Ensure all slider cards are the same width and height */
+#certificates-container > .flex-shrink-0,
+#badges-container > .flex-shrink-0 {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 100vw;
+    height: 100%;
+}
+
+@media (min-width: 640px) {
+    #certificates-container > .flex-shrink-0,
+    #badges-container > .flex-shrink-0 {
+        width: 50vw;
+        max-width: 50vw;
+        min-width: 50vw;
+    }
+}
+@media (min-width: 768px) {
+    #certificates-container > .flex-shrink-0,
+    #badges-container > .flex-shrink-0 {
+        width: 33.3333vw;
+        max-width: 33.3333vw;
+        min-width: 33.3333vw;
+    }
+}
+@media (min-width: 1024px) {
+    #certificates-container > .flex-shrink-0,
+    #badges-container > .flex-shrink-0 {
+        width: 25vw;
+        max-width: 25vw;
+        min-width: 25vw;
+    }
+}
+
+/* Make all carousel cards the same height */
+.carousel-card {
+  height: 440px; /* Adjust as needed for your content */
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 640px) {
+  .carousel-card { height: 440px; }
+}
+@media (min-width: 1024px) {
+  .carousel-card { height: 440px; }
+}
+/* Ensure inner content fills the card */
+.carousel-card > div {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make sure the parent container doesn't wrap */
+#certificates-container,
+#badges-container {
+    flex-wrap: nowrap !important;
+}
+
+#certificates-container > .flex-shrink-0 > div,
+#badges-container > .flex-shrink-0 > div {
+    min-height: 420px; /* adjust as needed */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Certificates & Badges Carousel Styles */
+.carousel {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  outline: none;
+}
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+.carousel-card {
+  flex: 0 0 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+@media (min-width: 640px) {
+  .carousel-card { flex-basis: 50%; max-width: 50%; }
+}
+@media (min-width: 768px) {
+  .carousel-card { flex-basis: 33.3333%; max-width: 33.3333%; }
+}
+@media (min-width: 1024px) {
+  .carousel-card { flex-basis: 25%; max-width: 25%; }
+}
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  background: rgba(30,41,59,0.8);
+  color: #fff;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.5rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.carousel-btn.left { left: 0.5rem; }
+.carousel-btn.right { right: 0.5rem; }
+.carousel-btn:hover { background: rgba(30,41,59,1); }
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+.carousel-indicators button {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(255,255,255,0.3); border: none;
+  transition: background 0.3s, transform 0.3s;
+}
+.carousel-indicators button.active {
+  background: #22d3ee;
+  transform: scale(1.2);
 }
