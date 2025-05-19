@@ -1087,10 +1087,14 @@
                     </div>
                 </div>
                 
+                <!-- Contact Form with Netlify Integration -->
                 <div class="glass-card" data-aos="fade-up" data-aos-delay="200">
                     <h3 class="text-2xl font-semibold text-white mb-6">Send Me a Message</h3>
                     
-                    <form id="contact-form" class="space-y-6">
+                    <form id="contact-form" name="portfolio-contact" method="POST" data-netlify="true" class="space-y-6">
+                        <!-- Hidden input required for Netlify form handling -->
+                        <input type="hidden" name="form-name" value="portfolio-contact" />
+                        
                         <div>
                             <label for="name" class="block text-white mb-2">Name</label>
                             <input type="text" id="name" name="name" placeholder="Your name" required
@@ -1201,15 +1205,33 @@
             
             setTimeout(animateSkillBars, 500);
             
-            // Contact form submission handler
+            // Contact form submission handler for Netlify
             const contactForm = document.getElementById('contact-form');
             if (contactForm) {
                 contactForm.addEventListener('submit', function(e) {
+                    // Netlify will handle the form submission automatically
+                    // You can still add custom behavior here if needed
+                    
+                    // If you want to handle the form submission with AJAX instead of a page refresh:
+                    /*
                     e.preventDefault();
-                    // Form submission logic would go here
-                    // For now, just show a simple alert
-                    alert('Thanks for your message! This would be sent in a real implementation.');
-                    contactForm.reset();
+                    const formData = new FormData(contactForm);
+                    
+                    fetch("/", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: new URLSearchParams(formData).toString()
+                    })
+                        .then(() => {
+                            // Show success message
+                            alert('Thank you for your message! I will get back to you soon.');
+                            contactForm.reset();
+                        })
+                        .catch(error => {
+                            // Show error message
+                            alert('Oops! There was a problem submitting your form: ' + error);
+                        });
+                    */
                 });
             }
 
@@ -1424,26 +1446,23 @@
                     const galaxyPosition = new THREE.Vector3(
                         (Math.random() - 0.5) * 1500,
                         (Math.random() - 0.5) * 1500,
-                        (Math.random() - 0.5) * 1500
+                        (Math.random() - 0.5) * 
+ 1500
                     );
                     
-                    const colors = [];
-                    
-                    // Create spiral galaxy pattern
-                    for (let j = 0; j < 5000; j++) {
-                        const angle = Math.random() * Math.PI * 2;
+                    for (let j = 0; j < 1000; j++) {
                         const radius = Math.random() * galaxySize;
-                        const spiralOffset = angle * 5;
-                        
-                        const x = Math.cos(angle + spiralOffset) * radius;
-                        const y = (Math.random() - 0.5) * (radius * 0.2);
-                        const z = Math.sin(angle + spiralOffset) * radius;
-                        
-                        galaxyParticles.push(
-                            x + galaxyPosition.x, 
-                            y + galaxyPosition.y, 
-                            z + galaxyPosition.z
-                        );
+                        const angle = Math.random() * Math.PI * 2;
+                        const x = galaxyPosition.x + Math.sin(angle) * radius;
+                        const y = galaxyPosition.y + (Math.random() - 0.5) * 2 * galaxySize;
+                        const z = galaxyPosition.z + Math.cos(angle) * radius;
+                        galaxyParticles.push(x, y, z);
+                    }
+                    
+                    // Color gradient from center to edge
+                    const colors = [];
+                    for (let j = 0; j < galaxyParticles.length / 3; j++) {
+                        const radius = Math.sqrt(galaxyParticles[j * 3] ** 2 + galaxyParticles[j * 3 + 1] ** 2 + galaxyParticles[j * 3 + 2] ** 2);
                         
                         // Color gradient from center to edge
                         const colorFactor = radius / galaxySize;
