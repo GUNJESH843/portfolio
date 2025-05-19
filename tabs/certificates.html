@@ -34,6 +34,7 @@
             background: linear-gradient(120deg, rgba(36, 41, 54, 0.85) 80%, rgba(6, 182, 212, 0.08));
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
             transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 2.2rem;
         }
 
         .glass:hover {
@@ -45,6 +46,31 @@
             border: 2px solid #06b6d4;
             background: #181b26;
             box-shadow: 0 2px 12px #06b6d455;
+            width: 100%;
+            max-width: 420px;
+            height: auto;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* For badges: show original size/shape, no cropping */
+        .ss.badge {
+            aspect-ratio: unset;
+            width: auto;
+            max-width: 180px;
+            max-height: 120px;
+            height: auto;
+            object-fit: contain;
+            background: none;
+            border: none;
+            box-shadow: none;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            display: block;
         }
 
         .details {
@@ -53,17 +79,26 @@
             margin: 0.7rem 0 0.2rem 0;
             color: #fff;
             letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        /* Fix tags overlapping: put tags below details, add spacing */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.5rem 0 0.7rem 0;
+            justify-content: center;
         }
 
         .tags p {
             font-weight: 600;
             padding: 2px 10px;
             border-radius: 8px;
-            margin-right: 8px;
-            margin-bottom: 8px;
             background: #232634;
             font-size: 0.85rem;
             display: inline-block;
+            margin: 0;
         }
 
         #mysqltag {
@@ -158,6 +193,12 @@
 
             .ss {
                 width: 90vw !important;
+                max-width: 100vw;
+            }
+
+            .ss.badge {
+                max-width: 60vw;
+                max-height: 25vw;
             }
 
             .items {
