@@ -1,537 +1,1478 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" class="favicon" type="image/x-icon" href="images/favicon.png">
     <title>Gunjesh Kumar | Portfolio</title>
-    <link rel="stylesheet" href="tabs/style.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                        manrope: ['Manrope', 'sans-serif']
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.7s ease-out forwards',
+                        'slide-right': 'slideRight 0.7s ease-out forwards',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(50px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 },
+                        },
+                        slideRight: {
+                            '0%': { transform: 'translateX(-50px)', opacity: 0 },
+                            '100%': { transform: 'translateX(0)', opacity: 1 },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Inter:wght@300;400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    
+    <!-- AOS Library for Scroll Animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
     <style>
-        #formMessage {
-            color: yellow;
-            background-color: black;
-            padding: 10px;
-            border-radius: 5px;
+        /* Custom styles */
+        body {
+            overflow-x: hidden;
+        }
+        
+        .glass-card {
+            backdrop-filter: blur(12px);
+            background-color: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, #22d3ee, #e879f9);
+        }
+        
+        .skill-badge {
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            margin: 0.35rem;
+            font-size: 0.875rem;
+            border-radius: 9999px;
+            background-color: rgba(30, 41, 59, 0.5);
+            color: #e2e8f0;
+            border: 1px solid rgba(55, 65, 81, 0.7);
+            transition: all 0.2s ease;
+        }
+        
+        .skill-badge:hover {
+            background-color: rgba(30, 41, 59, 0.8);
+            transform: translateY(-2px);
+        }
+        
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.8rem;
+            height: 2.8rem;
+            border-radius: 9999px;
+            background-color: rgba(30, 41, 59, 0.8);
+            color: white;
+            border: 1px solid rgba(55, 65, 81, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background-color: rgba(51, 65, 85, 0.8);
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #22d3ee, #e879f9);
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 1.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #22d3ee, #e879f9);
+            box-shadow: 0 0 0 4px rgba(30, 41, 59, 0.5);
+        }
+        
+        /* Scroll animations */
+        [data-aos] {
+            opacity: 0;
+            transition-property: opacity, transform;
+        }
+        
+        [data-aos].aos-animate {
+            opacity: 1;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #22d3ee, #e879f9);
+            border-radius: 4px;
+        }
+        
+        /* Reveal animation on scroll */
+        .reveal {
+            position: relative;
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+        }
+        
+        .reveal.active.fade-bottom {
+            transform: translateY(0);
+        }
+        
+        .reveal.fade-bottom {
+            transform: translateY(50px);
+        }
+        
+        .reveal.active.fade-left {
+            transform: translateX(0);
+        }
+        
+        .reveal.fade-left {
+            transform: translateX(-50px);
+        }
+        
+        .reveal.active.fade-right {
+            transform: translateX(0);
+        }
+        
+        .reveal.fade-right {
+            transform: translateX(50px);
+        }
+        
+        section {
+            padding: 6rem 0;
+        }
+        
+        .section-heading {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 2rem;
             text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-subheading {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            line-height: 1.6;
         }
     </style>
 </head>
-<div class="infinity">
-    <p class="chat">Hey! I'm <b>Bravos°</b>.<br>Gunjesh's AI assistant.</p>
-</div>
-
-<body id="body">
-    <div id="progress_bar"></div>
-    <!--For Laptop-->
-    <div class="navbar2">
-        <a href="tabs/index.html" class="tglink2"><img src="images/favicon.png" class="tglogo"></a>
-        <button class="rightlink2" id="show2" onclick="show2()">
-            <div class="hamburgeri" id="hri"></div>
-            <div class="hamburgerii" id="hrii"></div>
-            <div class="hamburgeriii" id="hriii"></div>
-        </button>
-        <button class="rightlink2" id="hide2" onclick="hide2()"></button>
-    </div>
-    <!--For Mobile-->
-
-    <div class="blind" id="blind"></div>
-    <div class="navbar">
-        <a href="index.html" class="tglink"><img src="images/favicon.png" class="tglogo"></a>
-        <button class="rightlink" id="show" onclick="show()">
-            <div class="hamburger1" id="hr1"></div>
-            <div class="hamburger2" id="hr2"></div>
-            <div class="hamburger3" id="hr3"></div>
-        </button>
-        <button class="rightlink" id="hide" onclick="hide()"></button>
-    </div>
-
-    <button onclick="topFunction()" id="myBtn" title="Go to top"><img src="images/top.png" class="top"></button>
-    <div class="by" id="by">Designed & Developed by Gunjesh Kumar</div>
-
-    <img src="images/earth.png" class="cover" id="cover">
-    </div>
-    <div class="container" id="container">
-        <div class="share" id="share">
-            <div class="wrap">
-                Share My Portfolio! <br><br>
-                <code>gunjesh.netlify.app</code>
-                <br><br>
-                <button onclick="copy()" class="copy" id="copy">Copy Link&nbsp;<img src="images/copy.png"
-                        class="symbol"></button>
-            </div>
-            <img src="images/qr_portfolio.png" alt="" class="qr">
+<body class="min-h-screen bg-slate-900 text-gray-300 font-manrope">
+    <!-- Particle Background Canvas -->
+    <div id="particle-background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></div>
+    
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-slate-900/80 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600 flex items-center justify-center overflow-hidden border-2 border-white/10 shadow-lg">
+                    <img src="images/favicon.png" alt="Logo" class="w-10 h-10 object-contain">
+                </div>
+                <span class="text-2xl font-orbitron font-bold gradient-text">
+                    Gunjesh Kumar
+                </span>
+            </a>
+            
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#experience" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">
+                    Experience
+                </a>
+                <a href="#education" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">
+                    Education
+                </a>
+                <a href="#skills" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">
+                    Skills
+                </a>
+                <a href="#hobbies" class="text-gray-300 hover:text-cyan-400 transition-colors font-medium">
+                    Hobbies
+                </a>
+                <a href="#contact" class="bg-gradient-to-r from-cyan-500 to-fuchsia-600 px-5 py-2.5 rounded-full font-medium text-white shadow-lg shadow-fuchsia-500/20 transition-transform hover:scale-105">
+                    Contact
+                </a>
+            </nav>
+            
+            <button class="md:hidden text-white">
+                <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
         </div>
-
-        <div class="right" id="right">
-            <div class="1">
-                <img src="images\profie.jpg" class="photo">
-            </div>
-            <div class="2">
-                <div id="symbol">
-                    <img src="images/user.png" class="smallicon">
-                    <b>GUNJESH KUMAR</b>
+    </header>
+    
+    <!-- Hero section -->
+    <section class="relative py-28 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <div class="w-full lg:w-1/2 reveal fade-right">
+                    <span class="px-3 py-1.5 text-sm rounded-full border bg-fuchsia-900/30 text-fuchsia-400 border-fuchsia-500/50 inline-flex items-center gap-1 font-medium">
+                        Software Engineering Student
+                    </span>
+                    
+                    <h1 class="text-5xl md:text-6xl font-bold mt-6 mb-8 font-orbitron leading-tight">
+                        <span class="text-white">Hi! I'm </span>
+                        <span class="gradient-text">
+                            Gunjesh Kumar
+                        </span>
+                    </h1>
+                    
+                    <p class="text-xl text-gray-300 mb-10 leading-relaxed">
+                        A passionate and aspiring software engineering major. Welcome to my digital space, 
+                        where lines of code converge with creativity. Explore my portfolio to witness my journey, 
+                        showcasing projects, skills and a commitment to mastering the art and science of programming.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-5">
+                        <a href="resources/Resume.pdf" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-full font-medium text-white shadow-lg shadow-cyan-500/20 transition-transform hover:scale-105 hover:shadow-xl">
+                            Download CV
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                        </a>
+                        
+                        <a href="#contact" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-fuchsia-500 to-fuchsia-600 rounded-full font-medium text-white shadow-lg shadow-fuchsia-500/20 transition-transform hover:scale-105 hover:shadow-xl">
+                            Let's Connect
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="flex gap-5 mt-12">
+                        <a href="https://github.com/gunjesh843" target="_blank" class="social-icon">
+                            <i data-lucide="github" class="w-5 h-5"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" class="social-icon">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                        <a href="https://x.com/gunjesh843" target="_blank" class="social-icon">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="https://www.instagram.com/gunjesh_07/" target="_blank" class="social-icon">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="mailto:kumargunjesh843@gmail.com" class="social-icon">
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                        </a>
+                    </div>
                 </div>
-                <div id="symbol">
-                    <img src="images/graduation.png" alt="student" class="smallicon">
-                    <a href="https://gvpce.ac.in/" class="normal">Student at Gayatri Vidya Parishad<br>College of Engineering</a>
-                </div>
-                <div id="symbol">
-                    <img src="images/pin.png" alt="pin" class="smallicon">
-                    <a href="https://maps.app.goo.gl/zb56cyhEh5gV2vib8" class="normal">Visakhapatnam, Andhra Pradesh, India.</a>
+                
+                <div class="w-full lg:w-1/2 flex justify-center reveal fade-left">
+                    <div class="relative animate-float">
+                        <div class="w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white/10 shadow-2xl">
+                            <img src="images/profie.jpg" alt="Gunjesh Kumar" class="w-full h-full object-cover">
+                        </div>
+                        
+                        <div class="absolute -top-5 -right-5 bg-slate-800/80 backdrop-blur-md rounded-xl p-4 border border-gray-700 shadow-lg animate-slide-up">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="user" class="w-5 h-5 text-cyan-400"></i>
+                                <span class="font-semibold text-white">Gunjesh Kumar</span>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute -bottom-5 -left-5 bg-slate-800/80 backdrop-blur-md rounded-xl p-4 border border-gray-700 shadow-lg animate-slide-up">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-fuchsia-400"></i>
+                                <span>Visakhapatnam, India</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="box">
-            <div class="left" id="left">
-                <p class="text">Hi!<br>I'm <b>Gunjesh Kumar</b>,
-                <div class="intro">A passionate and aspiring software engineering major. Welcome to my digital space,
-                    where
-                    lines of code converge with creativity. Explore my portfolio to witness my journey, showcasing
-                    projects,
-                    skills and a commitment to mastering the art and science of programming.</div>
-                </p>
-                <!--
-                <div class="newstats">
-                    <div class="names" id="top-more">
-                        <div class="small">More than</div>
-                        <div class="small">More than</div>
-                    </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 bg-slate-950/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="section-heading">
+          <span class="gradient-text">My Projects</span>
+        </h2>
+        <p class="section-subheading">
+          Here are some of the projects I've worked on. Each project has been a journey of learning and growth.
+        </p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <!-- Project Card 1 -->
+          <div class="glass-card group hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="100">
+            <div class="relative h-60 rounded-lg overflow-hidden mb-6">
+              <img src="https://via.placeholder.com/600x400/0f172a/22d3ee?text=Project+1" alt="Project 1" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+            <h3 class="text-2xl font-semibold text-white mb-3">Road Safety Index</h3>
+            <p class="text-gray-300 mb-5 leading-relaxed">An AI-based system that analyzes dashboard camera footage to create a safety index for road infrastructure.</p>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="skill-badge">Python</span>
+              <span class="skill-badge">TensorFlow</span>
+              <span class="skill-badge">Computer Vision</span>
+            </div>
+            <div class="flex gap-4">
+              <a href="#" class="text-cyan-400 hover:text-cyan-300 inline-flex items-center font-medium">
+                View Project <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
+              </a>
+              <a href="#" class="text-fuchsia-400 hover:text-fuchsia-300 inline-flex items-center font-medium">
+                GitHub <i data-lucide="github" class="w-4 h-4 ml-1"></i>
+              </a>
+            </div>
+          </div>
+          
+          <div class="glass-card group hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="200">
+            <div class="relative h-60 rounded-lg overflow-hidden mb-6">
+              <img src="https://via.placeholder.com/600x400/0f172a/e879f9?text=Portfolio+Website" alt="Portfolio Website" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+            <h3 class="text-2xl font-semibold text-white mb-3">Portfolio Website</h3>
+            <p class="text-gray-300 mb-5 leading-relaxed">My personal portfolio website built with modern web technologies and responsive design principles.</p>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="skill-badge">HTML5</span>
+              <span class="skill-badge">CSS3</span>
+              <span class="skill-badge">JavaScript</span>
+              <span class="skill-badge">TailwindCSS</span>
+            </div>
+            <div class="flex gap-4">
+              <a href="#" class="text-cyan-400 hover:text-cyan-300 inline-flex items-center font-medium">
+                View Live <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
+              </a>
+              <a href="https://github.com/gunjesh843/portfolio" class="text-fuchsia-400 hover:text-fuchsia-300 inline-flex items-center font-medium">
+                GitHub <i data-lucide="github" class="w-4 h-4 ml-1"></i>
+              </a>
+            </div>
+          </div>
+          
+          <div class="glass-card group hover:scale-105 transition-transform duration-300" data-aos="fade-up" data-aos-delay="300">
+            <div class="relative h-60 rounded-lg overflow-hidden mb-6">
+              <img src="https://via.placeholder.com/600x400/0f172a/22d3ee?text=Web+Development" alt="Web Development Project" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+            <h3 class="text-2xl font-semibold text-white mb-3">E-Learning Platform</h3>
+            <p class="text-gray-300 mb-5 leading-relaxed">A comprehensive platform for students to access educational resources and track their progress.</p>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="skill-badge">React</span>
+              <span class="skill-badge">Node.js</span>
+              <span class="skill-badge">MongoDB</span>
+              <span class="skill-badge">Express</span>
+            </div>
+            <div class="flex gap-4">
+              <a href="#" class="text-cyan-400 hover:text-cyan-300 inline-flex items-center font-medium">
+                View Demo <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
+              </a>
+              <a href="#" class="text-fuchsia-400 hover:text-fuchsia-300 inline-flex items-center font-medium">
+                GitHub <i data-lucide="github" class="w-4 h-4 ml-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Main content -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <!-- Experience Section -->
+                <div class="lg:col-span-2" id="experience">
+                    <div class="glass-card" data-aos="fade-up">
+                        <div class="flex items-center mb-6 pb-4 border-b border-gray-700/50">
+                            <div class="mr-4 text-cyan-400">
+                                <i data-lucide="briefcase" class="w-7 h-7"></i>
+                            </div>
+                            <h2 class="text-3xl font-orbitron text-white">
+                                <span class="gradient-text">Experience</span>
+                            </h2>
+                        </div>
+                        
+                        <!-- Timeline Items -->
+                        <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                            <div class="flex flex-col md:flex-row md:items-center gap-5">
+                                <div class="flex-shrink-0 mb-3 md:mb-0">
+                                    <div class="w-16 h-16 rounded-full overflow-hidden bg-slate-800 flex items-center justify-center p-3 border border-slate-700 shadow-md">
+                                        <img src="images/csir.png" alt="CSIR-Central Road Research Institute" class="w-full h-full object-contain">
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold text-white">Research Intern</h3>
+                                    <div class="text-cyan-400 font-medium text-lg">CSIR-Central Road Research Institute</div>
+                                    <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                                        <span class="flex items-center gap-1">
+                                            <i data-lucide="calendar" class="w-4 h-4"></i> April 2025 - Present
+                                        </span>
+                                        <span class="flex items-center gap-1">
+                                            <i data-lucide="map-pin" class="w-4 h-4"></i> New Delhi, India
+                                        </span>
+                                    </div>
+                                    <div class="mt-4 text-gray-300">
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li>Developing a Road Safety Index using AI/ML models on dashboard camera footage.</li>
+                                            <li>Implementing computer vision techniques to detect and classify safety-critical road events.</li>
+                                            <li>Aiming to enhance traffic safety analytics and infrastructure planning.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item" data-aos="fade-up" data-aos-delay="150">
+                            <div class="flex flex-col md:flex-row md:items-center gap-5">
+                                <div class="flex-shrink-0 mb-3 md:mb-0">
+                                    <div class="w-16 h-16 rounded-full overflow-hidden bg-slate-800 flex items-center justify-center p-3 border border-slate-700 shadow-md">
+                                        <img src="images/mlsa _logo.png" alt="Microsoft Learn" class="w-full h-full object-contain">
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold text-white">Microsoft Student Ambassador</h3>
+                                    <div class="text-cyan-400 font-medium text-lg">Microsoft Learn</div>
+                                    <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                                        <span class="flex items-center gap-1">
+                                            <i data-lucide="calendar" class="w-4 h-4"></i> Oct 2024 - Present
+                                        </span>
+                                        <span class="flex items-center gap-1">
+                                            <i data-lucide="map-pin" class="w-4 h-4"></i> Remote, India
+                                        </span>
+                                    </div>
+                                    <div class="mt-4 text-gray-300">
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li>Helping Students understand Better about Technology.</li>
+                                            <li>Conducted workshops and seminars on various Microsoft technologies.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="statistics">
-                        <p class="stats" id="loc">0</p>
-                        <p class="stats" id="connections">0</p>
-                    </div>
-                    <div class="pipe"></div>
-                    <div class="names">
-                        <div class="small">Lines of Code</div>
-                        <div class="small">Connections</div>
-                    </div>
+                        <!-- GDSC - Hierarchical order -->
+                        <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+                            <div class="flex flex-col md:flex-row md:items-start gap-5">
+                                <div class="flex-shrink-0 mb-3 md:mb-0">
+                                    <div class="w-16 h-16 rounded-full overflow-hidden bg-slate-800 flex items-center justify-center p-3 border border-slate-700 shadow-md">
+                                        <img src="images/gdsc.png" alt="Google Developer Student Club" class="w-full h-full object-contain">
+                                    </div>
+                                </div>
+                                <div class="flex-grow">
+                                    <!-- Organization header -->
+                                    <div class="text-cyan-400 font-medium text-lg mb-3">Google Developer Student Club (GDSC) (GVPCE)</div>
+                                    
+                                    <!-- Position 1: Cyber Security Lead -->
+                                    <div class="mb-5 border-l-2 border-cyan-500 pl-5 pb-2">
+                                        <h3 class="text-2xl font-semibold text-white">Cyber Security Lead</h3>
+                                        <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="calendar" class="w-4 h-4"></i> Oct 2024 - Present
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="map-pin" class="w-4 h-4"></i> Vizag, India
+                                            </span>
+                                        </div>
+                                        <div class="mt-4 text-gray-300">
+                                            <ul class="list-disc list-inside space-y-2">
+                                                <li>Helping Students understand Better about Cyber Technology.</li>
+                                                <li>Conducted Seminars and workshops on Cybersecurity and Blockchain.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Position 2: Cyber Security Co-Lead -->
+                                    <div class="border-l-2 border-gray-600 pl-5">
+                                        <h3 class="text-xl font-semibold text-gray-200">Cyber Security Co-Lead</h3>
+                                        <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="calendar" class="w-4 h-4"></i> Aug 2023 - Oct 2024
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="map-pin" class="w-4 h-4"></i> Remote, India
+                                            </span>
+                                        </div>
+                                        <div class="mt-4 text-gray-300">
+                                            <p>Supporting the lead in organizing and conducting cybersecurity events and workshops.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                </div>-->
-                <div class="glass" id="projects">
-                    <p class="category"><b>LINKS</b></p>
-                    <hr>
-                    <table>
-                        <tr>
-                            <td>
-                                <div id="type">
-                                    <div class="html" id="skill"></div>
-                                    <div class="css" id="skill"></div>
-                                    <div class="js" id="skill"></div>
+                        <!-- GSSOC - Hierarchical order -->
+                        <div class="timeline-item" data-aos="fade-up" data-aos-delay="250">
+                            <div class="flex flex-col md:flex-row md:items-start gap-5">
+                                <div class="flex-shrink-0 mb-3 md:mb-0">
+                                    <div class="w-16 h-16 rounded-full overflow-hidden bg-slate-800 flex items-center justify-center p-3 border border-slate-700 shadow-md">
+                                        <img src="images/gssoc.png" alt="GirlScript Summer of Code" class="w-full h-full object-contain">
+                                    </div>
                                 </div>
-                            </td>
-                            <td>
-                                <a href="https://github.com/GUNJESH843">Web&nbsp;Development↗</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div id="type">
-                                    <div class="python" id="skill"></div>
-                                    <div class="mysql" id="skill"></div>
+                                <div class="flex-grow">
+                                    <!-- Organization header -->
+                                    <div class="text-cyan-400 font-medium text-lg mb-3">GSSOC (Girl Script Summer of Code)</div>
+                                    
+                                    <!-- Position 1: Mentor -->
+                                    <div class="mb-5 border-l-2 border-cyan-500 pl-5 pb-2">
+                                        <h3 class="text-2xl font-semibold text-white">Mentor</h3>
+                                        <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="calendar" class="w-4 h-4"></i> Oct 2024 - Nov 2024
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="map-pin" class="w-4 h-4"></i> Remote, India
+                                            </span>
+                                        </div>
+                                        <div class="mt-4 text-gray-300">
+                                            <ul class="list-disc list-inside space-y-2">
+                                                <li>Mentored few Contributors about Open-Source Projects.</li>
+                                                <li>Was Recognized as Top 50 Mentors all over India.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Position 2: Contributor -->
+                                    <div class="border-l-2 border-gray-600 pl-5">
+                                        <h3 class="text-xl font-semibold text-gray-200">Contributor</h3>
+                                        <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="calendar" class="w-4 h-4"></i> May 2024 - Aug 2024
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="map-pin" class="w-4 h-4"></i> Remote, India
+                                            </span>
+                                        </div>
+                                        <div class="mt-4 text-gray-300">
+                                            <ul class="list-disc list-inside space-y-2">
+                                                <li>Contributed to many Open-Source Projects.</li>
+                                                <li>Technologies used: C++, Python, HTML, CSS, JavaScript.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                            </td>
-                            <td>
-                                <a href="https://leetcode.com/u/gunjesh843/">LeetCode↗</a>
-                            </td>
-                        </tr>
-                        <!-- <tr>
-                            <td>
-                                <div id="type">
-                                    <div class="cpp" id="skill"></div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
+                            <div class="flex flex-col md:flex-row md:items-center gap-5">
+                                <div class="flex-shrink-0 mb-3 md:mb-0">
+                                    <div class="w-16 h-16 rounded-full overflow-hidden bg-slate-800 flex items-center justify-center p-3 border border-slate-700 shadow-md">
+                                        <img src="images/moodindigo.png" alt="Mood Indigo IIT Bombay" class="w-full h-full object-contain">
+                                    </div>
                                 </div>
-                            </td>
-                            <td>
-                                <a href="tabs/cppprojects.html">C++ Projects</a>
-                            </td>
-                        </tr> -->
-                        <tr>
-                            <td>
-                                <div id="type">
-                                    <div class="markdown" id="skill"></div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold text-white">Digital Marketing Intern</h3>
+                                    <div class="text-cyan-400 font-medium text-lg">Mood Indigo IIT Bombay</div>
+                                    <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                                        <span class="flex items-center gap-1">
+                                            <i data-lucide="calendar" class="w-4 h-4"></i> Jul 2022 - Jan 2023
+                                        </span>
+                                        <span class="flex items-center gap-1">
+                                            <i data-lucide="map-pin" class="w-4 h-4"></i> India
+                                        </span>
+                                    </div>
+                                    <div class="mt-4 text-gray-300">
+                                        <ul class="list-disc list-inside space-y-2">
+                                            <li>Worked with Microsoft Office.</li>
+                                            <li>Video/Thumbnail and Photo Editing.</li>
+                                            <li>Utilized modern web technologies and learned Management Skills.</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </td>
-                            <td>
-                                <a href="https://www.linkedin.com/in/gunjeshkumar/">Linkedin↗</a>
-                            </td>
-                        </tr>
-                    </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skills Section (Moved here from right column) -->
+                    <div id="skills" class="mt-10">
+                        <div class="glass-card" data-aos="fade-up">
+                            <div class="flex items-center mb-6 pb-4 border-b border-gray-700/50">
+                                <div class="mr-4 text-cyan-400">
+                                    <i data-lucide="code" class="w-7 h-7"></i>
+                                </div>
+                                <h2 class="text-3xl font-orbitron text-white">
+                                    <span class="gradient-text">Skills</span>
+                                </h2>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white mb-4">Languages</h3>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-medium">Python</span>
+                                                <span>90%</span>
+                                            </div>
+                                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="skill-progress h-full rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600" style="width: 0%" data-width="90%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-medium">C++</span>
+                                                <span>85%</span>
+                                            </div>
+                                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="skill-progress h-full rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600" style="width: 0%" data-width="85%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-medium">C</span>
+                                                <span>82%</span>
+                                            </div>
+                                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="skill-progress h-full rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600" style="width: 0%" data-width="82%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-medium">HTML5</span>
+                                                <span>95%</span>
+                                            </div>
+                                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="skill-progress h-full rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600" style="width: 0%" data-width="95%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-medium">CSS3</span>
+                                                <span>88%</span>
+                                            </div>
+                                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="skill-progress h-full rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600" style="width: 0%" data-width="88%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-medium">JavaScript</span>
+                                                <span>80%</span>
+                                            </div>
+                                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="skill-progress h-full rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600" style="width: 0%" data-width="80%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white mb-4">Libraries & Frameworks</h3>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-medium">React</span>
+                                                <span>78%</span>
+                                            </div>
+                                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="skill-progress h-full rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600" style="width: 0%" data-width="78%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-medium">Django</span>
+                                                <span>80%</span>
+                                            </div>
+                                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="skill-progress h-full rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600" style="width: 0%" data-width="80%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-medium">Node.js</span>
+                                                <span>75%</span>
+                                            </div>
+                                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="skill-progress h-full rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600" style="width: 0%" data-width="75%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between mb-2">
+                                                <span class="font-medium">TensorFlow</span>
+                                                <span>75%</span>
+                                            </div>
+                                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                                                <div class="skill-progress h-full rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-600" style="width: 0%" data-width="75%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white mb-4">Tools & Platforms</h3>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="skill-badge">GitHub</span>
+                                        <span class="skill-badge">GitHub Pages</span>
+                                        <span class="skill-badge">Git</span>
+                                        <span class="skill-badge">VS Code</span>
+                                        <span class="skill-badge">Netlify</span>
+                                        <span class="skill-badge">Jupyter</span>
+                                        <span class="skill-badge">Android Studio</span>
+                                        <span class="skill-badge">Colab</span>
+                                        <span class="skill-badge">Figma</span>
+                                        <span class="skill-badge">Canva</span>
+                                        <span class="skill-badge">Blender</span>
+                                        <span class="skill-badge">Adobe Lightroom</span>
+                                        <span class="skill-badge">Adobe Photoshop</span>
+                                        <span class="skill-badge">PowerPoint</span>
+                                        <span class="skill-badge">Excel</span>
+                                        <span class="skill-badge">Word</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h3 class="text-xl font-semibold text-white mb-4">Database & OS</h3>
+                                    <div class="mb-4">
+                                        <h4 class="text-lg font-medium text-white mb-2">Database</h4>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="skill-badge">MySQL</span>
+                                            <span class="skill-badge">MongoDB</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-medium text-white mb-2">OS</h4>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="skill-badge">Windows</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
+                <!-- Right Column -->
+                <div class="space-y-10">
+                    <!-- Education Section -->
+                    <div id="education">
+                        <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
+                            <div class="flex items-center mb-6 pb-4 border-b border-gray-700/50">
+                                <div class="mr-4 text-cyan-400">
+                                    <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+                                </div>
+                                <h2 class="text-3xl font-orbitron text-white">
+                                    <span class="gradient-text">Education</span>
+                                </h2>
+                            </div>
+                            
+                            <div class="timeline-item" data-aos="fade-up" data-aos-delay="150">
+                                <div class="flex flex-col md:flex-row md:items-center gap-5">
+                                    <div class="flex-shrink-0 mb-3 md:mb-0">
+                                        <div class="w-16 h-16 rounded-full overflow-hidden bg-slate-800 flex items-center justify-center p-3 border border-slate-700 shadow-md">
+                                            <img src="images/gvpce_logo.png" alt="GVPCE" class="w-full h-full object-contain">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-semibold text-white">Bachelor of Technology (B.Tech.)</h3>
+                                        <div class="text-cyan-400 font-medium text-lg">Gayatri Vidya Parishad College of Engineering</div>
+                                        <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="calendar" class="w-4 h-4"></i> 2022 - Present
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="map-pin" class="w-4 h-4"></i> Andhra Pradesh, India
+                                            </span>
+                                        </div>
+                                        <div class="mt-4 text-gray-300">
+                                            <p>Information Technology</p>
+                                            <p class="font-medium text-cyan-400 mt-1">CGPA: 7.8/10</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+                                <div class="flex flex-col md:flex-row md:items-center gap-5">
+                                    <div class="flex-shrink-0 mb-3 md:mb-0">
+                                        <div class="w-16 h-16 rounded-full overflow-hidden bg-slate-800 flex items-center justify-center p-3 border border-slate-700 shadow-md">
+                                            <img src="images/sri_chaitanya.jpg" alt="Sri Chaitanya Jr College" class="w-full h-full object-contain">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-semibold text-white">H.S.C (Class XII)</h3>
+                                        <div class="text-cyan-400 font-medium text-lg">Sri Chaitanya Jr College</div>
+                                        <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="calendar" class="w-4 h-4"></i> 2020 - 2022
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="map-pin" class="w-4 h-4"></i> Andhra Pradesh, India
+                                            </span>
+                                        </div>
+                                        <div class="mt-4 text-gray-300">
+                                            <p>State Higher Secondary Education</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <div class="glass" id="resume">
-                    <p class="category"><b>Résumé</b></p>
-                    <hr>
-                    <a href="resources/Resume.pdf">
-                        <img src="images/resume.png" class="certificate" id="resumephoto">
+                            <div class="timeline-item" data-aos="fade-up" data-aos-delay="250">
+                                <div class="flex flex-col md:flex-row md:items-center gap-5">
+                                    <div class="flex-shrink-0 mb-3 md:mb-0">
+                                        <div class="w-16 h-16 rounded-full overflow-hidden bg-slate-800 flex items-center justify-center p-3 border border-slate-700 shadow-md">
+                                            <img src="images/school.png" alt="Adarsh Public School" class="w-full h-full object-contain">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-semibold text-white">S.S.C (Class X)</h3>
+                                        <div class="text-cyan-400 font-medium text-lg">Adarsh Public School</div>
+                                        <div class="flex flex-wrap gap-4 text-sm text-gray-400 mt-2">
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="calendar" class="w-4 h-4"></i> 2019 - 2020
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <i data-lucide="map-pin" class="w-4 h-4"></i> Andhra Pradesh, India
+                                            </span>
+                                        </div>
+                                        <div class="mt-4 text-gray-300">
+                                            <p>Central Board of Secondary Education</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- LeetCode Badges -->
+                    <div class="glass-card" data-aos="fade-up" data-aos-delay="150">
+                        <div class="flex items-center mb-6 pb-4 border-b border-gray-700/50">
+                            <div class="mr-4 text-cyan-400">
+                                <i data-lucide="code" class="w-7 h-7"></i>
+                            </div>
+                            <h2 class="text-3xl font-orbitron text-white">
+                                <span class="gradient-text">LeetCode Badges</span>
+                            </h2>
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="https://leetcode.com/u/gunjesh843/" target="_blank" class="inline-block mb-6 transition-transform hover:scale-105">
+                                <img src="images/leetcode.png" alt="LeetCode" class="h-16 mx-auto">
+                            </a>
+                            
+                            <div class="grid grid-cols-2 gap-5 mb-6">
+                                <img src="./images/2024-100-new.gif" alt="Highlight Badge" class="w-full transform hover:scale-105 transition-transform">
+                                <img src="./images/2025-100.gif" alt="Highlight Badge" class="w-full transform hover:scale-105 transition-transform">
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-5 mb-6">
+                                <img src="./images/2024-50.gif" alt="Achievement Badge 1" class="w-full transform hover:scale-105 transition-transform">
+                                <img src="./images/2025-50.gif" alt="Monthly Badge 6" class="w-full transform hover:scale-105 transition-transform">
+                            </div>
+                            
+                            <div class="grid grid-cols-4 gap-3">
+                                <img src="./images/2024-08.gif" alt="Monthly Badge 1" class="w-full transform hover:scale-110 transition-transform">
+                                <img src="./images/2024-09.gif" alt="Monthly Badge 2" class="w-full transform hover:scale-110 transition-transform">
+                                <img src="./images/2024-10.gif" alt="Monthly Badge 3" class="w-full transform hover:scale-110 transition-transform">
+                                <img src="./images/2024-11.gif" alt="Monthly Badge 4" class="w-full transform hover:scale-110 transition-transform">
+                                <img src="./images/2024-12.gif" alt="Monthly Badge 5" class="w-full transform hover:scale-110 transition-transform">
+                                <img src="./images/2025-01.gif" alt="Monthly Badge 6" class="w-full transform hover:scale-110 transition-transform">
+                                <img src="./images/2025-02.gif" alt="Monthly Badge 6" class="w-full transform hover:scale-110 transition-transform">
+                                <img src="./images/2025-03.gif" alt="Monthly Badge 7" class="w-full transform hover:scale-110 transition-transform">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hobbies Section -->
+                    <div id="hobbies">
+                        <div class="glass-card" data-aos="fade-up" data-aos-delay="300">
+                            <div class="flex items-center mb-6 pb-4 border-b border-gray-700/50">
+                                <div class="mr-4 text-cyan-400">
+                                    <i data-lucide="camera" class="w-7 h-7"></i>
+                                </div>
+                                <h2 class="text-3xl font-orbitron text-white">
+                                    <span class="gradient-text">Hobbies</span>
+                                </h2>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div class="bg-slate-800/30 p-5 rounded-xl border border-slate-700/50 hover:border-slate-600/70 transition-colors hover:bg-slate-800/50">
+                                    <h3 class="text-xl font-semibold text-white">Technical Writing</h3>
+                                    <p class="text-gray-300 mt-2 leading-relaxed">
+                                        I enjoy writing technical content and articles, exploring complex concepts, 
+                                        and presenting them in a simple, engaging manner.
+                                    </p>
+                                    <a href="https://medium.com/@gunjesh843" target="_blank" class="text-cyan-400 hover:text-cyan-300 inline-flex items-center mt-3 font-medium">
+                                        Medium <i data-lucide="arrow-up-right" class="w-4 h-4 ml-1"></i>
+                                    </a>
+                                </div>
+                                
+                                <div class="bg-slate-800/30 p-5 rounded-xl border border-slate-700/50 hover:border-slate-600/70 transition-colors hover:bg-slate-800/50">
+                                    <h3 class="text-xl font-semibold text-white">Open-Source Contributions</h3>
+                                    <p class="text-gray-300 mt-2 leading-relaxed">
+                                        Contributing to open-source projects is a rewarding experience that allows me 
+                                        to learn from others and give back to the community.
+                                    </p>
+                                    <a href="https://github.com/GUNJESH843" target="_blank" class="text-cyan-400 hover:text-cyan-300 inline-flex items-center mt-3 font-medium">
+                                        GitHub <i data-lucide="arrow-up-right" class="w-4 h-4 ml-1"></i>
+                                    </a>
+                                </div>
+
+                                <div class="bg-slate-800/30 p-5 rounded-xl border border-slate-700/50 hover:border-slate-600/70 transition-colors hover:bg-slate-800/50">
+                                    <h3 class="text-xl font-semibold text-white">Landscape Photography</h3>
+                                    <p class="text-gray-300 mt-2 leading-relaxed">
+                                        Capturing the beauty of nature through my lens, especially landscapes, is one of my passions.
+                                    </p>
+                                    <a href="https://whatsapp.com/channel/0029VaewnIU59PwXKaK2r01H" target="_blank" class="text-cyan-400 hover:text-cyan-300 inline-flex items-center mt-3 font-medium">
+                                        Photography Portfolio <i data-lucide="arrow-up-right" class="w-4 h-4 ml-1"></i>
+                                    </a>
+                                </div>
+
+                                <div class="bg-slate-800/30 p-5 rounded-xl border border-slate-700/50 hover:border-slate-600/70 transition-colors hover:bg-slate-800/50">
+                                    <h3 class="text-xl font-semibold text-white">Numismatics, Notaphily & Philately</h3>
+                                    <p class="text-gray-300 mt-2 leading-relaxed">
+                                        I have been collecting coins, banknotes, and stamps from around the world for several years, 
+                                        aiming to gather unique items from every country.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-slate-950/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="section-heading">
+                <span class="gradient-text">Get In Touch</span>
+            </h2>
+            <p class="section-subheading">
+                Feel free to reach out if you want to collaborate on a project, have a question, or just want to connect.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-2xl font-semibold text-white mb-6">Contact Information</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="mail" class="w-5 h-5 text-cyan-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-1">Email</h4>
+                                <a href="mailto:kumargunjesh843@gmail.com" class="text-gray-300 hover:text-cyan-400 transition-colors">
+                                    kumargunjesh843@gmail.com
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-cyan-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-1">Location</h4>
+                                <p class="text-gray-300">
+                                    Visakhapatnam, Andhra Pradesh, India
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="linkedin" class="w-5 h-5 text-cyan-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-1">LinkedIn</h4>
+                                <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" class="text-gray-300 hover:text-cyan-400 transition-colors">
+                                    linkedin.com/in/gunjeshkumar
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="github" class="w-5 h-5 text-cyan-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-medium text-white mb-1">GitHub</h4>
+                                <a href="https://github.com/gunjesh843" target="_blank" class="text-gray-300 hover:text-cyan-400 transition-colors">
+                                    github.com/gunjesh843
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-2xl font-semibold text-white mb-6">Send Me a Message</h3>
+                    
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-white mb-2">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your name" required
+                                class="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-white mb-2">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Your email" required
+                                class="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all">
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-white mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Your message" required
+                                class="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all resize-none"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-fuchsia-600 rounded-lg font-medium text-white shadow-lg shadow-fuchsia-500/20 transition-transform hover:scale-105 hover:shadow-xl">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-10 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <p class="text-gray-400">
+                        &copy; 2025 Gunjesh Kumar. All rights reserved.
+                    </p>
+                </div>
+                
+                <div class="flex gap-4">
+                    <a href="https://github.com/gunjesh843" target="_blank" class="social-icon">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" class="social-icon">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://x.com/gunjesh843" target="_blank" class="social-icon">
+                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://www.instagram.com/gunjesh_07/" target="_blank" class="social-icon">
+                        <i data-lucide="instagram" class="w-5 h-5"></i>
+                    </a>
+                    <a href="mailto:kumargunjesh843@gmail.com" class="social-icon">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
                     </a>
                 </div>
-
-                <div class="table">
-                    <div class="glass">
-                        <p class="category"><b>Certificates & Courses</b></p>
-                        <hr>
-                        <img src="images\Software Engineering NPTEL.jpg" class="certificate">
-                        <a href="tabs/certificates.html"><img src="images/CS50x.png" class="certificate" id="move"></a>
-                    </div>
-                </div>
-
-                <div class="glass" id="skills_div">
-                    <p class="category"><b>Skills</b></p>
-                    <hr>
-                    
-                    <table border="0" class="skills_table">
-                        <tr>
-                          <td>Languages</td>
-                          <td>
-                            <img src="https://img.shields.io/badge/Python-FFD43B?style=flat&logo=python&logoColor=blue" alt="Python">
-                            <img src="https://img.shields.io/badge/C%2B%2B-00599C?style=flat&logo=c%2B%2B&logoColor=white" alt="C++">
-                            <img src="https://img.shields.io/badge/C-00599C?style=flat&logo=c&logoColor=white" alt="C">
-                            <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white" alt="HTML5">
-                            <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white" alt="CSS3">
-                            <img src="https://img.shields.io/badge/JavaScript-323330?style=flat&logo=javascript&logoColor=F7DF1E" alt="JavaScript">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Libraries</td>
-                          <td>
-                            <img src="https://img.shields.io/badge/numpy-%23013243.svg?style=flat&logo=numpy&logoColor=white" alt="NumPy">
-                            <img src="https://img.shields.io/badge/pandas-%23150458.svg?style=flat&logo=pandas&logoColor=white" alt="Pandas">
-                            <img src="https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=flat&logo=TensorFlow&logoColor=white" alt="TensorFlow">
-                            <img src="https://img.shields.io/badge/React-%2320232a.svg?style=flat&logo=React&logoColor=%2361DAFB" alt="React">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Frameworks</td>
-                          <td>
-                            <img src="https://img.shields.io/badge/Django-092E20?style=flat&logo=django&logoColor=white" alt="Django">
-                            <img src="https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white" alt="Node.js">
-                            <img src="https://img.shields.io/badge/Express.js-000000?style=flat&logo=express&logoColor=white" alt="Express.js">
-                          </td>
-                        <tr>
-                          <td>Tools & Platforms</td>
-                          <td>
-                            <img src="https://img.shields.io/badge/GitHub-7700ff?style=flat&logo=github&logoColor=white" alt="GitHub">
-                            <img src="https://img.shields.io/badge/GitHub%20Pages-121013?style=flat&logo=github&logoColor=white" alt="GitHub Pages">
-                            <img src="https://img.shields.io/badge/Git-%23F05033.svg?style=flat&logo=git&logoColor=white" alt="Git">
-                            <img src="https://img.shields.io/badge/Netlify-%2300C7B7.svg?style=flat&logo=netlify&logoColor=000000" alt="Netlify">
-                            <img src="https://img.shields.io/badge/Jupyter-0e1726?style=flat&logo=jupyter&logoColor=#f2770e" alt="Jupyter Notebook">
-                            <img src="https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=flat&logo=visual%20studio%20code&logoColor=white" alt="VS Code">
-                            <img src="https://img.shields.io/badge/Android%20Studio-3DDC84?style=flat&logo=android-studio&logoColor=white" alt="Android Studio">
-                            <img src="https://img.shields.io/badge/Colab-2c2e35?style=flat&logo=googlecolab&color=525252" alt="Colab">
-                            <img src="https://img.shields.io/badge/Figma-2c2e35?style=flat&logo=figma&logoColor=white" alt="Figma">
-                            <img src="https://img.shields.io/badge/Canva-%2300C4CC.svg?&style=flat&logo=Canva&logoColor=white" alt="Canva">
-                            <img src="https://img.shields.io/badge/blender-%23F5792A.svg?style=flat&logo=blender&logoColor=white" alt="Blender">
-                            <img src="https://img.shields.io/badge/Adobe%20Lightroom-31A8FF?style=flat&logo=Adobe%20Lightroom&logoColor=black" alt="Adobe Lightroom">
-                            <img src="https://img.shields.io/badge/Adobe%20Photoshop-31A8FF?style=flat&logo=Adobe%20Photoshop&logoColor=black" alt="Adobe Photoshop">
-                            <img src="https://img.shields.io/badge/Microsoft_PowerPoint-B7472A?style=flat&logo=microsoft-powerpoint&logoColor=white" alt="PowerPoint">
-                            <img src="https://img.shields.io/badge/Microsoft_Excel-217346?style=flat&logo=microsoft-excel&logoColor=white" alt="Excel">
-                            <img src="https://img.shields.io/badge/Microsoft_Word-2B579A?style=flat&logo=microsoft-word&logoColor=white" alt="Word">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Database</td>
-                          <td>
-                            <img src="https://img.shields.io/badge/MySQL-005C84?style=flat&logo=mysql&logoColor=white" alt="MySQL">
-                            <img src="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=flat&logo=mongodb&logoColor=white" alt="MongoDB">
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>OS</td>
-                          <td>
-                            <img src="https://img.shields.io/badge/Windows-0078D6?style=flat&logo=Microsoft&logoColor=white" alt="Windows">
-                          </td>
-                        </tr>
-                      </table>
-                      
-
-                </div>
-
-            </div>
-            <div class="middle" id="middle">
-<!-- experience session -->
-                <div class="hobbies">
-                    <div class="glass">
-                        <p class="category"><b>Experience</b></p>
-                        <hr>
-                        <div class="vralign">
-                            <div class="parts">
-                                <div class="align">
-                                    <div class="timeline">
-                                        <div class="timeline">
-                                            <div class="exp"><a href="https://crridom.gov.in/"><img src="images/csir.png" class="orglogo"></a>
-                                                <div class="role">Research Intern | CSIR-Central Road Research Institute</div>
-                                            </div>
-                                        </div>
-                                        <div class="indent">
-                                            <div class="expinfo">
-                                                <div class="date">April 2025 - Present</div>
-                                                <div class="country">New Delhi, India</div>
-                                            </div>
-                                            <br>- Developing a Road Safety Index using AI/ML models on dashboard camera footage.
-                                            <br>- Implementing computer vision techniques to detect and classify safety-critical road events.
-                                            <br>- Aiming to enhance traffic safety analytics and infrastructure planning.
-                                        </div>
-                                        <br>
-                                            
-                                        <div class="exp"><a href="https://mvp.microsoft.com/en-US/studentambassadors/profile/3c3ca556-ac37-4999-998b-d2ece7ffa532"><img src="images\mlsa _logo.png" class="orglogo"></a>
-                                            <div class="role">Microsoft Student Ambassador | Microsoft Learn</div>
-                                        </div>
-                                    </div>
-                                    <div class="indent">
-                                        <div class="expinfo">
-                                            <div class="date">Oct 2024 - Present</div>
-                                            <div class="country">Remote, India</div>
-                                        </div>
-                                        <br>- Helping Students understand Better about Technology.
-                                        <br>- Conducted workshops and seminars on various Microsoft technologies.
-                                    </div>
-                                    <br>
-                                    <div class="timeline">
-                                        <div class="exp"><a href="https://gssoc.girlscript.tech/"><img src="images/gssoc.png" class="orglogo"></a>
-                                            <div class="role">Mentor | GSSOC (Girl Script Summer of Code)</div>
-                                        </div>
-                                    </div>
-                                    <div class="indent">
-                                        <div class="expinfo">
-                                            <div class="date">Oct 2024 - Nov 2024</div>
-                                            <div class="country">Remote, India</div>
-                                        </div>
-                                        <br>- Mentored few Contributors about Open-Source Projects.
-                                        <br>- Was Recognized as Top 50 Mentors all over India.
-                                        <br>
-                                        <br>
-                                        <div class="role">Contributor | GSSOC (Girl Script Summer of Code)</div>
-                                        <div class="expinfo">
-                                            <div class="date">May 2024 - Aug 2024</div>
-                                            <div class="country">Remote, India</div>
-                                        </div>
-                                        <br>- Contributed to many Open-Source Projects.
-                                        <br>- Technologies used: C++, Python, HTML, CSS, JavaScript.
-
-                                    </div>
-                                    <br>
-                                    <div class="timeline">
-                                        <div class="exp"><a href="https://gdg.community.dev/gdg-on-campus-gayatri-vidya-parishad-college-of-engineering-visakhapatnam-india/"><img src="images/gdsc.png" class="orglogo"></a>
-                                            <div class="role">Cyber Security Lead | Google Developer Student Club (GDSC) (GVPCE)</div>
-                                        </div>
-                                    </div>
-                                    <div class="indent">
-                                        <div class="expinfo">
-                                            <div class="date">Oct 2024 - Present</div>
-                                            <div class="country">Vizag, India</div>
-                                        </div>
-                                        <br>- Helping Students understand Better about Cyber Technology.
-                                        <br>- Conducted Seminars and workshops on Cybersecurity and Blockchain.
-                                        <br>
-                                        <br>
-                                        <div class="role">Cyber Security Co-Lead | Google Developer Student Club (GDSC) (GVPCE)</div>
-                                        <div class="expinfo">
-                                            <div class="date">Aug 2023 - Oct 2024</div>
-                                            <div class="country">Remote, India</div>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="timeline">
-                                        <div class="exp"><a href="https://moodi.org/"><img src="images/moodindigo.png" class="orglogo"></a>
-                                            <div class="role">Digital Marketing Intern | Mood Indigo IIT Bombay</div>
-                                        </div>
-                                    </div>
-                                    <div class="indent">
-                                        <div class="expinfo">
-                                            <div class="date">Jul 2022 - Jan 2023</div>
-                                            <div class="country">India</div>
-                                        </div>
-                                        <br>- Worked with Microsoft Office.
-                                        <br>- Video/Thumbnail and Photo Editing.
-                                        <br>- Utilized modern web technologies and learned Management Skills.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                
+                <div class="mt-6 md:mt-0">
+                    <p class="text-gray-400">
+                        Made with <span class="text-red-500">❤</span> using HTML, CSS, and JavaScript
+                    </p>
                 </div>
             </div>
-<!-- education session -->
-            <div class="last" id="last">
-                <div class="hobbies">
-                    <div class="glass">
-                        <p class="category"><b>Education</b></p>
-                        <hr>
-                        <div class="vralign">
-                            <div class="parts">
-                                <div class="align">
-                                    <div class="timeline">
-                                        <p><b>2022-Present</b>
-                                    </div>
-                                    <div class="indent">Bachelor of Technology (B.Tech.)<br>Information Technology<br>
-                                        CGPA:
-                                         7.8/10<br><a href="https://www.gvpce.ac.in/" class="normal">GVPCE<br>
-                                             Andhra Pradesh,
-                                             India</a></p>
-                                    </div>
-                                    <div class="timeline">
-                                        <p><b>2020-2022</b>
-                                    </div>
-                                    <div class="indent">H.S.C (Class XII)<br>
-                                        State Higher Secondary Education<br><a
-                                            href="https://srichaitanya.net/" class="normal">Sri Chaitanya Jr College<br>
-                                             Andhra Pradesh,
-                                             India</a></p>
-                                    </div>
-                                    <div class="timeline">
-                                        <p><b>2019-2020</b>
-                                    </div>
-                                    <div class="indent">S.S.C (Class X)<br>
-                                        Central Board of Secondary Education<br><a
-                                            href="https://www.adarshpublicschool.org/" class="normal">Adarsh Public School<br>
-                                             Andhra Pradesh,
-                                             India</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-<!-- LeetCode Badges section -->
-<div class="leetcode-badges">
-    <div class="glass">
-        <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
-            <a href="https://leetcode.com/u/gunjesh843/"><img src="images/leetcode.png" class="orglogo" style="vertical-align: middle; margin-bottom: 10px;"></a>
-            <strong style="font-size: 20px; vertical-align: middle;">LeetCode Badges</strong>
-            <table style="font-size: 20px; margin-top: 10px;">
-                <tr>
-                    <td style="text-align: center; padding: 5px;">
-                        <img src="./images/2024-100-new.gif" alt="Highlight Badge" width="150" />
-                        <img src="./images/2025-100.gif" alt="Highlight Badge" width="150" />
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: center; padding: 5px;">
-                        <img src="./images/2024-50.gif" alt="Achievement Badge 1" width="100" />
-                        <img src="./images/2025-50.gif" alt="Monthly Badge 6" width="100" />
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center; padding: 5px;">
-                        <img src="./images/2024-08.gif" alt="Monthly Badge 1" width="50" />
-                        <img src="./images/2024-09.gif" alt="Monthly Badge 2" width="50" />
-                        <img src="./images/2024-10.gif" alt="Monthly Badge 3" width="50" />
-                        <img src="./images/2024-11.gif" alt="Monthly Badge 4" width="50" />
-                        <img src="./images/2024-12.gif" alt="Monthly Badge 5" width="50" />
-                        <img src="./images/2025-01.gif" alt="Monthly Badge 6" width="50" />
-                        <img src="./images/2025-02.gif" alt="Monthly Badge 6" width="50" />
-                        <img src="./images/2025-03.gif" alt="Monthly Badge 7" width="50" />
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- hobbies session -->
-<div class="hobbies">
-    <div class="glass">
-        <p class="category"><b>Hobbies</b></p>
-        <hr>
-        <b>Technical Writing:</b> I enjoy writing technical content and articles, exploring complex concepts, and presenting them in a simple, engaging manner.<br><br>
-
-        🔗 Related Links: <a href="https://medium.com/@gunjesh843" class="normal"> Medium↗</a><br><br>
-
-        <b>Open-Source Contributions:</b> Contributing to open-source projects is a rewarding experience that allows me to learn from others and give back to the community.<br><br>
-
-        🔗 Related Links: <a href="https://github.com/GUNJESH843" class="normal">GitHub↗</a><br><br>
-
-        
-        <b>Landscape Photography:</b> Capturing the beauty of nature through my lens, especially landscapes, is one of my passions.<br><br>
-        
-        🔗 Related Links: <a href="https://whatsapp.com/channel/0029VaewnIU59PwXKaK2r01H " class="normal">Photography Portfolio↗</a><br><br>
-        
-        <b>Numismatics, Notaphily & Philately:</b> I have been collecting coins, banknotes, and stamps from around the world for several years, aiming to gather unique items from every country.<br><br>
-        If you share similar interests, feel free to connect for potential collaborations!
-    </div>
-</div>
-
-            </div>
-        </div>
-    </div>
-    <div class="endgap">
-        <div class="l1 letter"></div>
-        <div class="l2 letter"></div>
-    </div>
-    <footer>
-        <form name="Gunjesh Portfolio Contact" method="POST" data-netlify="true" id="contactForm">
-            <input type="hidden" name="form-name" value="Gunjesh Portfolio Contact">
-            <div class="contact"><b>Let's Connect!</b></div>
-            <br>
-            <input type="text" name="Name" placeholder="&nbsp;&nbsp;Your Name" required>
-            <input type="email" name="Email" placeholder="&nbsp;&nbsp;Your E-mail ID" required>
-            <input type="text" name="Message" placeholder="&nbsp;&nbsp;Your Message" required>
-            <button type="submit" class="send">Send!</button>
-        </form>
-        <div id="formMessage" style="display:none;">Message sent successfully!</div>
-        <div class="icons">
-            <a href="https://github.com/gunjesh843"><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
-                    class="social" id="github"></a>
-            <a href="https://www.linkedin.com/in/gunjeshkumar/"><img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/480px-LinkedIn_logo_initials.png"
-                    class="social"></a>
-            <a href="https://x.com/gunjesh843"><img
-                    src="https://upload.wikimedia.org/wikipedia/commons/5/57/X_logo_2023_%28white%29.png"
-                    class="social"></a>
-            <a href="https://www.instagram.com/gunjesh_07/"><img
-                    src="https://images.app.goo.gl/hwkMDmSeQGL5QFo57" class="social"></a>
-            <a href="mailto:kumargunjesh843@gmail.com"><img
-                    src="https://cdn-icons-png.flaticon.com/512/8160/8160192.png" class="social"></a>
-        </div>
-        </div>
-        <div class="credits">
-            <hr width="200vw">
-            Gunjesh Kumar 
         </div>
     </footer>
-    <script src="tabs/index.js"></script>
-<script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
 
-        const form = event.target;
-        const formData = new FormData(form);
-
-        fetch('/', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => {
-            if (response.ok) {
-                const formMessage = document.getElementById('formMessage');
-                formMessage.style.display = 'block';
-                formMessage.innerText = 'Will connect soon!';
-                
-                // Inline styling to highlight the message
-                formMessage.style.color = 'yellow';
-                formMessage.style.backgroundColor = 'black';
-                formMessage.style.padding = '10px';
-                formMessage.style.borderRadius = '5px';
-                formMessage.style.textAlign = 'center';
-                formMessage.style.fontSize = '18px';
-                formMessage.style.fontWeight = 'bold';
-                formMessage.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-
-                form.reset(); // Reset the form fields
-            } else {
-                alert('There was an error sending your message.');
+    <!-- JavaScript -->
+    <script>
+        // Initialize AOS Animation Library
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: false,
+                mirror: true,
+                easing: 'ease-out-cubic'
+            });
+            
+            // Initialize Lucide Icons
+            lucide.createIcons();
+            
+            // Scroll animations for reveal elements
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            function revealOnScroll() {
+                revealElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 100) {
+                        element.classList.add('active');
+                    } else {
+                        element.classList.remove('active');
+                    }
+                });
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('There was an error sending your message.');
-        });
-    });
-</script>
+            
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Initial check on load
+            
+            // Animate skill progress bars
+            const skillBars = document.querySelectorAll('.skill-progress');
+            
+            function animateSkillBars() {
+                skillBars.forEach(bar => {
+                    const targetWidth = bar.getAttribute('data-width');
+                    bar.style.width = targetWidth;
+                    bar.style.transition = 'width 1.5s ease-out';
+                });
+            }
+            
+            setTimeout(animateSkillBars, 500);
+            
+            // Contact form submission handler
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Form submission logic would go here
+                    // For now, just show a simple alert
+                    alert('Thanks for your message! This would be sent in a real implementation.');
+                    contactForm.reset();
+                });
+            }
 
+            // Particle background effect
+            function setupParticleBackground() {
+                const canvas = document.getElementById('particle-background');
+                const ctx = canvas.getContext('2d');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                
+                const particles = [];
+                const particleCount = 100;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        radius: Math.random() * 2 + 1,
+                        color: i % 2 === 0 ? 'rgba(34, 211, 238, 0.5)' : 'rgba(232, 121, 249, 0.5)',
+                        speedX: Math.random() * 0.5 - 0.25,
+                        speedY: Math.random() * 0.5 - 0.25
+                    });
+                }
+                
+                function drawParticles() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    particles.forEach(particle => {
+                        ctx.beginPath();
+                        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = particle.color;
+                        ctx.fill();
+                        
+                        // Update particle position
+                        particle.x += particle.speedX;
+                        particle.y += particle.speedY;
+                        
+                        // Boundary checking
+                        if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1;
+                        if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1;
+                    });
+                    
+                    requestAnimationFrame(drawParticles);
+                }
+                
+                drawParticles();
+                
+                // Resize canvas when window size changes
+                window.addEventListener('resize', function() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                });
+            }
+            
+            // Setup THREE.js background
+            function setup3DBackground() {
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setClearColor(0x000000, 0);
+                document.getElementById('particle-background').appendChild(renderer.domElement);
+                
+                // Create stars
+                const starsGeometry = new THREE.BufferGeometry();
+                const starsMaterial = new THREE.PointsMaterial({
+                    color: 0xffffff,
+                    size: 0.5,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                
+                const starsVertices = [];
+                for (let i = 0; i < 3000; i++) {
+                    const x = (Math.random() - 0.5) * 2000;
+                    const y = (Math.random() - 0.5) * 2000;
+                    const z = (Math.random() - 0.5) * 2000;
+                    starsVertices.push(x, y, z);
+                }
+                
+                starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+                const stars = new THREE.Points(starsGeometry, starsMaterial);
+                scene.add(stars);
+                
+                camera.position.z = 5;
+                
+                function animate() {
+                    requestAnimationFrame(animate);
+                    stars.rotation.x += 0.0002;
+                    stars.rotation.y += 0.0001;
+                    renderer.render(scene, camera);
+                }
+                
+                animate();
+                
+                // Resize handler
+                window.addEventListener('resize', function() {
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+                    renderer.setSize(width, height);
+                    camera.aspect = width / height;
+                    camera.updateProjectionMatrix();
+                });
+            }
+            
+            // Choose which background effect to use
+            try {
+                setupSpaceBackground();
+            } catch (e) {
+                console.log('THREE.js background failed, falling back to basic particles');
+                setupParticleBackground();
+            }
+
+            // Enhanced space background with planets, stars and galaxies
+            function setupSpaceBackground() {
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setClearColor(0x000000, 0);
+                document.getElementById('particle-background').appendChild(renderer.domElement);
+                
+                // Create stars
+                const starsGeometry = new THREE.BufferGeometry();
+                const starsMaterial = new THREE.PointsMaterial({
+                    color: 0xffffff,
+                    size: 0.7,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                
+                const starsVertices = [];
+                for (let i = 0; i < 5000; i++) {
+                    const x = (Math.random() - 0.5) * 2000;
+                    const y = (Math.random() - 0.5) * 2000;
+                    const z = (Math.random() - 0.5) * 2000;
+                    starsVertices.push(x, y, z);
+                }
+                
+                starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+                const stars = new THREE.Points(starsGeometry, starsMaterial);
+                scene.add(stars);
+                
+                // Create planets
+                const planets = [];
+                const planetColors = [
+                    0x22d3ee, // cyan
+                    0xe879f9, // fuchsia
+                    0x34d399, // emerald
+                    0xfbbf24, // amber
+                    0xf87171, // red
+                    0xa78bfa  // violet
+                ];
+                
+                for (let i = 0; i < 8; i++) {
+                    const geometry = new THREE.SphereGeometry(Math.random() * 10 + 5, 32, 32);
+                    const material = new THREE.MeshBasicMaterial({ 
+                        color: planetColors[i % planetColors.length],
+                        transparent: true,
+                        opacity: 0.7
+                    });
+                    const planet = new THREE.Mesh(geometry, material);
+                    
+                    // Position planets at different distances
+                    const distance = Math.random() * 800 + 400;
+                    const angle = Math.random() * Math.PI * 2;
+                    planet.position.x = Math.sin(angle) * distance;
+                    planet.position.y = (Math.random() - 0.5) * 300;
+                    planet.position.z = Math.cos(angle) * distance;
+                    
+                    // Add rings to some planets
+                    if (Math.random() > 0.6) {
+                        const ringGeometry = new THREE.RingGeometry(
+                            planet.geometry.parameters.radius * 1.3, 
+                            planet.geometry.parameters.radius * 1.7, 
+                            32
+                        );
+                        const ringMaterial = new THREE.MeshBasicMaterial({ 
+                            color: 0xffffff,
+                            side: THREE.DoubleSide,
+                            transparent: true,
+                            opacity: 0.3
+                        });
+                        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                        ring.rotation.x = Math.PI / 2;
+                        planet.add(ring);
+                    }
+                    
+                    scene.add(planet);
+                    planets.push({
+                        mesh: planet,
+                        rotationSpeed: Math.random() * 0.01,
+                        orbitSpeed: Math.random() * 0.0005 + 0.0002,
+                        orbitRadius: distance,
+                        orbitAngle: angle
+                    });
+                }
+                
+                // Create galaxies with particle systems
+                for (let i = 0; i < 3; i++) {
+                    const galaxyGeometry = new THREE.BufferGeometry();
+                    const galaxyParticles = [];
+                    const galaxyColor = new THREE.Color(planetColors[Math.floor(Math.random() * planetColors.length)]);
+                    const galaxyMaterial = new THREE.PointsMaterial({
+                        size: 1.2,
+                        transparent: true,
+                        opacity: 0.7,
+                        vertexColors: true
+                    });
+                    
+                    const galaxySize = Math.random() * 200 + 100;
+                    const galaxyPosition = new THREE.Vector3(
+                        (Math.random() - 0.5) * 1500,
+                        (Math.random() - 0.5) * 1500,
+                        (Math.random() - 0.5) * 1500
+                    );
+                    
+                    const colors = [];
+                    
+                    // Create spiral galaxy pattern
+                    for (let j = 0; j < 5000; j++) {
+                        const angle = Math.random() * Math.PI * 2;
+                        const radius = Math.random() * galaxySize;
+                        const spiralOffset = angle * 5;
+                        
+                        const x = Math.cos(angle + spiralOffset) * radius;
+                        const y = (Math.random() - 0.5) * (radius * 0.2);
+                        const z = Math.sin(angle + spiralOffset) * radius;
+                        
+                        galaxyParticles.push(
+                            x + galaxyPosition.x, 
+                            y + galaxyPosition.y, 
+                            z + galaxyPosition.z
+                        );
+                        
+                        // Color gradient from center to edge
+                        const colorFactor = radius / galaxySize;
+                        const color = galaxyColor.clone();
+                        color.lerp(new THREE.Color(0xffffff), colorFactor);
+                        colors.push(color.r, color.g, color.b);
+                    }
+                    
+                    galaxyGeometry.setAttribute('position', new THREE.Float32BufferAttribute(galaxyParticles, 3));
+                    galaxyGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+                    
+                    const galaxy = new THREE.Points(galaxyGeometry, galaxyMaterial);
+                    scene.add(galaxy);
+                }
+                
+                camera.position.z = 1000;
+                
+                function animate() {
+                    requestAnimationFrame(animate);
+                    
+                    // Rotate stars slowly
+                    stars.rotation.x += 0.0001;
+                    stars.rotation.y += 0.0001;
+                    
+                    // Animate planets
+                    planets.forEach(planet => {
+                        // Self rotation
+                        planet.mesh.rotation.y += planet.rotationSpeed;
+                        
+                        // Orbit movement
+                        planet.orbitAngle += planet.orbitSpeed;
+                        planet.mesh.position.x = Math.sin(planet.orbitAngle) * planet.orbitRadius;
+                        planet.mesh.position.z = Math.cos(planet.orbitAngle) * planet.orbitRadius;
+                    });
+                    
+                    // Slowly move camera to create parallax effect
+                    const time = Date.now() * 0.0001;
+                    camera.position.x = Math.sin(time) * 10;
+                    camera.position.y = Math.cos(time) * 10;
+                    
+                    renderer.render(scene, camera);
+                }
+                
+                animate();
+                
+                // Resize handler
+                window.addEventListener('resize', function() {
+                    const width = window.innerWidth;
+                    const height = window.innerHeight;
+                    renderer.setSize(width, height);
+                    camera.aspect = width / height;
+                    camera.updateProjectionMatrix();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
