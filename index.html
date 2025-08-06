@@ -215,8 +215,40 @@
                 height: 60px;
                 display: flex;
                 align-items: center;
-                justify-content: center;
+                justify-content: space-between;
+                padding: 0 20px;
+                z-index: 40;
+                flex-direction: row;
+            }
+            
+            .sidebar > div {
+                flex-direction: row !important;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
+                height: auto;
+                padding: 0;
+            }
+            
+            .sidebar .flex.flex-col.items-center.space-y-6 {
+                flex-direction: row !important;
                 gap: 20px;
+                align-items: center;
+                margin: 0;
+            }
+            
+            .sidebar .flex.flex-col.space-y-4 {
+                flex-direction: row !important;
+                gap: 12px;
+                margin: 0;
+            }
+            
+            .sidebar .transform.-rotate-90 {
+                display: none;
+            }
+            
+            .social-icon {
+                padding: 8px;
             }
             
             .main-content {
@@ -248,7 +280,7 @@
                 </div>
             </div>
             
-            <div class="text-xs text-terminal-text transform -rotate-90 whitespace-nowrap">
+            <div class="text-xs text-terminal-text transform -rotate-90 whitespace-nowrap hidden md:block">
                 Media
             </div>
         </div>
@@ -273,9 +305,6 @@
                     <a href="#certificates" class="nav-link">#certificates</a>
                     <a href="#hobbies" class="nav-link">#hobbies</a>
                     <a href="#contacts" class="nav-link">#contacts</a>
-                    <select class="bg-transparent border border-terminal-panel rounded px-2 py-1 text-sm text-terminal-text">
-                        <option>EN</option>
-                    </select>
                 </nav>
                 
                 <button id="mobile-menu-btn" class="md:hidden">
