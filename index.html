@@ -780,29 +780,47 @@
                 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- LeetCode Badges -->
-                    <div class="terminal-window" data-aos="fade-up">
+                     <div class="terminal-window" data-aos="fade-up">
                         <div class="terminal-header">
                             <div class="terminal-dot dot-red"></div>
                             <div class="terminal-dot dot-yellow"></div>
                             <div class="terminal-dot dot-green"></div>
                             <span class="ml-4 text-sm text-terminal-text">leetcode-badges.json</span>
                         </div>
-                        <div class="terminal-content text-center">
+                            <div class="terminal-content text-center">
                             <a href="https://leetcode.com/u/gunjesh843/" target="_blank" 
-                               class="inline-block mb-4 hover:scale-105 transition-transform">
+                               class="inline-block mb-6 hover:scale-105 transition-transform">
                                 <img src="images/leetcode.png" alt="LeetCode" class="h-12 mx-auto">
                             </a>
                             
-                            <div class="grid grid-cols-2 gap-3 mb-4">
-                                <img src="./images/2024-100-new.gif" alt="2024 Badge" class="w-full rounded-lg hover:scale-105 transition-transform">
-                                <img src="./images/2025-100.gif" alt="2025 Badge" class="w-full rounded-lg hover:scale-105 transition-transform">
+                            <!-- Main Knight Badge - Biggest and centered -->
+                            <div class="mb-6">
+                                <img src="./images/Knight.gif" alt="Knight Badge" class="w-40 h-40 mx-auto rounded-lg hover:scale-105 transition-transform rotating-badge">
                             </div>
                             
-                            <div class="grid grid-cols-4 gap-2">
-                                <img src="./images/2024-08.gif" alt="Aug 2024" class="w-full rounded hover:scale-110 transition-transform">
-                                <img src="./images/2024-09.gif" alt="Sep 2024" class="w-full rounded hover:scale-110 transition-transform">
-                                <img src="./images/2024-10.gif" alt="Oct 2024" class="w-full rounded hover:scale-110 transition-transform">
-                                <img src="./images/2024-11.gif" alt="Nov 2024" class="w-full rounded hover:scale-110 transition-transform">
+                            <!--100/50-day Badges - Medium size -->
+                            <div class="grid grid-cols-4 gap-1">
+                                <img src="./images/2024-100-new.gif" alt="2024 100-day Badge" class="w-full rounded-lg hover:scale-105 transition-transform rotating-badge">
+                                <img src="./images/2025-100.gif" alt="2025 100-day Badge" class="w-full rounded-lg hover:scale-105 transition-transform rotating-badge">
+                                <img src="./images/2024-50.gif" alt="2024 50-day Badge" class="w-full rounded hover:scale-105 transition-transform rotating-badge">
+                                <img src="./images/2025-50.gif" alt="2025 50-day Badge" class="w-full rounded hover:scale-105 transition-transform rotating-badge">
+                            </div>
+                            
+                            <!-- Monthly Badges - Smallest -->
+                            <div class="grid grid-cols-5 gap-1">
+                                <img src="./images/2024-08.gif" alt="Aug 2024" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
+                                <img src="./images/2024-09.gif" alt="Sep 2024" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
+                                <img src="./images/2024-10.gif" alt="Oct 2024" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
+                                <img src="./images/2024-11.gif" alt="Nov 2024" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
+                                <img src="./images/2024-12.gif" alt="Dec 2024" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
+                            </div>
+                            
+                            <!-- 2025 Monthly Badges -->
+                            <div class="grid grid-cols-5 gap-1">
+                                <img src="./images/2025-01.gif" alt="Jan 2025" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
+                                <img src="./images/2025-02.gif" alt="Feb 2025" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
+                                <img src="./images/2025-03.gif" alt="Mar 2025" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
+                                <img src="./images/2025-05.gif" alt="May 2025" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
                             </div>
                         </div>
                     </div>
@@ -815,25 +833,39 @@
                             <div class="terminal-dot dot-green"></div>
                             <span class="ml-4 text-sm text-terminal-text">certificates.md</span>
                         </div>
-                        <div class="terminal-content">
-                            <h3 class="text-lg font-semibold text-terminal-text mb-4">Professional Certifications</h3>
-                            <div class="space-y-4">
-                                <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
-                                    <h4 class="font-semibold text-terminal-text">CS50x Certificate</h4>
-                                    <p class="text-terminal-accent text-sm">Harvard University • 2024</p>
+                                <div class="terminal-content">
+                                <h3 class="text-lg font-semibold text-terminal-text mb-4">Professional Certifications</h3>
+                                <div class="space-y-4">
+                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
+                                        <h4 class="font-semibold text-terminal-text">CS50x Certificate</h4>
+                                        <p class="text-terminal-accent text-sm">Harvard University • 2024</p>
+                                    </div>
+                                    
+                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
+                                        <h4 class="font-semibold text-terminal-text">GitHub Foundations</h4>
+                                        <p class="text-terminal-accent text-sm">GitHub • 2025</p>
+                                    </div>
+                                    
+                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
+                                        <h4 class="font-semibold text-terminal-text">AWS ML Foundation</h4>
+                                        <p class="text-terminal-accent text-sm">Amazon Web Services • 2025</p>
+                                    </div>
+    
+                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
+                                        <h4 class="font-semibold text-terminal-text">Software Engineering</h4>
+                                        <p class="text-terminal-accent text-sm">NPTEL • 2024</p>
+                                    </div>
+    
+                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
+                                        <h4 class="font-semibold text-terminal-text">API Fundamentals</h4>
+                                        <p class="text-terminal-accent text-sm">Postman • 2024</p>
+                                    </div>
+    
+                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
+                                        <h4 class="font-semibold text-terminal-text">Google Play Academy</h4>
+                                        <p class="text-terminal-accent text-sm">Google • 2023</p>
+                                    </div>
                                 </div>
-                                
-                                <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
-                                    <h4 class="font-semibold text-terminal-text">GitHub Foundations</h4>
-                                    <p class="text-terminal-accent text-sm">GitHub • 2025</p>
-                                </div>
-                                
-                                <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
-                                    <h4 class="font-semibold text-terminal-text">Azure Fundamentals</h4>
-                                    <p class="text-terminal-accent text-sm">Microsoft • 2024</p>
-                                </div>
-                            </div>
-                            
                             <div class="mt-6">
                                 <a href="tabs/certificates.html" 
                                    class="inline-flex items-center px-6 py-3 bg-terminal-purple text-terminal-bg rounded hover:bg-terminal-accent transition-colors">
