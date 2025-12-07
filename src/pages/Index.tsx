@@ -6,12 +6,14 @@ import { AboutSection } from '@/components/AboutSection';
 import { CertificatesSection } from '@/components/CertificatesSection';
 import { ContactSection } from '@/components/ContactSection';
 import { FooterMinimal } from '@/components/FooterMinimal';
+import { Scene3D } from '@/components/Scene3D';
 
 const Index = () => {
   return (
     <div className="min-h-screen noise">
+      <Scene3D />
       <CustomCursor />
-      <main>
+      <main className="relative z-10">
         <HeroExperimental />
         <MarqueeSection />
         <WorkSection />
