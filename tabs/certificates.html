@@ -1,764 +1,978 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="../images/CS50.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="Gunjesh Kumar - Certificates & Achievements">
     <title>Gunjesh | Certificates</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
+    <link rel="icon" type="image/x-icon" href="../images/CS50.png">
+    
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- AOS Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        mono: ['JetBrains Mono', 'monospace'],
-                        inter: ['Inter', 'sans-serif'],
-                        orbitron: ['Orbitron', 'sans-serif']
-                    },
-                    colors: {
-                        terminal: {
-                            bg: '#1e1e2e',
-                            darker: '#181825',
-                            panel: '#313244',
-                            text: '#cdd6f4',
-                            accent: '#b4befe',
-                            green: '#a6e3a1',
-                            purple: '#cba6f7',
-                            yellow: '#f9e2af',
-                            blue: '#89b4fa'
-                        }
-                    }
-                }
+    
+    <style>
+        :root {
+            --background: #050505;
+            --foreground: #F4F3EF;
+            --primary: #F5A623;
+            --accent: #00D9A5;
+            --muted: #242424;
+            --muted-foreground: #808080;
+            --border: #262626;
+            --font-display: 'Instrument Serif', serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-mono);
+            cursor: none;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            background: var(--foreground);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: width 0.2s ease, height 0.2s ease, transform 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+        
+        .cursor.hover {
+            width: 60px;
+            height: 60px;
+        }
+        
+        /* 3D Canvas */
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        /* Floating Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float-orb 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: rgba(245, 166, 35, 0.12);
+            top: -150px;
+            right: -150px;
+        }
+        
+        .orb-2 {
+            width: 350px;
+            height: 350px;
+            background: rgba(0, 217, 165, 0.1);
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -5s;
+        }
+        
+        @keyframes float-orb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 10px) scale(1.02); }
+        }
+        
+        /* Noise Overlay */
+        .noise::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9998;
+        }
+        
+        /* Content wrapper */
+        .content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Typography */
+        .display-massive {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 12vw, 12rem);
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            font-weight: 400;
+        }
+        
+        .display-large {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 8vw, 8rem);
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+        }
+        
+        .mono-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--muted-foreground);
+        }
+        
+        /* Header */
+        header {
+            padding: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--foreground);
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            transition: all 0.3s ease;
+            padding: 12px 24px;
+            border: 1px solid var(--border);
+        }
+        
+        .back-link:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .header-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+        }
+        
+        /* Section */
+        section {
+            padding: 80px 48px;
+        }
+        
+        @media (max-width: 768px) {
+            section {
+                padding: 40px 24px;
+            }
+            header {
+                padding: 24px;
+                flex-direction: column;
+                gap: 20px;
             }
         }
-    </script>
-
-    <style>
-        body {
-            background: #1e1e2e;
-            color: #cdd6f4;
-            font-family: 'JetBrains Mono', monospace;
-            min-height: 100vh;
+        
+        /* Certificates Grid */
+        .certificates-header {
+            margin-bottom: 60px;
         }
-
-        .terminal-window {
-            background: #313244;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            border: 1px solid #45475a;
+        
+        .certificates-header h1 {
+            margin-bottom: 16px;
+        }
+        
+        .certificates-header .italic-gold {
+            color: var(--primary);
+            font-style: italic;
+        }
+        
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 32px;
+            margin-bottom: 100px;
+        }
+        
+        @media (max-width: 768px) {
+            .certificates-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .cert-card {
+            padding: 0;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .cert-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+        
+        .cert-image-wrapper {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px;
+        }
+        
+        .cert-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        
+        .cert-card:hover .cert-image {
+            transform: scale(1.05);
+        }
+        
+        .cert-content {
+            padding: 24px;
+        }
+        
+        .cert-content h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        
+        .cert-issuer {
+            color: var(--accent);
+            font-size: 13px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .cert-year {
+            color: var(--muted-foreground);
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .cert-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .cert-tag {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             transition: all 0.3s ease;
         }
-
-        .terminal-window:hover {
-            border-color: #74c7ec;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        
+        .cert-tag:hover {
+            border-color: var(--primary);
+            color: var(--primary);
         }
-
-        .terminal-header {
-            background: #45475a;
-            padding: 12px 16px;
-            border-radius: 8px 8px 0 0;
+        
+        .cert-actions {
             display: flex;
+            gap: 12px;
+        }
+        
+        .cert-btn {
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--foreground);
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
         }
-
-        .terminal-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
+        
+        .cert-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--background);
         }
-
-        .dot-red {
-            background: #f38ba8;
+        
+        /* Badges Section */
+        .badges-header {
+            margin-bottom: 60px;
+            margin-top: 100px;
         }
-
-        .dot-yellow {
-            background: #f9e2af;
+        
+        .badges-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 6vw, 6rem);
+            line-height: 1;
         }
-
-        .dot-green {
-            background: #a6e3a1;
+        
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 24px;
         }
-
-        .terminal-content {
-            padding: 20px;
+        
+        @media (max-width: 768px) {
+            .badges-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
         }
-
-        .code-tag {
-            background: rgba(116, 199, 236, 0.1);
-            color: #74c7ec;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            border: 1px solid rgba(116, 199, 236, 0.2);
-            display: inline-block;
-            margin: 2px;
+        
+        .badge-card {
+            padding: 32px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all 0.3s ease;
         }
-
-        .section-title {
-            color: #cba6f7;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            font-family: 'Orbitron', monospace;
+        
+        .badge-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
         }
-
-        .certificate-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 6px;
-            border: 1px solid #45475a;
-            background: #181825;
-        }
-
-        .badge-image {
+        
+        .badge-image-wrapper {
             width: 120px;
             height: 120px;
-            object-fit: contain;
-            border-radius: 6px;
-            background: transparent;
-            margin: 0 auto;
-        }
-
-        .sidebar {
-            background: #181825;
-            border-right: 1px solid #45475a;
-            min-height: 100vh;
-            width: 80px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 50;
-        }
-
-        .main-content {
-            margin-left: 80px;
-            min-height: 100vh;
-        }
-
-        .social-icon {
-            color: #6c7086;
-            transition: color 0.3s ease;
-            padding: 12px;
+            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
-        .social-icon:hover {
-            color: #74c7ec;
+        
+        .badge-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
-
-        .btn-terminal {
-            background: transparent;
-            border: 1px solid #cba6f7;
-            color: #cba6f7;
-            padding: 8px 16px;
-            border-radius: 4px;
+        
+        .badge-card h4 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+        
+        .badge-issuer {
+            color: var(--primary);
             font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .badge-date {
+            color: var(--muted-foreground);
+            font-size: 11px;
+            margin-bottom: 16px;
+        }
+        
+        .badge-link {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--foreground);
             text-decoration: none;
-            display: inline-block;
-            margin: 2px;
-        }
-
-        .btn-terminal:hover {
-            background: #cba6f7;
-            color: #1e1e2e;
-            transform: translateY(-1px);
-        }
-
-        .nav-link {
-            color: #b4befe;
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             transition: all 0.3s ease;
-            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-
-        .nav-link:hover {
-            background: rgba(180, 190, 254, 0.1);
-            color: #cba6f7;
+        
+        .badge-link:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--background);
         }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                min-height: auto;
-                height: 60px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 20px;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
+        
+        /* Footer */
+        footer {
+            padding: 48px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        
+        .footer-left {
+            font-size: 12px;
+            color: var(--muted-foreground);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .footer-social a {
+            color: var(--muted-foreground);
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-social a:hover {
+            color: var(--primary);
         }
     </style>
 </head>
-
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="flex flex-col items-center py-6 h-full justify-between">
-            <div class="flex flex-col items-center space-y-6">
-                <div class="w-10 h-10 bg-terminal-purple rounded-full flex items-center justify-center">
-                    <span class="text-terminal-bg font-bold">GK</span>
-                </div>
-
-                <div class="flex flex-col space-y-4">
-                    <a href="https://github.com/gunjesh843" target="_blank" class="social-icon">
-                        <i data-lucide="github" class="w-5 h-5"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" class="social-icon">
-                        <i data-lucide="linkedin" class="w-5 h-5"></i>
-                    </a>
-                    <a href="https://x.com/gunjesh843" target="_blank" class="social-icon">
-                        <i data-lucide="twitter" class="w-5 h-5"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="text-xs text-terminal-text transform -rotate-90 whitespace-nowrap">
-                Media
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
+<body class="noise">
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    
+    <!-- 3D Canvas -->
+    <canvas id="three-canvas"></canvas>
+    
+    <!-- Floating Orbs -->
+    <div class="orb orb-1" id="orb1"></div>
+    <div class="orb orb-2" id="orb2"></div>
+    
+    <!-- Content -->
+    <div class="content">
         <!-- Header -->
-        <header class="p-6 border-b border-terminal-panel">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <i data-lucide="terminal" class="w-5 h-5 text-terminal-accent"></i>
-                    <span class="text-lg font-semibold text-terminal-text">Gunjesh</span>
-                </div>
-
-                <nav class="hidden md:flex items-center space-x-1">
-                    <a href="../index.html#home" class="nav-link">#home</a>
-                    <a href="../index.html#experience" class="nav-link">#experience</a>
-                    <a href="../index.html#skills" class="nav-link">#skills</a>
-                    <a href="../index.html#projects" class="nav-link">#projects</a>
-                    <a href="certificates.html" class="nav-link text-terminal-purple">#certificates</a>
-                    <a href="../index.html#contacts" class="nav-link">#contacts</a>
-                </nav>
-
-                <button class="md:hidden">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-            </div>
+        <header>
+            <a href="../index.html" class="back-link" data-hover>
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Back to Portfolio
+            </a>
+            <h1 class="header-title">Gunjesh Kumar</h1>
         </header>
-
+        
         <!-- Certificates Section -->
-        <section class="p-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex items-center space-x-2 mb-8">
-                    <h2 class="section-title">#certificates</h2>
-                    <div class="flex-1 h-px bg-terminal-purple"></div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- CS50x Certificate -->
-                    <div class="terminal-window" data-aos="fade-up">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">cs50x.cert</span>
-                        </div>
-                        <div class="terminal-content">
-                            <img src="../images/CS50x.png" alt="CS50x Certificate" class="certificate-image mb-4">
-                            <h3 class="text-lg font-semibold text-terminal-text mb-2">CS50x | HARVARD</h3>
-                            <div class="flex flex-wrap gap-1 mb-3">
-                                <span class="code-tag">#CS50</span>
-                                <span class="code-tag">#Harvard</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">2024</p>
-                            <div class="flex flex-wrap gap-2">
-                                <a href="../resources/cs50x.pdf" class="btn-terminal">
-                                    <i data-lucide="file-text" class="w-3 h-3 inline mr-1"></i>PDF
-                                </a>
-                                <a href="https://cs50.harvard.edu/certificates/7f55ae1f-3570-4ae9-ac18-2fdf7a267136" target="_blank"
-                                    class="btn-terminal">
-                                    <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>Verify
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- GitHub Foundations -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="100">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">github-foundations.cert</span>
-                        </div>
-                        <div class="terminal-content">
-                            <img src="../images/GITHUB_Foundation.png" alt="GitHub Foundations" class="certificate-image mb-4">
-                            <h3 class="text-lg font-semibold text-terminal-text mb-2">GitHub Foundations</h3>
-                            <div class="flex flex-wrap gap-1 mb-3">
-                                <span class="code-tag">#GitHub</span>
-                                <span class="code-tag">#Git</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">January 2025 - January 2028</p>
-                            <div class="flex flex-wrap gap-2">
-                                <a href="../resources/GitHubFoundations.pdf" class="btn-terminal">
-                                    <i data-lucide="file-text" class="w-3 h-3 inline mr-1"></i>PDF
-                                </a>
-                                <a href="https://www.credly.com/badges/f9e1bbc7-6276-45b5-a5c8-f9959ece8e0c" target="_blank"
-                                    class="btn-terminal">
-                                    <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>Verify
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- AWS ML Foundation -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="200">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">aws-ml.cert</span>
-                        </div>
-                        <div class="terminal-content">
-                            <img src="../images/aws.png" alt="AWS ML Foundation" class="certificate-image mb-4">
-                            <h3 class="text-lg font-semibold text-terminal-text mb-2">AWS ML Foundation</h3>
-                            <div class="flex flex-wrap gap-1 mb-3">
-                                <span class="code-tag">#AWS</span>
-                                <span class="code-tag">#ML</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">March 2025</p>
-                            <div class="flex flex-wrap gap-2">
-                                <a href="../resources/AWS_Academy_Graduate___AWS_Academy_Machine_Learning_Foundations_Badge20250310-26-tgl0kg.pdf"
-                                    class="btn-terminal">
-                                    <i data-lucide="file-text" class="w-3 h-3 inline mr-1"></i>PDF
-                                </a>
-                                <a href="https://www.credly.com/badges/d6d4dea1-3567-40b3-a27d-dfa05218f1b3/public_url" target="_blank"
-                                    class="btn-terminal">
-                                    <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>Verify
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Software Engineering NPTEL -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="300">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">nptel-se.cert</span>
-                        </div>
-                        <div class="terminal-content">
-                            <img src="../images/Software Engineering NPTEL.jpg" alt="Software Engineering NPTEL" class="certificate-image mb-4">
-                            <h3 class="text-lg font-semibold text-terminal-text mb-2">Software Engineering</h3>
-                            <div class="flex flex-wrap gap-1 mb-3">
-                                <span class="code-tag">#NPTEL</span>
-                                <span class="code-tag">#Software Engineering</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">November 2024</p>
-                            <div class="flex flex-wrap gap-2">
-                                <a href="../resources/Software Engineering_NPTEL.pdf" class="btn-terminal">
-                                    <i data-lucide="file-text" class="w-3 h-3 inline mr-1"></i>PDF
-                                </a>
-                                <a href="https://nptel.ac.in/noc/E_Certificate/NPTEL24CS119S105290117603871196" target="_blank"
-                                    class="btn-terminal">
-                                    <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>Verify
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Postman API -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="400">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">postman-api.cert</span>
-                        </div>
-                        <div class="terminal-content">
-                            <img src="../images/Postman.jpeg" alt="Postman API" class="certificate-image mb-4">
-                            <h3 class="text-lg font-semibold text-terminal-text mb-2">API Fundamentals</h3>
-                            <div class="flex flex-wrap gap-1 mb-3">
-                                <span class="code-tag">#Postman</span>
-                                <span class="code-tag">#API</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">August 2024</p>
-                            <div class="flex flex-wrap gap-2">
-                                <a href="../resources/Postman.pdf" class="btn-terminal">
-                                    <i data-lucide="file-text" class="w-3 h-3 inline mr-1"></i>PDF
-                                </a>
-                                <a href="https://api.badgr.io/public/assertions/CxPoW1V3RQ-KbVyjBntqag?identity__email=gunjesh843%40gmail.com"
-                                    target="_blank" class="btn-terminal">
-                                    <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>Verify
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Google Play Academy -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="500">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">google-play.cert</span>
-                        </div>
-                        <div class="terminal-content">
-                            <img src="../images/google_play_academy.png" alt="Google Play Academy" class="certificate-image mb-4">
-                            <h3 class="text-lg font-semibold text-terminal-text mb-2">Store Listing Certificates</h3>
-                            <div class="flex flex-wrap gap-1 mb-3">
-                                <span class="code-tag">#Google Play</span>
-                                <span class="code-tag">#Android</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">December 2023 - December 2026</p>
-                            <div class="flex flex-wrap gap-2">
-                                <a href="../resources/Google Play Academy.pdf" class="btn-terminal">
-                                    <i data-lucide="file-text" class="w-3 h-3 inline mr-1"></i>PDF
-                                </a>
-                                <a href="https://www.credential.net/19f89513-ffe4-4a4c-8484-78e9a1e8d789" target="_blank"
-                                    class="btn-terminal">
-                                    <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>Verify
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- AI for Everyone IBM -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="600">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">ibm-ai.cert</span>
-                        </div>
-                        <div class="terminal-content">
-                            <img src="../images/AI_IBM_edx.png" alt="AI IBM edX" class="certificate-image mb-4">
-                            <h3 class="text-lg font-semibold text-terminal-text mb-2">AI for Everyone - IBM</h3>
-                            <div class="flex flex-wrap gap-1 mb-3">
-                                <span class="code-tag">#IBM</span>
-                                <span class="code-tag">#AI</span>
-                                <span class="code-tag">#edX</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">April 2024</p>
-                            <div class="flex flex-wrap gap-2">
-                                <a href="../resources/edxIBM.pdf" class="btn-terminal">
-                                    <i data-lucide="file-text" class="w-3 h-3 inline mr-1"></i>PDF
-                                </a>
-                                <a href="https://courses.edx.org/certificates/357baf51617342418b3604e14a75210f" target="_blank"
-                                    class="btn-terminal">
-                                    <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>Verify
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ISRO ML -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="700">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">isro-ml.cert</span>
-                        </div>
-                        <div class="terminal-content">
-                            <img src="../images/ML_ISRO.png" alt="ISRO ML" class="certificate-image mb-4">
-                            <h3 class="text-lg font-semibold text-terminal-text mb-2">ML to Deep Learning</h3>
-                            <div class="flex flex-wrap gap-1 mb-3">
-                                <span class="code-tag">#ISRO</span>
-                                <span class="code-tag">#Python</span>
-                                <span class="code-tag">#ML</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">July 2022</p>
-                            <div class="flex flex-wrap gap-2">
-                                <a href="../resources/Machine Learning to Deep Learning A Journey for Remote Sensing Data Classification.pdf"
-                                    class="btn-terminal">
-                                    <i data-lucide="file-text" class="w-3 h-3 inline mr-1"></i>PDF
-                                </a>
-                                <a href="https://certificate.iirs.gov.in/" target="_blank" class="btn-terminal">
-                                    <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>Verify
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <section>
+            <div class="certificates-header">
+                <h1 class="display-massive">Certificates <span class="italic-gold">&</span></h1>
+                <h1 class="display-massive">Achievements</h1>
+                <p class="mono-label" style="margin-top: 20px;">Professional Recognition</p>
             </div>
-        </section>
-
-        <!-- Badges Section -->
-        <section class="p-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex items-center space-x-2 mb-8">
-                    <h2 class="section-title">#badges</h2>
-                    <div class="flex-1 h-px bg-terminal-purple"></div>
+            
+            <div class="certificates-grid">
+                <!-- CS50x Certificate -->
+                <div class="cert-card" data-hover>
+                    <div class="cert-image-wrapper">
+                        <img src="../images/CS50x.png" alt="CS50x Certificate" class="cert-image">
+                    </div>
+                    <div class="cert-content">
+                        <h3>CS50x</h3>
+                        <p class="cert-issuer">Harvard University</p>
+                        <p class="cert-year">2024</p>
+                        <div class="cert-tags">
+                            <span class="cert-tag">#CS50</span>
+                            <span class="cert-tag">#Harvard</span>
+                        </div>
+                        <div class="cert-actions">
+                            <a href="../resources/cs50x.pdf" class="cert-btn" data-hover>
+                                <i data-lucide="file-text" class="w-3 h-3"></i>PDF
+                            </a>
+                            <a href="https://cs50.harvard.edu/certificates/7f55ae1f-3570-4ae9-ac18-2fdf7a267136" target="_blank" class="cert-btn" data-hover>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>Verify
+                            </a>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Solution Challenge Badge -->
-                    <div class="terminal-window" data-aos="fade-up">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">google-solution.badge</span>
+                
+                <!-- GitHub Foundations -->
+                <div class="cert-card" data-hover>
+                    <div class="cert-image-wrapper">
+                        <img src="../images/GITHUB_Foundation.png" alt="GitHub Foundations" class="cert-image">
+                    </div>
+                    <div class="cert-content">
+                        <h3>GitHub Foundations</h3>
+                        <p class="cert-issuer">GitHub</p>
+                        <p class="cert-year">January 2025 - January 2028</p>
+                        <div class="cert-tags">
+                            <span class="cert-tag">#GitHub</span>
+                            <span class="cert-tag">#Git</span>
                         </div>
-                        <div class="terminal-content text-center">
-                            <img src="../images/solution_challenge.png" alt="Solution Challenge" class="badge-image mb-4">
-                            <h3 class="text-base font-semibold text-terminal-text mb-2">Solution Challenge</h3>
-                            <div class="flex flex-wrap gap-1 mb-3 justify-center">
-                                <span class="code-tag">#Google</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">January 2025</p>
-                            <a href="https://g.dev/gunjesh07" target="_blank" class="btn-terminal">
-                                <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>View
+                        <div class="cert-actions">
+                            <a href="../resources/GitHubFoundations.pdf" class="cert-btn" data-hover>
+                                <i data-lucide="file-text" class="w-3 h-3"></i>PDF
+                            </a>
+                            <a href="https://www.credly.com/badges/f9e1bbc7-6276-45b5-a5c8-f9959ece8e0c" target="_blank" class="cert-btn" data-hover>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>Verify
                             </a>
                         </div>
                     </div>
-
-                    <!-- GitHub Foundations Badge -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="100">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">github.badge</span>
+                </div>
+                
+                <!-- AWS ML Foundation -->
+                <div class="cert-card" data-hover>
+                    <div class="cert-image-wrapper">
+                        <img src="../images/aws.png" alt="AWS ML Foundation" class="cert-image">
+                    </div>
+                    <div class="cert-content">
+                        <h3>AWS ML Foundation</h3>
+                        <p class="cert-issuer">Amazon Web Services</p>
+                        <p class="cert-year">March 2025</p>
+                        <div class="cert-tags">
+                            <span class="cert-tag">#AWS</span>
+                            <span class="cert-tag">#ML</span>
                         </div>
-                        <div class="terminal-content text-center">
-                            <img src="../images/github-foundations.png" alt="GitHub Foundations Badge" class="badge-image mb-4">
-                            <h3 class="text-base font-semibold text-terminal-text mb-2">GitHub Foundations</h3>
-                            <div class="flex flex-wrap gap-1 mb-3 justify-center">
-                                <span class="code-tag">#GitHub</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">January 2025</p>
-                            <a href="https://www.credly.com/badges/f9e1bbc7-6276-45b5-a5c8-f9959ece8e0c" target="_blank" class="btn-terminal">
-                                <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>View
+                        <div class="cert-actions">
+                            <a href="../resources/AWS_Academy_Graduate___AWS_Academy_Machine_Learning_Foundations_Badge20250310-26-tgl0kg.pdf" class="cert-btn" data-hover>
+                                <i data-lucide="file-text" class="w-3 h-3"></i>PDF
+                            </a>
+                            <a href="https://www.credly.com/badges/d6d4dea1-3567-40b3-a27d-dfa05218f1b3/public_url" target="_blank" class="cert-btn" data-hover>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>Verify
                             </a>
                         </div>
                     </div>
-
-                    <!-- AI Skills Challenge -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="200">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">ms-ai.badge</span>
+                </div>
+                
+                <!-- Software Engineering NPTEL -->
+                <div class="cert-card" data-hover>
+                    <div class="cert-image-wrapper">
+                        <img src="../images/Software Engineering NPTEL.jpg" alt="Software Engineering NPTEL" class="cert-image">
+                    </div>
+                    <div class="cert-content">
+                        <h3>Software Engineering</h3>
+                        <p class="cert-issuer">NPTEL</p>
+                        <p class="cert-year">November 2024</p>
+                        <div class="cert-tags">
+                            <span class="cert-tag">#NPTEL</span>
+                            <span class="cert-tag">#Software Engineering</span>
                         </div>
-                        <div class="terminal-content text-center">
-                            <img src="../images/ai-skills-challenge-april-2024.png" alt="AI Skills Challenge" class="badge-image mb-4">
-                            <h3 class="text-base font-semibold text-terminal-text mb-2">AI Skills Challenge</h3>
-                            <div class="flex flex-wrap gap-1 mb-3 justify-center">
-                                <span class="code-tag">#Microsoft</span>
-                                <span class="code-tag">#AI</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">April 2024</p>
-                            <a href="https://learn.microsoft.com/en-us/users/gunjeshkumar-1959/achievements/uxyky8w3?ref=https%3A%2F%2Fwww.linkedin.com%2F"
-                                target="_blank" class="btn-terminal">
-                                <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>View
+                        <div class="cert-actions">
+                            <a href="../resources/Software Engineering_NPTEL.pdf" class="cert-btn" data-hover>
+                                <i data-lucide="file-text" class="w-3 h-3"></i>PDF
+                            </a>
+                            <a href="https://nptel.ac.in/noc/E_Certificate/NPTEL24CS119S105290117603871196" target="_blank" class="cert-btn" data-hover>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>Verify
                             </a>
                         </div>
                     </div>
-
-                    <!-- AWS Badge -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="300">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">aws-ml.badge</span>
+                </div>
+                
+                <!-- Postman API -->
+                <div class="cert-card" data-hover>
+                    <div class="cert-image-wrapper">
+                        <img src="../images/Postman.jpeg" alt="Postman API" class="cert-image">
+                    </div>
+                    <div class="cert-content">
+                        <h3>API Fundamentals</h3>
+                        <p class="cert-issuer">Postman</p>
+                        <p class="cert-year">August 2024</p>
+                        <div class="cert-tags">
+                            <span class="cert-tag">#Postman</span>
+                            <span class="cert-tag">#API</span>
                         </div>
-                        <div class="terminal-content text-center">
-                            <img src="../images/aws-academy-graduate-aws-academy-machine-learning-foundations.png" alt="AWS ML Foundation Badge" class="badge-image mb-4">
-                            <h3 class="text-base font-semibold text-terminal-text mb-2">AWS ML Foundation</h3>
-                            <div class="flex flex-wrap gap-1 mb-3 justify-center">
-                                <span class="code-tag">#AWS</span>
-                                <span class="code-tag">#ML</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">March 2025</p>
-                            <a href="https://www.credly.com/badges/d6d4dea1-3567-40b3-a27d-dfa05218f1b3/public_url" target="_blank" class="btn-terminal">
-                                <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>View
+                        <div class="cert-actions">
+                            <a href="../resources/Postman.pdf" class="cert-btn" data-hover>
+                                <i data-lucide="file-text" class="w-3 h-3"></i>PDF
+                            </a>
+                            <a href="https://api.badgr.io/public/assertions/CxPoW1V3RQ-KbVyjBntqag?identity__email=gunjesh843%40gmail.com" target="_blank" class="cert-btn" data-hover>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>Verify
                             </a>
                         </div>
                     </div>
-
-                    <!-- Google Play Badge -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="400">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">google-play.badge</span>
+                </div>
+                
+                <!-- Google Play Academy -->
+                <div class="cert-card" data-hover>
+                    <div class="cert-image-wrapper">
+                        <img src="../images/google_play_academy.png" alt="Google Play Academy" class="cert-image">
+                    </div>
+                    <div class="cert-content">
+                        <h3>Store Listing Certificates</h3>
+                        <p class="cert-issuer">Google Play Academy</p>
+                        <p class="cert-year">December 2023 - December 2026</p>
+                        <div class="cert-tags">
+                            <span class="cert-tag">#Google Play</span>
+                            <span class="cert-tag">#Android</span>
                         </div>
-                        <div class="terminal-content text-center">
-                            <img src="../images/GOOGLE PALY ACADEMY.png" alt="Google Play Badge" class="badge-image mb-4">
-                            <h3 class="text-base font-semibold text-terminal-text mb-2">Store Listing Badge</h3>
-                            <div class="flex flex-wrap gap-1 mb-3 justify-center">
-                                <span class="code-tag">#Google Play</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">December 2023</p>
-                            <a href="https://www.credential.net/19f89513-ffe4-4a4c-8484-78e9a1e8d789" target="_blank" class="btn-terminal">
-                                <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>View
+                        <div class="cert-actions">
+                            <a href="../resources/Google Play Academy.pdf" class="cert-btn" data-hover>
+                                <i data-lucide="file-text" class="w-3 h-3"></i>PDF
+                            </a>
+                            <a href="https://www.credential.net/19f89513-ffe4-4a4c-8484-78e9a1e8d789" target="_blank" class="cert-btn" data-hover>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>Verify
                             </a>
                         </div>
                     </div>
-
-                    <!-- Microsoft Learn Badge -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="500">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">ms-learn.badge</span>
+                </div>
+                
+                <!-- AI for Everyone IBM -->
+                <div class="cert-card" data-hover>
+                    <div class="cert-image-wrapper">
+                        <img src="../images/AI_IBM_edx.png" alt="AI IBM edX" class="cert-image">
+                    </div>
+                    <div class="cert-content">
+                        <h3>AI for Everyone</h3>
+                        <p class="cert-issuer">IBM & edX</p>
+                        <p class="cert-year">April 2024</p>
+                        <div class="cert-tags">
+                            <span class="cert-tag">#IBM</span>
+                            <span class="cert-tag">#AI</span>
+                            <span class="cert-tag">#edX</span>
                         </div>
-                        <div class="terminal-content text-center">
-                            <img src="../images/MICROSOFT.png" alt="Microsoft Learn Badge" class="badge-image mb-4">
-                            <h3 class="text-base font-semibold text-terminal-text mb-2">Learn Challenge</h3>
-                            <div class="flex flex-wrap gap-1 mb-3 justify-center">
-                                <span class="code-tag">#Microsoft Learn</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">June 2022</p>
-                            <a href="https://learn.microsoft.com/en-us/users/gunjeshkumar-1959/achievements?tab=credentials-tab" target="_blank" class="btn-terminal">
-                                <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>View
+                        <div class="cert-actions">
+                            <a href="../resources/edxIBM.pdf" class="cert-btn" data-hover>
+                                <i data-lucide="file-text" class="w-3 h-3"></i>PDF
+                            </a>
+                            <a href="https://courses.edx.org/certificates/357baf51617342418b3604e14a75210f" target="_blank" class="cert-btn" data-hover>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>Verify
                             </a>
                         </div>
                     </div>
-
-                    <!-- MLSA Badge -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="600">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">mlsa.badge</span>
-                        </div>
-                        <div class="terminal-content text-center">
-                            <img src="../images/mlsa _logo.png" alt="MLSA Badge" class="badge-image mb-4">
-                            <h3 class="text-base font-semibold text-terminal-text mb-2">MLSA Alpha Badge</h3>
-                            <div class="flex flex-wrap gap-1 mb-3 justify-center">
-                                <span class="code-tag">#MLSA</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">October 2024</p>
-                            <a href="https://mvp.microsoft.com/en-US/studentambassadors/profile/3c3ca556-ac37-4999-998b-d2ece7ffa532" target="_blank" class="btn-terminal">
-                                <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>View
-                            </a>
-                        </div>
+                </div>
+                
+                <!-- ISRO ML -->
+                <div class="cert-card" data-hover>
+                    <div class="cert-image-wrapper">
+                        <img src="../images/ML_ISRO.png" alt="ISRO ML" class="cert-image">
                     </div>
-
-                    <!-- GDSC Badge -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="700">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">gdsc.badge</span>
+                    <div class="cert-content">
+                        <h3>ML to Deep Learning</h3>
+                        <p class="cert-issuer">ISRO</p>
+                        <p class="cert-year">July 2022</p>
+                        <div class="cert-tags">
+                            <span class="cert-tag">#ISRO</span>
+                            <span class="cert-tag">#Python</span>
+                            <span class="cert-tag">#ML</span>
                         </div>
-                        <div class="terminal-content text-center">
-                            <img src="../images/gdsc_badge.png" alt="GDSC Badge" class="badge-image mb-4">
-                            <h3 class="text-base font-semibold text-terminal-text mb-2">Core Team Badge</h3>
-                            <div class="flex flex-wrap gap-1 mb-3 justify-center">
-                                <span class="code-tag">#GDSC</span>
-                            </div>
-                            <p class="text-terminal-accent text-sm mb-4">August 2023</p>
-                            <a href="https://developers.google.com/profile/u/gunjesh07" target="_blank" class="btn-terminal">
-                                <i data-lucide="external-link" class="w-3 h-3 inline mr-1"></i>View
+                        <div class="cert-actions">
+                            <a href="../resources/Machine Learning to Deep Learning A Journey for Remote Sensing Data Classification.pdf" class="cert-btn" data-hover>
+                                <i data-lucide="file-text" class="w-3 h-3"></i>PDF
+                            </a>
+                            <a href="https://certificate.iirs.gov.in/" target="_blank" class="cert-btn" data-hover>
+                                <i data-lucide="external-link" class="w-3 h-3"></i>Verify
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="p-6 border-t border-terminal-panel">
-            <div class="max-w-6xl mx-auto text-center">
-                <div class="mb-6">
-                    <a href="../index.html" class="inline-flex items-center px-6 py-3 bg-transparent border border-terminal-purple text-terminal-purple rounded hover:bg-terminal-purple hover:text-terminal-bg transition-colors">
-                        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
-                        Go Back to Portfolio
+            
+            <!-- Badges Section -->
+            <div class="badges-header">
+                <h2 class="display-large">Professional <span class="italic-gold">Badges</span></h2>
+                <p class="mono-label" style="margin-top: 20px;">Industry Recognition</p>
+            </div>
+            
+            <div class="badges-grid">
+                <!-- Solution Challenge Badge -->
+                <div class="badge-card" data-hover>
+                    <div class="badge-image-wrapper">
+                        <img src="../images/solution_challenge.png" alt="Solution Challenge" class="badge-image">
+                    </div>
+                    <h4>Solution Challenge</h4>
+                    <p class="badge-issuer">Google</p>
+                    <p class="badge-date">January 2025</p>
+                    <a href="https://g.dev/gunjesh07" target="_blank" class="badge-link" data-hover>
+                        <i data-lucide="external-link" class="w-3 h-3"></i>View Badge
                     </a>
                 </div>
-
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="flex items-center space-x-2 mb-4 md:mb-0">
-                        <i data-lucide="terminal" class="w-5 h-5 text-terminal-accent"></i>
-                        <span class="text-terminal-text font-semibold">Gunjesh</span>
-                        <span class="text-terminal-accent ml-4">kumargunjesh843@gmail.com</span>
+                
+                <!-- GitHub Foundations Badge -->
+                <div class="badge-card" data-hover>
+                    <div class="badge-image-wrapper">
+                        <img src="../images/github-foundations.png" alt="GitHub Foundations Badge" class="badge-image">
                     </div>
-
-                    <div class="flex space-x-4">
-                        <a href="https://github.com/gunjesh843" target="_blank" class="social-icon">
-                            <i data-lucide="github" class="w-5 h-5"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" class="social-icon">
-                            <i data-lucide="linkedin" class="w-5 h-5"></i>
-                        </a>
-                        <a href="https://x.com/gunjesh843" target="_blank" class="social-icon">
-                            <i data-lucide="twitter" class="w-5 h-5"></i>
-                        </a>
+                    <h4>GitHub Foundations</h4>
+                    <p class="badge-issuer">GitHub</p>
+                    <p class="badge-date">January 2025</p>
+                    <a href="https://www.credly.com/badges/f9e1bbc7-6276-45b5-a5c8-f9959ece8e0c" target="_blank" class="badge-link" data-hover>
+                        <i data-lucide="external-link" class="w-3 h-3"></i>View Badge
+                    </a>
+                </div>
+                
+                <!-- AI Skills Challenge -->
+                <div class="badge-card" data-hover>
+                    <div class="badge-image-wrapper">
+                        <img src="../images/ai-skills-challenge-april-2024.png" alt="AI Skills Challenge" class="badge-image">
                     </div>
+                    <h4>AI Skills Challenge</h4>
+                    <p class="badge-issuer">Microsoft</p>
+                    <p class="badge-date">April 2024</p>
+                    <a href="https://learn.microsoft.com/en-us/users/gunjeshkumar-1959/achievements/uxyky8w3?ref=https%3A%2F%2Fwww.linkedin.com%2F" target="_blank" class="badge-link" data-hover>
+                        <i data-lucide="external-link" class="w-3 h-3"></i>View Badge
+                    </a>
                 </div>
-
-                <div class="mt-6 pt-6 border-t border-terminal-panel">
-                    <p class="text-terminal-text text-sm">Web designer and <span class="text-terminal-purple">front-end developer</span>
-                    </p>
-                    <p class="text-terminal-accent text-sm mt-2">© Copyright 2025. Made with ❤️ by Gunjesh</p>
+                
+                <!-- AWS Badge -->
+                <div class="badge-card" data-hover>
+                    <div class="badge-image-wrapper">
+                        <img src="../images/aws-academy-graduate-aws-academy-machine-learning-foundations.png" alt="AWS ML Foundation Badge" class="badge-image">
+                    </div>
+                    <h4>AWS ML Foundation</h4>
+                    <p class="badge-issuer">AWS</p>
+                    <p class="badge-date">March 2025</p>
+                    <a href="https://www.credly.com/badges/d6d4dea1-3567-40b3-a27d-dfa05218f1b3/public_url" target="_blank" class="badge-link" data-hover>
+                        <i data-lucide="external-link" class="w-3 h-3"></i>View Badge
+                    </a>
                 </div>
+                
+                <!-- Google Play Badge -->
+                <div class="badge-card" data-hover>
+                    <div class="badge-image-wrapper">
+                        <img src="../images/GOOGLE PALY ACADEMY.png" alt="Google Play Badge" class="badge-image">
+                    </div>
+                    <h4>Store Listing Badge</h4>
+                    <p class="badge-issuer">Google Play</p>
+                    <p class="badge-date">December 2023</p>
+                    <a href="https://www.credential.net/19f89513-ffe4-4a4c-8484-78e9a1e8d789" target="_blank" class="badge-link" data-hover>
+                        <i data-lucide="external-link" class="w-3 h-3"></i>View Badge
+                    </a>
+                </div>
+                
+                <!-- Microsoft Learn Badge -->
+                <div class="badge-card" data-hover>
+                    <div class="badge-image-wrapper">
+                        <img src="../images/MICROSOFT.png" alt="Microsoft Learn Badge" class="badge-image">
+                    </div>
+                    <h4>Learn Challenge</h4>
+                    <p class="badge-issuer">Microsoft Learn</p>
+                    <p class="badge-date">June 2022</p>
+                    <a href="https://learn.microsoft.com/en-us/users/gunjeshkumar-1959/achievements?tab=credentials-tab" target="_blank" class="badge-link" data-hover>
+                        <i data-lucide="external-link" class="w-3 h-3"></i>View Badge
+                    </a>
+                </div>
+                
+                <!-- MLSA Badge -->
+                <div class="badge-card" data-hover>
+                    <div class="badge-image-wrapper">
+                        <img src="../images/mlsa _logo.png" alt="MLSA Badge" class="badge-image">
+                    </div>
+                    <h4>MLSA Alpha Badge</h4>
+                    <p class="badge-issuer">MLSA</p>
+                    <p class="badge-date">October 2024</p>
+                    <a href="https://mvp.microsoft.com/en-US/studentambassadors/profile/3c3ca556-ac37-4999-998b-d2ece7ffa532" target="_blank" class="badge-link" data-hover>
+                        <i data-lucide="external-link" class="w-3 h-3"></i>View Badge
+                    </a>
+                </div>
+                
+                <!-- GDSC Badge -->
+                <div class="badge-card" data-hover>
+                    <div class="badge-image-wrapper">
+                        <img src="../images/gdsc_badge.png" alt="GDSC Badge" class="badge-image">
+                    </div>
+                    <h4>Core Team Badge</h4>
+                    <p class="badge-issuer">GDSC</p>
+                    <p class="badge-date">August 2023</p>
+                    <a href="https://developers.google.com/profile/u/gunjesh07" target="_blank" class="badge-link" data-hover>
+                        <i data-lucide="external-link" class="w-3 h-3"></i>View Badge
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-left">
+                <p>© 2025 Gunjesh Kumar</p>
+                <p style="margin-top: 4px;">Made with passion</p>
+            </div>
+            <div class="footer-social">
+                <a href="https://github.com/gunjesh843" target="_blank" data-hover>GitHub</a>
+                <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" data-hover>LinkedIn</a>
+                <a href="https://x.com/gunjesh843" target="_blank" data-hover>Twitter</a>
+                <a href="mailto:kumargunjesh843@gmail.com" data-hover>Email</a>
             </div>
         </footer>
     </div>
-
+    
     <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 600,
-            once: true,
-            offset: 100
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
-
+        
+        // Smooth cursor animation
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+        
+        // Cursor hover effect
+        document.querySelectorAll('[data-hover]').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+        
+        // Parallax Orbs
+        const orb1 = document.getElementById('orb1');
+        const orb2 = document.getElementById('orb2');
+        
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+            
+            orb1.style.transform = `translate(${x * 30}px, ${y * 30}px)`;
+            orb2.style.transform = `translate(${x * -50}px, ${y * -50}px)`;
+        });
+        
+        // Three.js Scene
+        const canvas = document.getElementById('three-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 8;
+        
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas, 
+            alpha: true, 
+            antialias: window.devicePixelRatio < 2,
+            powerPreference: 'high-performance'
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(10, 10, 5);
+        scene.add(directionalLight);
+        
+        const pointLight = new THREE.PointLight(0x00d9a5, 0.5);
+        pointLight.position.set(-10, -10, -5);
+        scene.add(pointLight);
+        
+        // Animated Sphere (Gold)
+        const sphereGeometry = new THREE.SphereGeometry(1, 64, 64);
+        const sphereMaterial = new THREE.MeshStandardMaterial({
+            color: 0xF5A623,
+            metalness: 0.9,
+            roughness: 0.1,
+        });
+        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+        sphere.position.set(3, 0, -2);
+        scene.add(sphere);
+        
+        // Animated Torus (Teal)
+        const torusGeometry = new THREE.TorusGeometry(0.8, 0.3, 32, 64);
+        const torusMaterial = new THREE.MeshStandardMaterial({
+            color: 0x00D9A5,
+            metalness: 0.9,
+            roughness: 0.2,
+        });
+        const torus = new THREE.Mesh(torusGeometry, torusMaterial);
+        torus.position.set(-3, -1, -3);
+        scene.add(torus);
+        
+        // Floating Ring (Gold)
+        const ringGeometry = new THREE.TorusGeometry(1.5, 0.04, 16, 100);
+        const ringMaterial = new THREE.MeshBasicMaterial({
+            color: 0xF5A623,
+        });
+        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+        ring.position.set(0, 2, -4);
+        scene.add(ring);
+        
+        // Particles (optimized count)
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 50;
+        const positions = new Float32Array(particlesCount * 3);
+        
+        for (let i = 0; i < particlesCount * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 20;
+        }
+        
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        
+        const particlesMaterial = new THREE.PointsMaterial({
+            color: 0xF5A623,
+            size: 0.05,
+            transparent: true,
+            opacity: 0.8,
+        });
+        
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
+        
+        // Animation
+        let time = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.01;
+            
+            // Sphere animation
+            sphere.rotation.x += 0.005;
+            sphere.rotation.y += 0.01;
+            sphere.position.y = Math.sin(time) * 0.3;
+            
+            // Torus animation
+            torus.rotation.x += 0.01;
+            torus.rotation.y += 0.005;
+            torus.position.y = -1 + Math.sin(time * 0.8) * 0.2;
+            
+            // Ring animation
+            ring.rotation.y += 0.005;
+            ring.position.y = 2 + Math.sin(time * 0.5) * 0.3;
+            
+            // Particles rotation
+            particles.rotation.y += 0.001;
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        // Resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
         // Initialize Lucide icons
         lucide.createIcons();
-
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
     </script>
 </body>
-
 </html>

@@ -1,1148 +1,1508 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="Gunjesh Kumar - Software Engineer & Full Stack Developer">
     <title>Gunjesh Kumar | Software Engineer</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- AOS Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        mono: ['JetBrains Mono', 'monospace'],
-                        inter: ['Inter', 'sans-serif'],
-                        orbitron: ['Orbitron', 'sans-serif'],
-                        manrope: ['Manrope', 'sans-serif']
-                    },
-                    colors: {
-                        terminal: {
-                            bg: '#1e1e2e',
-                            darker: '#181825',
-                            panel: '#313244',
-                            text: '#cdd6f4',
-                            accent: '#b4befe',
-                            green: '#a6e3a1',
-                            purple: '#cba6f7',
-                            yellow: '#f9e2af',
-                            blue: '#89b4fa'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
     <style>
+        :root {
+            --background: #050505;
+            --foreground: #F4F3EF;
+            --primary: #F5A623;
+            --accent: #00D9A5;
+            --muted: #242424;
+            --muted-foreground: #808080;
+            --border: #262626;
+            --font-display: 'Instrument Serif', serif;
+            --font-mono: 'Space Mono', monospace;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
-            background: #1e1e2e;
-            color: #cdd6f4;
-            font-family: 'JetBrains Mono', monospace;
+            background: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-mono);
+            cursor: none;
+            overflow-x: hidden;
         }
         
-        .terminal-window {
-            background: #313244;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            border: 1px solid #45475a;
-        }
-        
-        .terminal-header {
-            background: #45475a;
-            padding: 12px 16px;
-            border-radius: 8px 8px 0 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .terminal-dot {
-            width: 12px;
-            height: 12px;
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            background: var(--foreground);
             border-radius: 50%;
-        }
-        
-        .dot-red { background: #f38ba8; }
-        .dot-yellow { background: #f9e2af; }
-        .dot-green { background: #a6e3a1; }
-        
-        .terminal-content {
-            padding: 20px;
-        }
-        
-        .code-tag {
-            background: rgba(116, 199, 236, 0.1);
-            color: #74c7ec;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 14px;
-            border: 1px solid rgba(116, 199, 236, 0.2);
-            display: inline-block;
-            margin: 2px;
-        }
-        
-        .nav-link {
-            color: #b4befe;
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-        
-        .nav-link:hover {
-            background: rgba(180, 190, 254, 0.1);
-            color: #cba6f7;
-        }
-        
-        .fun-fact-tag {
-            background: rgba(69, 71, 90, 0.8);
-            border: 1px solid #585b70;
-            color: #cdd6f4;
-            padding: 8px 16px;
-            border-radius: 6px;
-            margin: 6px;
-            display: inline-block;
-            font-size: 14px;
-        }
-        
-        .highlight {
-            color: #cba6f7;
-            font-weight: 600;
-        }
-        
-        .section-title {
-            color: #cba6f7;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        
-        .project-card {
-            background: #313244;
-            border: 1px solid #45475a;
-            border-radius: 8px;
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .project-card:hover {
-            border-color: #74c7ec;
-            transform: translateY(-2px);
-        }
-        
-        .sidebar {
-            background: #181825;
-            border-right: 1px solid #45475a;
-            min-height: 100vh;
-            width: 80px;
             position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: width 0.2s ease, height 0.2s ease, transform 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+        
+        .cursor.hover {
+            width: 60px;
+            height: 60px;
+        }
+        
+        /* 3D Canvas */
+        #three-canvas {
+            position: fixed;
+            top: 0;
             left: 0;
-            top: 0;
-            z-index: 50;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
         
-        .main-content {
-            margin-left: 80px;
-            min-height: 100vh;
-        }
-        
-        .social-icon {
-            color: #6c7086;
-            transition: color 0.3s ease;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .social-icon:hover {
-            color: #74c7ec;
-        }
-        
-        .timeline-item {
-            position: relative;
-            padding-left: 32px;
-            margin-bottom: 32px;
-            border-left: 2px solid #45475a;
-        }
-        
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -0.5rem;
-            top: 0;
-            width: 1rem;
-            height: 1rem;
-            background: #cba6f7;
+        /* Floating Orbs */
+        .orb {
+            position: fixed;
             border-radius: 50%;
-            border: 3px solid #1e1e2e;
+            filter: blur(80px);
+            animation: float-orb 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
         }
         
-        .skill-progress {
-            transition: width 1.5s ease-in-out;
-            background: linear-gradient(135deg, #cba6f7, #74c7ec);
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: rgba(245, 166, 35, 0.15);
+            top: -200px;
+            right: -200px;
         }
         
-        .mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(0, 217, 165, 0.12);
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -5s;
         }
         
-        .mobile-menu.active {
-            transform: translateX(0);
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: rgba(245, 166, 35, 0.1);
+            top: 50%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+        
+        @keyframes float-orb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 10px) scale(1.02); }
+        }
+        
+        /* Noise Overlay */
+        .noise::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9998;
+        }
+        
+        /* Typography */
+        .display-massive {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 18vw, 18rem);
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            font-weight: 400;
+        }
+        
+        .display-large {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 12vw, 12rem);
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+        }
+        
+        .display-medium {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 6vw, 6rem);
+            line-height: 1;
+        }
+        
+        .serif-italic {
+            font-family: var(--font-display);
+            font-style: italic;
+        }
+        
+        .mono-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--muted-foreground);
+        }
+        
+        /* Content wrapper */
+        .content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Section padding */
+        section {
+            padding: 48px;
+            min-height: 100vh;
         }
         
         @media (max-width: 768px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                min-height: auto;
-                height: 60px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 0 20px;
-                z-index: 40;
-                flex-direction: row;
+            section {
+                padding: 24px;
+            }
+        }
+        
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+        
+        .hero-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-top: 20px;
+        }
+        
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid var(--accent);
+            background: rgba(0, 217, 165, 0.05);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        .hero-center {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .hero-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: 20px;
+        }
+        
+        /* Navigation Numbers */
+        .nav-numbers {
+            display: flex;
+            gap: 48px;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--foreground);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-number {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 8rem);
+            line-height: 1;
+            -webkit-text-stroke: 1px var(--foreground);
+            color: transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item:hover .nav-number {
+            color: var(--foreground);
+            -webkit-text-stroke: 0;
+        }
+        
+        .nav-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--muted-foreground);
+            margin-top: 8px;
+        }
+        
+        /* Marquee */
+        .marquee-section {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+            min-height: auto;
+        }
+        
+        .marquee-wrapper {
+            display: flex;
+            width: max-content;
+            animation: marquee 30s linear infinite;
+        }
+        
+        .marquee-wrapper:hover {
+            animation-play-state: paused;
+        }
+        
+        .marquee-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            padding: 0 30px;
+        }
+        
+        .marquee-item {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 5rem);
+            white-space: nowrap;
+            color: var(--foreground);
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+        
+        .marquee-item:hover {
+            opacity: 1;
+        }
+        
+        .marquee-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        /* Work Section */
+        .work-section {
+            padding-top: 100px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 80px;
+        }
+        
+        .section-number {
+            font-family: var(--font-display);
+            font-size: clamp(6rem, 15vw, 15rem);
+            -webkit-text-stroke: 1px var(--border);
+            color: transparent;
+            line-height: 0.8;
+        }
+        
+        .project-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 120px;
+            align-items: center;
+        }
+        
+        .project-item:nth-child(even) {
+            direction: rtl;
+        }
+        
+        .project-item:nth-child(even) > * {
+            direction: ltr;
+        }
+        
+        @media (max-width: 768px) {
+            .project-item,
+            .project-item:nth-child(even) {
+                grid-template-columns: 1fr;
+                direction: ltr;
+            }
+        }
+        
+        .project-image {
+            position: relative;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            background: var(--muted);
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: all 0.5s ease;
+        }
+        
+        .project-image:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+        
+        .project-number {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 10vw, 10rem);
+            -webkit-text-stroke: 1px var(--primary);
+            color: transparent;
+            line-height: 1;
+            z-index: 2;
+        }
+        
+        .project-content h3 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 4rem);
+            margin-bottom: 16px;
+        }
+        
+        .project-content p {
+            color: var(--muted-foreground);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .tag {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--foreground);
+            text-decoration: none;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+        }
+        
+        .project-link:hover {
+            color: var(--primary);
+        }
+        
+        .project-link .arrow {
+            transition: transform 0.3s ease;
+        }
+        
+        .project-link:hover .arrow {
+            transform: translateX(5px);
+        }
+        
+        /* About Section */
+        .about-section {
+            padding-top: 100px;
+        }
+        
+        .about-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 100px;
+        }
+        
+        @media (max-width: 768px) {
+            .about-header {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .about-title span {
+            display: block;
+        }
+        
+        .about-desc {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--muted-foreground);
+        }
+        
+        /* Timeline */
+        .timeline-section {
+            margin-bottom: 80px;
+        }
+        
+        .timeline-header {
+            margin-bottom: 40px;
+        }
+        
+        .timeline-header h3 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 4rem);
+        }
+        
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 40px;
+            padding: 32px 0;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-item {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+        
+        .timeline-item:hover {
+            border-color: var(--primary);
+        }
+        
+        .timeline-date {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted-foreground);
+        }
+        
+        .timeline-content h4 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+        
+        .timeline-content .company {
+            color: var(--primary);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .timeline-content p {
+            color: var(--muted-foreground);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* Skills */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 40px;
+        }
+        
+        .skill-tag {
+            padding: 12px 24px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-tag:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* Education */
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 40px;
+        }
+        
+        .education-card {
+            padding: 32px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .education-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .education-card h4 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        
+        .education-card .school {
+            color: var(--primary);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .education-card .year {
+            color: var(--muted-foreground);
+            font-size: 12px;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .contact-title {
+            margin-bottom: 60px;
+        }
+        
+        .contact-title .italic-gold {
+            color: var(--primary);
+        }
+        
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--foreground);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-link:hover {
+            border-color: var(--primary);
+        }
+        
+        .contact-link-content {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .contact-link-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--muted-foreground);
+            width: 80px;
+        }
+        
+        .contact-link-value {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 3rem);
+        }
+        
+        .contact-link .arrow {
+            font-size: 24px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-link:hover .arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* HR Animation */
+        .hr-animate {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            border: none;
+            transform: scaleX(0);
+            animation: hr-expand 1s ease-out forwards;
+        }
+        
+        @keyframes hr-expand {
+            to { transform: scaleX(1); }
+        }
+        
+        /* Stagger Animation */
+        .stagger > * {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: stagger-in 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+        
+        .stagger > *:nth-child(1) { animation-delay: 0.1s; }
+        .stagger > *:nth-child(2) { animation-delay: 0.2s; }
+        .stagger > *:nth-child(3) { animation-delay: 0.3s; }
+        .stagger > *:nth-child(4) { animation-delay: 0.4s; }
+        .stagger > *:nth-child(5) { animation-delay: 0.5s; }
+        .stagger > *:nth-child(6) { animation-delay: 0.6s; }
+        .stagger > *:nth-child(7) { animation-delay: 0.7s; }
+        .stagger > *:nth-child(8) { animation-delay: 0.8s; }
+        
+        @keyframes stagger-in {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Footer */
+        footer {
+            padding: 48px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+        
+        .footer-left {
+            font-size: 12px;
+            color: var(--muted-foreground);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .footer-social a {
+            color: var(--muted-foreground);
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-social a:hover {
+            color: var(--primary);
+        }
+        
+        /* Certificates Section */
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .cert-card {
+            padding: 24px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .cert-card:hover {
+            border-color: var(--primary);
+        }
+        
+        .cert-card h4 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+        }
+        
+        .cert-card .issuer {
+            color: var(--accent);
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        
+        .cert-card .year {
+            color: var(--muted-foreground);
+            font-size: 12px;
+        }
+        
+        /* LeetCode Badge Section */
+        .leetcode-section {
+            padding: 40px;
+            border: 1px solid var(--border);
+            margin-top: 60px;
+        }
+        
+        .leetcode-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .leetcode-header img {
+            height: 40px;
+        }
+        
+        .leetcode-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+        
+        .leetcode-badge {
+            width: 80px;
+            height: 80px;
+            transition: transform 0.3s ease;
+        }
+        
+        .leetcode-badge:hover {
+            transform: scale(1.1);
+        }
+        
+        .leetcode-badge-large {
+            width: 120px;
+            height: 120px;
+        }
+        
+        /* Fun Facts */
+        .fun-facts-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 40px;
+        }
+        
+        .fun-fact {
+            padding: 16px 24px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .fun-fact:hover {
+            border-color: var(--primary);
+        }
+        
+        .fun-fact .highlight {
+            color: var(--primary);
+            font-style: italic;
+        }
+        
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .nav-numbers {
+                flex-direction: column;
+                gap: 24px;
             }
             
-            .sidebar > div {
-                flex-direction: row !important;
-                width: 100%;
-                justify-content: space-between;
-                align-items: center;
-                height: auto;
-                padding: 0;
+            .hero-bottom {
+                flex-direction: column;
+                gap: 32px;
             }
-            
-            .sidebar .flex.flex-col.items-center.space-y-6 {
-                flex-direction: row !important;
-                gap: 20px;
-                align-items: center;
-                margin: 0;
-            }
-            
-            .sidebar .flex.flex-col.space-y-4 {
-                flex-direction: row !important;
-                gap: 12px;
-                margin: 0;
-            }
-            
-            .sidebar .transform.-rotate-90 {
-                display: none;
-            }
-            
-            .social-icon {
+        }
+        
+        .company-logo {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            background: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 0;
+            padding: 10px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            filter: grayscale(100%);
+        }
+        
+        .timeline-item:hover .company-logo {
+            border-color: var(--primary);
+            filter: grayscale(0%);
+            background: rgba(245, 166, 35, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .company-logo {
+                width: 52px;
+                height: 52px;
                 padding: 8px;
-            }
-            
-            .main-content {
-                margin-left: 0;
             }
         }
     </style>
 </head>
 
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="flex flex-col items-center py-6 h-full justify-between">
-            <div class="flex flex-col items-center space-y-6">
-                <div class="w-10 h-10 bg-terminal-purple rounded-full flex items-center justify-center">
-                    <img src="images/logo.png" alt="GK" class="w-6 h-6 object-contain">
+<body class="noise">
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    
+    <!-- 3D Canvas -->
+    <canvas id="three-canvas"></canvas>
+    
+    <!-- Floating Orbs -->
+    <div class="orb orb-1" id="orb1"></div>
+    <div class="orb orb-2" id="orb2"></div>
+    <div class="orb orb-3" id="orb3"></div>
+    
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-top stagger">
+                <div>
+                    <p class="mono-label">Software Engineer</p>
+                    <p class="mono-label" style="color: var(--muted-foreground);">Vizag, India</p>
                 </div>
-                
-                <div class="flex flex-col space-y-4">
-                    <a href="https://github.com/gunjesh843" target="_blank" class="social-icon">
-                        <i data-lucide="github" class="w-5 h-5"></i>
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span class="mono-label" style="color: var(--accent); letter-spacing: 0.1em;">Available for work</span>
+                </div>
+            </div>
+            
+            <div class="hero-center stagger">
+                <h1 class="display-massive">Gunjesh</h1>
+                <h1 class="display-massive">Kumar</h1>
+                <p style="margin-top: 24px; color: var(--muted-foreground); max-width: 500px;">
+                    Crafting digital experiences where technology meets creativity
+                </p>
+            </div>
+            
+            <div class="hero-bottom stagger">
+                <div>
+                    <p class="mono-label" style="margin-bottom: 8px;">Currently building</p>
+                    <p style="color: var(--primary);">AI-powered systems</p>
+                </div>
+                <nav class="nav-numbers">
+                    <a href="#work" class="nav-item" data-hover>
+                        <span class="nav-number">01</span>
+                        <span class="nav-label">Work</span>
                     </a>
-                    <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" class="social-icon">
-                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    <a href="#about" class="nav-item" data-hover>
+                        <span class="nav-number">02</span>
+                        <span class="nav-label">About</span>
                     </a>
-                    <a href="https://x.com/gunjesh843" target="_blank" class="social-icon">
-                        <i data-lucide="twitter" class="w-5 h-5"></i>
+                    <a href="#contact" class="nav-item" data-hover>
+                        <span class="nav-number">03</span>
+                        <span class="nav-label">Contact</span>
+                    </a>
+                </nav>
+            </div>
+        </section>
+        
+        <!-- Marquee Section -->
+        <section class="marquee-section">
+            <div class="marquee-wrapper">
+                <div class="marquee-content">
+                    <span class="marquee-item">AI Engineering</span>
+                    <span class="marquee-dot"></span>
+                    <span class="marquee-item">Web Development</span>
+                    <span class="marquee-dot"></span>
+                    <span class="marquee-item">Machine Learning</span>
+                    <span class="marquee-dot"></span>
+                    <span class="marquee-item">Creative Coding</span>
+                    <span class="marquee-dot"></span>
+                    <span class="marquee-item">Computer Vision</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                <div class="marquee-content">
+                    <span class="marquee-item">AI Engineering</span>
+                    <span class="marquee-dot"></span>
+                    <span class="marquee-item">Web Development</span>
+                    <span class="marquee-dot"></span>
+                    <span class="marquee-item">Machine Learning</span>
+                    <span class="marquee-dot"></span>
+                    <span class="marquee-item">Creative Coding</span>
+                    <span class="marquee-dot"></span>
+                    <span class="marquee-item">Computer Vision</span>
+                    <span class="marquee-dot"></span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Work Section -->
+        <section class="work-section" id="work">
+            <div class="section-header">
+                <div>
+                    <h2 class="display-large">Selected</h2>
+                    <h2 class="display-large"><span class="serif-italic" style="color: var(--primary);">Work</span></h2>
+                </div>
+                <span class="section-number">01</span>
+            </div>
+            
+            <!-- Project 1 -->
+            <div class="project-item">
+                <div class="project-image" data-hover>
+                    <span class="project-number">01</span>
+                    <img src="images/road safety index.png" alt="Road Safety Index">
+                </div>
+                <div class="project-content stagger">
+                    <h3>Road Safety Index</h3>
+                    <p>AI-powered system analyzing dashboard camera footage to create comprehensive safety metrics for road infrastructure. Built during CSIR-CRRI internship.</p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">TensorFlow</span>
+                        <span class="tag">OpenCV</span>
+                        <span class="tag">Computer Vision</span>
+                    </div>
+                    <a href="https://github.com/VIZAGBOYS/CSRI_CRRI_ROAD_SAFETY_SCORE" target="_blank" class="project-link" data-hover>
+                        View Project <span class="arrow">→</span>
                     </a>
                 </div>
             </div>
             
-            <div class="text-xs text-terminal-text transform -rotate-90 whitespace-nowrap hidden md:block">
-                Media
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Header -->
-        <header class="p-6 border-b border-terminal-panel">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <i data-lucide="terminal" class="w-5 h-5 text-terminal-accent"></i>
-                    <span class="text-lg font-semibold text-terminal-text">Gunjesh</span>
+            <!-- Project 2 -->
+            <div class="project-item">
+                <div class="project-image" data-hover>
+                    <span class="project-number">02</span>
+                    <img src="images/portfolio project.png" alt="Portfolio Website">
                 </div>
-                
-                <nav class="hidden md:flex items-center space-x-1">
-                    <a href="#home" class="nav-link">#home</a>
-                    <a href="#experience" class="nav-link">#experience</a>
-                    <a href="#education" class="nav-link">#education</a>
-                    <a href="#skills" class="nav-link">#skills</a>
-                    <a href="#projects" class="nav-link">#projects</a>
-                    <a href="#certificates" class="nav-link">#certificates</a>
-                    <a href="#hobbies" class="nav-link">#hobbies</a>
-                    <a href="#contacts" class="nav-link">#contacts</a>
-                </nav>
-                
-                <button id="mobile-menu-btn" class="md:hidden">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-            </div>
-        </header>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="fixed inset-0 z-40 bg-terminal-bg mobile-menu">
-            <div class="flex flex-col items-center justify-center h-full space-y-8">
-                <a href="#home" class="text-2xl text-terminal-text hover:text-terminal-purple">Home</a>
-                <a href="#experience" class="text-2xl text-terminal-text hover:text-terminal-purple">Experience</a>
-                <a href="#education" class="text-2xl text-terminal-text hover:text-terminal-purple">Education</a>
-                <a href="#skills" class="text-2xl text-terminal-text hover:text-terminal-purple">Skills</a>
-                <a href="#projects" class="text-2xl text-terminal-text hover:text-terminal-purple">Projects</a>
-                <a href="#certificates" class="text-2xl text-terminal-text hover:text-terminal-purple">Certificates</a>
-                <a href="#hobbies" class="text-2xl text-terminal-text hover:text-terminal-purple">Hobbies</a>
-                <a href="#contacts" class="text-2xl text-terminal-text hover:text-terminal-purple">Contact</a>
-            </div>
-            <button id="close-mobile-menu" class="absolute top-6 right-6 p-2 text-terminal-text hover:text-terminal-purple">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-        </div>
-
-        <!-- Hero Section -->
-        <section id="home" class="p-6 min-h-screen flex items-center">
-            <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <!-- Left Content -->
-                <div class="space-y-8" data-aos="fade-right">
-                    <div class="space-y-6">
-                        <div class="inline-flex items-center px-4 py-2 bg-terminal-panel border border-terminal-green rounded-full">
-                            <span class="w-2 h-2 bg-terminal-green rounded-full mr-2 animate-pulse"></span>
-                            <span class="text-terminal-green text-sm font-medium">Available for opportunities</span>
-                        </div>
-                        
-                        <h1 class="text-4xl lg:text-5xl font-bold font-orbitron">
-                            <span class="text-terminal-text">Gunjesh Kumar </span>
-                            <span class="text-terminal-purple">software engineer</span>
-                        </h1>
-                        
-                        <p class="text-terminal-text text-lg">
-                            Crafting responsive websites where technology meets creativity.
-                        </p>
-                        
-                        <div class="flex flex-wrap gap-4">
-                            <a href="resources/Resume.pdf" target="_blank" 
-                               class="inline-flex items-center px-8 py-3 bg-terminal-purple text-terminal-bg rounded hover:bg-terminal-accent transition-colors font-medium">
-                                Download CV
-                                <i data-lucide="download" class="w-5 h-5 ml-2"></i>
-                            </a>
-                            <a href="#contacts" 
-                               class="inline-block bg-transparent border border-terminal-purple text-terminal-purple px-8 py-3 rounded hover:bg-terminal-purple hover:text-terminal-bg transition-colors">
-                                Contact me!!
-                            </a>
-                        </div>
+                <div class="project-content stagger">
+                    <h3>Portfolio Website</h3>
+                    <p>Experimental portfolio with 3D elements, custom cursor, and brutalist typography. Where code becomes art.</p>
+                    <div class="project-tags">
+                        <span class="tag">Three.js</span>
+                        <span class="tag">HTML5</span>
+                        <span class="tag">CSS3</span>
+                        <span class="tag">JavaScript</span>
                     </div>
-                    
-                    <!-- Status Box -->
-                    <div class="terminal-window max-w-sm">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                        </div>
-                        <div class="terminal-content">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-4 h-4 bg-terminal-green rounded-full"></div>
-                                <span class="text-terminal-text">Currently working on <span class="text-terminal-purple">AI-powered system</span></span>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="https://github.com/gunjesh843/portfolio" target="_blank" class="project-link" data-hover>
+                        View Project <span class="arrow">→</span>
+                    </a>
                 </div>
-                
-                <!-- Right Content - Profile Image -->
-                <div class="flex justify-center" data-aos="fade-left">
-                    <div class="relative">
-                        <div class="w-80 h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-terminal-panel shadow-2xl">
-                            <img src="images/profie.jpg" alt="Gunjesh Kumar" class="w-full h-full object-cover">
-                        </div>
-                        
-                        <!-- Floating Cards -->
-                        <div class="absolute -top-4 -right-4 terminal-window p-4">
-                            <div class="flex items-center space-x-2">
-                                <i data-lucide="code" class="w-5 h-5 text-terminal-blue"></i>
-                                <span class="text-sm font-medium">Developer</span>
-                            </div>
-                        </div>
-                        
-                        <div class="absolute -bottom-4 -left-4 terminal-window p-4">
-                            <div class="flex items-center space-x-2">
-                                <i data-lucide="map-pin" class="w-5 h-5 text-terminal-green"></i>
-                                <span class="text-sm font-medium">Vizag, India</span>
-                            </div>
-                        </div>
+            </div>
+            
+            <!-- Project 3 -->
+            <div class="project-item">
+                <div class="project-image" data-hover>
+                    <span class="project-number">03</span>
+                    <img src="images/e-learning.jpg" alt="E-Learning Platform">
+                </div>
+                <div class="project-content stagger">
+                    <h3>E-Learning Platform</h3>
+                    <p>Comprehensive platform for students to access educational resources, track progress, and engage with interactive content.</p>
+                    <div class="project-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">Express</span>
                     </div>
+                    <a href="https://github.com/VIZAGBOYS/Counselling_forms" target="_blank" class="project-link" data-hover>
+                        View Project <span class="arrow">→</span>
+                    </a>
                 </div>
             </div>
         </section>
-
-        <!-- Experience Section -->
-        <section id="experience" class="p-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex items-center space-x-2 mb-8">
-                    <h2 class="section-title">#experience</h2>
-                    <div class="flex-1 h-px bg-terminal-purple"></div>
+        
+        <!-- About Section -->
+        <section class="about-section" id="about">
+            <div class="section-header">
+                <div>
+                    <h2 class="display-large">About</h2>
+                    <h2 class="display-large"><span class="serif-italic" style="color: var(--primary);">Me</span></h2>
                 </div>
-                
-                <div class="terminal-window" data-aos="fade-up">
-                    <div class="terminal-header">
-                        <div class="terminal-dot dot-red"></div>
-                        <div class="terminal-dot dot-yellow"></div>
-                        <div class="terminal-dot dot-green"></div>
-                        <span class="ml-4 text-sm text-terminal-text">experience.log</span>
+                <span class="section-number">02</span>
+            </div>
+            
+            <div class="about-header">
+                <div class="about-title">
+                    <p class="display-medium">Building</p>
+                    <p class="display-medium"><span class="serif-italic" style="color: var(--accent);">tomorrow's</span></p>
+                    <p class="display-medium">technology</p>
+                </div>
+                <div class="about-desc">
+                    <p>I'm a software engineer passionate about AI, machine learning, and creating impactful digital solutions. Currently pursuing B.Tech in Information Technology while working on AI pipelines and computer vision projects.</p>
+                    <br>
+                    <p>When I'm not coding, you'll find me organizing tech workshops, contributing to open source, or capturing nature through my lens.</p>
+                </div>
+            </div>
+            
+            <hr class="hr-animate">
+            
+            <!-- Experience Timeline -->
+            <div class="timeline-section">
+                <div class="timeline-header">
+                    <h3>Experience</h3>
+                </div>
+
+                <div class="timeline-item" data-hover>
+                    <span class="timeline-date">Aug 2025 — Present</span>
+                    <div class="timeline-content" style="display: flex; align-items: center; gap: 24px;">
+                        <img src="images/farm_vaidya_ai_tech_logo.jpg" alt="FarmVaidya.ai" class="company-logo" />
+                        <div>
+                            <h4>AI Software Engineer</h4>
+                            <p class="company">FarmVaidya.ai</p>
+                            <p>Designed and deployed large-scale AI pipelines for 100k+ multilingual agri-audio datasets. Built Validator App for transcript verification. Integrated Gemini Pro APIs.</p>
+                        </div>
                     </div>
-                    <div class="terminal-content">
-                        <div class="space-y-8">
-                            <!--Farm Vaidya Internship-->
-                            <div class="timeline-item">
-                                <div class="flex items-start space-x-4">
-                                    <div class="w-12 h-12 rounded-lg bg-terminal-darker flex items-center justify-center flex-shrink-0">
-                                        <img src="images/farm_vaidya_ai_tech_logo.jpg" alt="FarmVaidya.ai" class="w-8 h-8 object-contain">
-                                    </div>
-                                    <div class="flex-1">
-                                        <h3 class="text-xl font-semibold text-terminal-text">AI Software Engineer</h3>
-                                        <div class="text-terminal-purple font-medium">FarmVaidya.ai</div>
-                                        <div class="text-sm text-terminal-accent mt-1">Aug 2025 – Present • Internship</div>
-                                        <p class="text-terminal-text mt-3 text-sm leading-relaxed">
-                                            -> Designed and deployed large-scale AI pipelines for 100k+ multilingual agri-audio datasets.<br>
-                                            -> Built a Validator App to streamline transcript verification by distributed teams.<br>
-                                            -> Integrated Gemini Pro APIs for diarization, transcription, and code-mixed text support.<br>
-                                            -> Automated YouTube-to-dataset workflows, reducing preprocessing time by 80%.<br>
-                                            -> Contributed to AI voice agents (Bhuvi, Setu, Sevak) serving farmers and agri-input enterprises.
-                                        </p>
-                                        <div class="flex flex-wrap gap-1 mt-3">
-                                            <span class="code-tag">AI Pipelines</span>
-                                            <span class="code-tag">Multilingual NLP</span>
-                                            <span class="code-tag">Gemini Pro</span>
-                                            <span class="code-tag">Automation</span>
-                                            <span class="code-tag">AgriTech</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                </div>
 
-                            <!-- CSIR Internship -->
-                            <div class="timeline-item">
-                                <div class="flex items-start space-x-4">
-                                    <div class="w-12 h-12 rounded-lg bg-terminal-darker flex items-center justify-center flex-shrink-0">
-                                        <img src="images/csir.png" alt="CSIR" class="w-8 h-8 object-contain">
-                                    </div>
-                                    <div class="flex-1">
-                                        <h3 class="text-xl font-semibold text-terminal-text">Research Intern</h3>
-                                        <div class="text-terminal-purple font-medium">CSIR-Central Road Research Institute</div>
-                                        <div class="text-sm text-terminal-accent mt-1">April 2025 - Present • New Delhi, India</div>
-                                        <p class="text-terminal-text mt-3 text-sm leading-relaxed">
-                                            -> Developing AI/ML models for road safety analysis using computer vision techniques 
-                                            on dashboard camera footage to enhance traffic safety analytics.
-                                        </p>
-                                        <div class="flex flex-wrap gap-1 mt-3">
-                                            <span class="code-tag">Python</span>
-                                            <span class="code-tag">TensorFlow</span>
-                                            <span class="code-tag">Computer Vision</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="timeline-item" data-hover>
+                    <span class="timeline-date">Apr 2025 — Present</span>
+                    <div class="timeline-content" style="display: flex; align-items: center; gap: 24px;">
+                        <img src="images/csir.png" alt="CSIR-CRRI" class="company-logo" />
+                        <div>
+                            <h4>Research Intern</h4>
+                            <p class="company">CSIR-Central Road Research Institute</p>
+                            <p>Developing AI/ML models for road safety analysis using computer vision techniques on dashboard camera footage.</p>
+                        </div>
+                    </div>
+                </div>
 
-                            <!-- GDG -->
-                            <div class="timeline-item">
-                                <div class="flex items-start space-x-4">
-                                    <div class="w-12 h-12 rounded-lg bg-terminal-darker flex items-center justify-center flex-shrink-0">
-                                        <img src="images/GDG-Sticker-Brackets.gif" alt="GDSC" class="w-8 h-8 object-contain">
-                                    </div>
-                                    <div class="flex-1">
-                                        <h3 class="text-xl font-semibold text-terminal-text">GDG on Campus Organizer</h3>
-                                        <div class="text-terminal-purple font-medium">Google Developer Groups (GDG) on Campus</div>
-                                        <div class="text-sm text-terminal-accent mt-1">Sep 2025 – Present • GVPCE, Vizag</div>
-                                        <p class="text-terminal-text mt-3 text-sm leading-relaxed">
-                                            -> Driving community initiatives by organizing tech campaigns, hackathons, and workshops to inspire innovation, collaboration, and peer learning on campus.
-                                        </p>
-                                        <div class="flex flex-wrap gap-1 mt-3">
-                                            <span class="code-tag">Community Leadership</span>
-                                            <span class="code-tag">Hackathons</span>
-                                            <span class="code-tag">Workshops</span>
-                                            <span class="code-tag">Tech Campaigns</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-start space-x-4">
-                                    <div class="w-12 h-12 rounded-lg bg-terminal-darker flex items-center justify-center flex-shrink-0">
-                                        <img src="images/GDG-Sticker-Slider.gif" alt="GDSC" class="w-8 h-8 object-contain">
-                                    </div>
-                                    <div class="flex-1">
-                                        <h3 class="text-xl font-semibold text-terminal-text">Cyber Security Lead</h3>
-                                        <div class="text-terminal-purple font-medium">Google Developer Student Club</div>
-                                        <div class="text-sm text-terminal-accent mt-1">Oct 2024 - Aug 2025 • GVPCE, Vizag</div>
-                                        <p class="text-terminal-text mt-3 text-sm leading-relaxed">
-                                            -> Leading cybersecurity initiatives and conducting workshops on cybersecurity and blockchain technologies for students.
-                                        </p>
-                                        <div class="flex flex-wrap gap-1 mt-3">
-                                            <span class="code-tag">Cybersecurity</span>
-                                            <span class="code-tag">Blockchain</span>
-                                            <span class="code-tag">Workshop Facilitation</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-start space-x-4">
-                                    <div class="w-12 h-12 rounded-lg bg-terminal-darker flex items-center justify-center flex-shrink-0">
-                                        <img src="images/GDG-Sticker-Assembly.gif" alt="GDSC" class="w-8 h-8 object-contain">
-                                    </div>
-                                    <div class="flex-1">
-                                        <h3 class="text-xl font-semibold text-terminal-text">Cyber Security Co-Lead</h3>
-                                        <div class="text-terminal-purple font-medium">Google Developer Student Club</div>
-                                        <div class="text-sm text-terminal-accent mt-1">Aug 2023 - Oct 2024 • GVPCE, Vizag</div>
-                                        <p class="text-terminal-text mt-3 text-sm leading-relaxed">
-                                            -> Organized hands-on training sessions and awareness programs on emerging technologies, 
-                                            with a focus on cybersecurity and blockchain applications.
-                                        </p>
-                                        <div class="flex flex-wrap gap-1 mt-3">
-                                            <span class="code-tag">Cybersecurity</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="timeline-item" data-hover>
+                    <span class="timeline-date">Sep 2025 — Present</span>
+                    <div class="timeline-content" style="display: flex; align-items: center; gap: 24px;">
+                        <img src="images/gdsc.png" alt="Google Developer Groups" class="company-logo" />
+                        <div>
+                            <h4>GDG on Campus Organizer</h4>
+                            <p class="company">Google Developer Groups</p>
+                            <p>Driving community initiatives by organizing tech campaigns, hackathons, and workshops to inspire innovation.</p>
+                        </div>
+                    </div>
+                </div>
 
-                            <!-- Microsoft Learn Student Ambassador -->
-                            <div class="timeline-item">
-                                <div class="flex items-start space-x-4">
-                                    <div class="w-12 h-12 rounded-lg bg-terminal-darker flex items-center justify-center flex-shrink-0">
-                                        <img src="images/mlsa _logo.png" alt="MLSA" class="w-8 h-8 object-contain">
-                                    </div>
-                                    <div class="flex-1">
-                                        <h3 class="text-xl font-semibold text-terminal-text">Microsoft Student Ambassador</h3>
-                                        <div class="text-terminal-purple font-medium">Microsoft Learn</div>
-                                        <div class="text-sm text-terminal-accent mt-1">Oct 2024 - Present • Remote</div>
-                                        <p class="text-terminal-text mt-3 text-sm leading-relaxed">
-                                            -> Helping students understand technology better through workshops and seminars
-                                            on various Microsoft technologies and development practices.
-                                        </p>
-                                        <div class="flex flex-wrap gap-1 mt-3">
-                                            <span class="code-tag">Microsoft Azure</span>
-                                            <span class="code-tag">Community Building</span>
-                                            <span class="code-tag">Tech Education</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="timeline-item" data-hover>
+                    <span class="timeline-date">Oct 2024 — Present</span>
+                    <div class="timeline-content" style="display: flex; align-items: center; gap: 24px;">
+                        <img src="images/microsoft.png" alt="Microsoft Learn" class="company-logo" />
+                        <div>
+                            <h4>Microsoft Student Ambassador</h4>
+                            <p class="company">Microsoft Learn</p>
+                            <p>Helping students understand technology through workshops on Microsoft technologies and development practices.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-hover>
+                    <span class="timeline-date">Oct 2024 — Aug 2025</span>
+                    <div class="timeline-content" style="display: flex; align-items: center; gap: 24px;">
+                        <img src="images/gdsc.png" alt="Google Developer Student Club" class="company-logo" />
+                        <div>
+                            <h4>Cyber Security Lead</h4>
+                            <p class="company">Google Developer Student Club</p>
+                            <p>Leading cybersecurity initiatives and conducting workshops on cybersecurity and blockchain technologies.</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Education Section -->
-        <section id="education" class="p-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex items-center space-x-2 mb-8">
-                    <h2 class="section-title">#education</h2>
-                    <div class="flex-1 h-px bg-terminal-purple"></div>
+            
+            <hr class="hr-animate">
+            
+            <!-- Skills -->
+            <div class="timeline-section">
+                <div class="timeline-header">
+                    <h3>Skills</h3>
                 </div>
                 
-                <div class="terminal-window" data-aos="fade-up">
-                    <div class="terminal-header">
-                        <div class="terminal-dot dot-red"></div>
-                        <div class="terminal-dot dot-yellow"></div>
-                        <div class="terminal-dot dot-green"></div>
-                        <span class="ml-4 text-sm text-terminal-text">education.json</span>
+                <div class="skills-grid">
+                    <span class="skill-tag" data-hover>Python</span>
+                    <span class="skill-tag" data-hover>JavaScript</span>
+                    <span class="skill-tag" data-hover>C++</span>
+                    <span class="skill-tag" data-hover>React</span>
+                    <span class="skill-tag" data-hover>Node.js</span>
+                    <span class="skill-tag" data-hover>TensorFlow</span>
+                    <span class="skill-tag" data-hover>Flask</span>
+                    <span class="skill-tag" data-hover>Express.js</span>
+                    <span class="skill-tag" data-hover>MongoDB</span>
+                    <span class="skill-tag" data-hover>PostgreSQL</span>
+                    <span class="skill-tag" data-hover>Git</span>
+                    <span class="skill-tag" data-hover>Docker</span>
+                    <span class="skill-tag" data-hover>AWS</span>
+                    <span class="skill-tag" data-hover>Linux</span>
+                    <span class="skill-tag" data-hover>Computer Vision</span>
+                    <span class="skill-tag" data-hover>OpenCV</span>
+                    <span class="skill-tag" data-hover>Figma</span>
+                </div>
+            </div>
+            
+            <hr class="hr-animate">
+            
+            <!-- Education -->
+            <div class="timeline-section">
+                <div class="timeline-header">
+                    <h3>Education</h3>
+                </div>
+                
+                <div class="education-grid">
+                    <div class="education-card" data-hover>
+                        <h4>B.Tech Information Technology</h4>
+                        <p class="school">GVPCE</p>
+                        <p class="year">2022 — 2026 • CGPA: 8/10</p>
                     </div>
-                    <div class="terminal-content">
-                        <div class="space-y-6">
-                            <div class="timeline-item">
-                                <div class="flex items-center space-x-3 mb-2">
-                                    <img src="images/gvpce_logo.png" alt="GVPCE" class="w-8 h-8 rounded object-contain">
-                                    <div>
-                                        <h3 class="font-semibold text-terminal-text">B.Tech Information Technology</h3>
-                                        <p class="text-sm text-terminal-accent">GVPCE • 2022-2026</p>
-                                        <p class="text-sm text-terminal-purple">CGPA: 8/10</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="timeline-item">
-                                <div class="flex items-center space-x-3 mb-2">
-                                    <img src="images/sri_chaitanya.jpg" alt="Sri Chaitanya" class="w-8 h-8 rounded object-contain">
-                                    <div>
-                                        <h3 class="font-semibold text-terminal-text">Higher Secondary</h3>
-                                        <p class="text-sm text-terminal-accent">Sri Chaitanya • 2020-2022</p>
-                                        <p class="text-sm text-terminal-purple">Intermediate (MPC)</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="education-card" data-hover>
+                        <h4>Higher Secondary (MPC)</h4>
+                        <p class="school">Sri Chaitanya</p>
+                        <p class="year">2020 — 2022</p>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="p-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex items-center space-x-2 mb-8">
-                    <h2 class="section-title">#skills</h2>
-                    <div class="flex-1 h-px bg-terminal-purple"></div>
+            
+            <hr class="hr-animate">
+            
+            <!-- Certificates -->
+            <div class="timeline-section">
+                <div class="timeline-header">
+                    <h3>Certificates</h3>
                 </div>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Skills Progress -->
-                    <div class="terminal-window" data-aos="fade-up">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">skills.py</span>
-                        </div>
-                        <div class="terminal-content">
-                            <div class="space-y-6">
-                                <!-- Programming Languages -->
-                                <div>
-                                    <h3 class="text-lg font-semibold text-terminal-text mb-4"># Programming Languages</h3>
-                                    <div class="space-y-4">
-                                        <div>
-                                            <div class="flex justify-between mb-2">
-                                                <span class="text-terminal-text">Python</span>
-                                                <span class="text-terminal-purple text-sm">90%</span>
-                                            </div>
-                                            <div class="h-2 bg-terminal-darker rounded-full overflow-hidden">
-                                                <div class="skill-progress h-full rounded-full" 
-                                                     style="width: 0%" data-width="90%"></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="flex justify-between mb-2">
-                                                <span class="text-terminal-text">JavaScript</span>
-                                                <span class="text-terminal-purple text-sm">85%</span>
-                                            </div>
-                                            <div class="h-2 bg-terminal-darker rounded-full overflow-hidden">
-                                                <div class="skill-progress h-full rounded-full" 
-                                                     style="width: 0%" data-width="85%"></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="flex justify-between mb-2">
-                                                <span class="text-terminal-text">C++</span>
-                                                <span class="text-terminal-purple text-sm">80%</span>
-                                            </div>
-                                            <div class="h-2 bg-terminal-darker rounded-full overflow-hidden">
-                                                <div class="skill-progress h-full rounded-full" 
-                                                     style="width: 0%" data-width="80%"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Frameworks & Tools -->
-                                <div>
-                                    <h3 class="text-lg font-semibold text-terminal-text mb-4"># Frameworks & Tools</h3>
-                                    <div class="space-y-4">
-                                        <div>
-                                            <div class="flex justify-between mb-2">
-                                                <span class="text-terminal-text">React</span>
-                                                <span class="text-terminal-purple text-sm">78%</span>
-                                            </div>
-                                            <div class="h-2 bg-terminal-darker rounded-full overflow-hidden">
-                                                <div class="skill-progress h-full rounded-full" 
-                                                     style="width: 0%" data-width="78%"></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="flex justify-between mb-2">
-                                                <span class="text-terminal-text">TensorFlow</span>
-                                                <span class="text-terminal-purple text-sm">75%</span>
-                                            </div>
-                                            <div class="h-2 bg-terminal-darker rounded-full overflow-hidden">
-                                                <div class="skill-progress h-full rounded-full" 
-                                                     style="width: 0%" data-width="75%"></div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="flex justify-between mb-2">
-                                                <span class="text-terminal-text">Node.js</span>
-                                                <span class="text-terminal-purple text-sm">70%</span>
-                                            </div>
-                                            <div class="h-2 bg-terminal-darker rounded-full overflow-hidden">
-                                                <div class="skill-progress h-full rounded-full" 
-                                                     style="width: 0%" data-width="70%"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="certificates-grid">
+                    <div class="cert-card" data-hover>
+                        <h4>CS50x Certificate</h4>
+                        <p class="issuer">Harvard University</p>
+                        <p class="year">2024</p>
                     </div>
-                    
-                    <!-- Technology Stack -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="200">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">tech-stack.js</span>
-                        </div>
-                        <div class="terminal-content">
-                            <div class="space-y-6">
-                                <div>
-                                    <h3 class="text-terminal-text mb-4"># Languages</h3>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="code-tag">Python</span>
-                                        <span class="code-tag">JavaScript</span>
-                                        <span class="code-tag">C++</span>
-                                        <span class="code-tag">HTML5</span>
-                                        <span class="code-tag">CSS3</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 class="text-terminal-text mb-4"># Frameworks</h3>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="code-tag">React</span>
-                                        <span class="code-tag">Node.js</span>
-                                        <span class="code-tag">Flask</span>
-                                        <span class="code-tag">Express.js</span>
-                                        <span class="code-tag">TensorFlow</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 class="text-terminal-text mb-4"># Tools & Technologies</h3>
-                                    <div class="flex flex-wrap gap-2">
-                                        <span class="code-tag">Git</span>
-                                        <span class="code-tag">Docker</span>
-                                        <span class="code-tag">AWS</span>
-                                        <span class="code-tag">MongoDB</span>
-                                        <span class="code-tag">PostgreSQL</span>
-                                        <span class="code-tag">Linux</span>
-                                        <span class="code-tag">Figma</span>
-                                        <span class="code-tag">VS Code</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="cert-card" data-hover>
+                        <h4>GitHub Foundations</h4>
+                        <p class="issuer">GitHub</p>
+                        <p class="year">2025</p>
+                    </div>
+                    <div class="cert-card" data-hover>
+                        <h4>AWS ML Foundation</h4>
+                        <p class="issuer">Amazon Web Services</p>
+                        <p class="year">2025</p>
+                    </div>
+                    <div class="cert-card" data-hover>
+                        <h4>Software Engineering</h4>
+                        <p class="issuer">NPTEL</p>
+                        <p class="year">2024</p>
+                    </div>
+                    <div class="cert-card" data-hover>
+                        <h4>API Fundamentals</h4>
+                        <p class="issuer">Postman</p>
+                        <p class="year">2024</p>
+                    </div>
+                    <div class="cert-card" data-hover>
+                        <h4>Google Play Academy</h4>
+                        <p class="issuer">Google</p>
+                        <p class="year">2023</p>
+                    </div>
+                </div>
+                
+                <a href="tabs/certificates.html" class="project-link" style="margin-top: 24px; display: inline-flex;" data-hover>
+                    View All Certificates <span class="arrow">→</span>
+                </a>
+                
+                <!-- LeetCode Badges -->
+                <div class="leetcode-section">
+                    <div class="leetcode-header">
+                        <a href="https://leetcode.com/u/gunjesh843/" target="_blank" data-hover>
+                            <img src="images/leetcode.png" alt="LeetCode">
+                        </a>
+                        <span class="mono-label">LeetCode Achievements</span>
+                    </div>
+                    <div class="leetcode-badges">
+                        <img src="./images/Knight.gif" alt="Knight Badge" class="leetcode-badge leetcode-badge-large" data-hover>
+                        <img src="./images/2025-365.gif" alt="365-day Badge" class="leetcode-badge" data-hover>
+                        <img src="./images/2025-200.gif" alt="200-day Badge" class="leetcode-badge" data-hover>
+                        <img src="./images/2024-100.gif" alt="100-day Badge" class="leetcode-badge" data-hover>
+                        <img src="./images/2025-100.gif" alt="100-day Badge" class="leetcode-badge" data-hover>
+                        <img src="./images/2024-50.gif" alt="50-day Badge" class="leetcode-badge" data-hover>
+                        <img src="./images/2025-50.gif" alt="50-day Badge" class="leetcode-badge" data-hover>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="p-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex items-center space-x-2 mb-8">
-                    <h2 class="section-title">#projects</h2>
-                    <div class="flex-1 h-px bg-terminal-purple"></div>
+            
+            <hr class="hr-animate">
+            
+            <!-- Fun Facts -->
+            <div class="timeline-section">
+                <div class="timeline-header">
+                    <h3>Fun Facts</h3>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Project 1 -->
-                    <div class="project-card" data-aos="fade-up">
-                        <div class="h-48 bg-terminal-darker rounded mb-4 flex items-center justify-center overflow-hidden">
-                            <img src="images/road safety index.png" alt="Road Safety Index" class="w-full h-full object-cover">
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex flex-wrap gap-1">
-                                <span class="code-tag">Python</span>
-                                <span class="code-tag">TensorFlow</span>
-                                <span class="code-tag">OpenCV</span>
-                            </div>
-                            <h3 class="text-terminal-text font-semibold text-lg">Road Safety Index</h3>
-                            <p class="text-terminal-text text-sm opacity-80">
-                                AI-powered system analyzing dashboard camera footage to create safety metrics for road infrastructure.
-                            </p>
-                            <div class="flex space-x-4 pt-2">
-                                <a href="https://github.com/VIZAGBOYS/CSRI_CRRI_ROAD_SAFETY_SCORE" target="_blank" 
-                                   class="text-terminal-purple hover:text-terminal-blue text-sm inline-flex items-center">
-                                    GitHub <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Project 2 -->
-                    <div class="project-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="h-48 bg-terminal-darker rounded mb-4 flex items-center justify-center overflow-hidden">
-                            <img src="images/portfolio project.png" alt="Portfolio" class="w-full h-full object-cover">
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex flex-wrap gap-1">
-                                <span class="code-tag">HTML5</span>
-                                <span class="code-tag">TailwindCSS</span>
-                                <span class="code-tag">JavaScript</span>
-                            </div>
-                            <h3 class="text-terminal-text font-semibold text-lg">Portfolio Website</h3>
-                            <p class="text-terminal-text text-sm opacity-80">
-                                Modern, responsive portfolio built with clean design principles and smooth animations.
-                            </p>
-                            <div class="flex space-x-4 pt-2">
-                                <a href="https://github.com/gunjesh843/portfolio" target="_blank" 
-                                   class="text-terminal-purple hover:text-terminal-blue text-sm inline-flex items-center">
-                                    GitHub <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Project 3 -->
-                    <div class="project-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="h-48 bg-terminal-darker rounded mb-4 flex items-center justify-center overflow-hidden">
-                            <img src="images/e-learning.jpg" alt="E-Learning" class="w-full h-full object-cover">
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex flex-wrap gap-1">
-                                <span class="code-tag">React</span>
-                                <span class="code-tag">Node.js</span>
-                                <span class="code-tag">MongoDB</span>
-                            </div>
-                            <h3 class="text-terminal-text font-semibold text-lg">E-Learning Platform</h3>
-                            <p class="text-terminal-text text-sm opacity-80">
-                                Comprehensive platform for students to access educational resources and track progress.
-                            </p>
-                            <div class="flex space-x-4 pt-2">
-                                <a href="https://github.com/VIZAGBOYS/Counselling_forms" target="_blank" 
-                                   class="text-terminal-purple hover:text-terminal-blue text-sm inline-flex items-center">
-                                    GitHub <i data-lucide="external-link" class="w-4 h-4 ml-1"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                <div class="fun-facts-grid">
+                    <div class="fun-fact" data-hover>I like winter more than summer</div>
+                    <div class="fun-fact" data-hover>I often bike with my friends</div>
+                    <div class="fun-fact" data-hover>I like <span class="highlight">pizza</span> and <span class="highlight">pasta</span></div>
+                    <div class="fun-fact" data-hover>I love <span class="highlight">photography</span> and capturing nature</div>
+                    <div class="fun-fact" data-hover>My favorite movie is <span class="highlight">The Green Mile</span></div>
+                    <div class="fun-fact" data-hover>I am passionate about <span class="highlight">open source</span></div>
+                    <div class="fun-fact" data-hover>I enjoy <span class="highlight">technical writing</span></div>
+                    <div class="fun-fact" data-hover>I'm always learning new <span class="highlight">technologies</span></div>
                 </div>
             </div>
         </section>
-
-        <!-- Certificates Section -->
-        <section id="certificates" class="p-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex items-center space-x-2 mb-8">
-                    <h2 class="section-title">#certificates</h2>
-                    <div class="flex-1 h-px bg-terminal-purple"></div>
-                </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- LeetCode Badges -->
-                     <div class="terminal-window" data-aos="fade-up">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">leetcode-badges.json</span>
-                        </div>
-                            <div class="terminal-content text-center">
-                            <a href="https://leetcode.com/u/gunjesh843/" target="_blank" 
-                               class="inline-block mb-6 hover:scale-105 transition-transform">
-                                <img src="images/leetcode.png" alt="LeetCode" class="h-12 mx-auto">
-                            </a>
-                            
-                            <!-- Main Knight Badge - Biggest and centered -->
-                            <div class="mb-6">
-                                <img src="./images/Knight.gif" alt="Knight Badge" class="w-40 h-40 mx-auto rounded-lg hover:scale-105 transition-transform rotating-badge">
-                            </div>
-                            
-                            <!--100/50-day Badges - Medium size -->
-                            <div class="grid grid-cols-3 gap-2">
-                                <img src="./images/2025-365.gif" alt="2025 365-day Badge" class="w-full rounded-lg hover:scale-105 transition-transform rotating-badge">
-                                <img src="./images/2025-200.gif" alt="2025 200-day Badge" class="w-full rounded-lg hover:scale-105 transition-transform rotating-badge">
-                                <img src="./images/2024-100.gif" alt="2024 100-day Badge" class="w-full rounded-lg hover:scale-105 transition-transform rotating-badge">
-                                <img src="./images/2025-100.gif" alt="2025 100-day Badge" class="w-full rounded-lg hover:scale-105 transition-transform rotating-badge">
-                                <img src="./images/2024-50.gif" alt="2024 50-day Badge" class="w-full rounded hover:scale-105 transition-transform rotating-badge">
-                                <img src="./images/2025-50.gif" alt="2025 50-day Badge" class="w-full rounded hover:scale-105 transition-transform rotating-badge">
-                            </div>
-                            
-                            <!-- Monthly Badges - Smallest -->
-                            <div class="grid grid-cols-5 gap-1">
-                                <img src="./images/2024-08.gif" alt="Aug 2024" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
-                                <img src="./images/2024-09.gif" alt="Sep 2024" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
-                                <img src="./images/2024-10.gif" alt="Oct 2024" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
-                                <img src="./images/2024-11.gif" alt="Nov 2024" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
-                                <img src="./images/2024-12.gif" alt="Dec 2024" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
-                            </div>
-                            
-                            <!-- 2025 Monthly Badges -->
-                            <div class="grid grid-cols-5 gap-1">
-                                <img src="./images/2025-01.gif" alt="Jan 2025" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
-                                <img src="./images/2025-02.gif" alt="Feb 2025" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
-                                <img src="./images/2025-03.gif" alt="Mar 2025" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
-                                <img src="./images/2025-05.gif" alt="May 2025" class="w-full rounded hover:scale-110 transition-transform rotating-badge">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Certificates Link -->
-                    <div class="terminal-window" data-aos="fade-up" data-aos-delay="200">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">certificates.md</span>
-                        </div>
-                                <div class="terminal-content">
-                                <h3 class="text-lg font-semibold text-terminal-text mb-4">Professional Certifications</h3>
-                                <div class="space-y-4">
-                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
-                                        <h4 class="font-semibold text-terminal-text">CS50x Certificate</h4>
-                                        <p class="text-terminal-accent text-sm">Harvard University • 2024</p>
-                                    </div>
-                                    
-                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
-                                        <h4 class="font-semibold text-terminal-text">GitHub Foundations</h4>
-                                        <p class="text-terminal-accent text-sm">GitHub • 2025</p>
-                                    </div>
-                                    
-                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
-                                        <h4 class="font-semibold text-terminal-text">AWS ML Foundation</h4>
-                                        <p class="text-terminal-accent text-sm">Amazon Web Services • 2025</p>
-                                    </div>
-    
-                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
-                                        <h4 class="font-semibold text-terminal-text">Software Engineering</h4>
-                                        <p class="text-terminal-accent text-sm">NPTEL • 2024</p>
-                                    </div>
-    
-                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
-                                        <h4 class="font-semibold text-terminal-text">API Fundamentals</h4>
-                                        <p class="text-terminal-accent text-sm">Postman • 2024</p>
-                                    </div>
-    
-                                    <div class="p-4 bg-terminal-darker rounded border border-terminal-panel">
-                                        <h4 class="font-semibold text-terminal-text">Google Play Academy</h4>
-                                        <p class="text-terminal-accent text-sm">Google • 2023</p>
-                                    </div>
-                                </div>
-                            <div class="mt-6">
-                                <a href="tabs/certificates.html" 
-                                   class="inline-flex items-center px-6 py-3 bg-terminal-purple text-terminal-bg rounded hover:bg-terminal-accent transition-colors">
-                                    View All Certificates
-                                    <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Hobbies/Fun Facts Section -->
-        <section id="hobbies" class="p-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex items-center space-x-2 mb-8">
-                    <h2 class="section-title">#my-fun-facts</h2>
-                    <div class="flex-1 h-px bg-terminal-purple"></div>
-                </div>
-                
-                <div class="terminal-window" data-aos="fade-up">
-                    <div class="terminal-header">
-                        <div class="terminal-dot dot-red"></div>
-                        <div class="terminal-dot dot-yellow"></div>
-                        <div class="terminal-dot dot-green"></div>
-                        <span class="ml-4 text-sm text-terminal-text">fun-facts.txt</span>
-                    </div>
-                    <div class="terminal-content">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="fun-fact-tag">I like winter more than summer</div>
-                            <div class="fun-fact-tag">I often bike with my friends</div>
-                            <div class="fun-fact-tag">I like <span class="highlight">pizza</span> and <span class="highlight">pasta</span></div>
-                            <div class="fun-fact-tag">I love <span class="highlight">photography</span> and capturing nature</div>
-                            <div class="fun-fact-tag">My favorite movie is <span class="highlight">The Green Mile</span></div>
-                            <div class="fun-fact-tag">I am passionate about <span class="highlight">open source</span></div>
-                            <div class="fun-fact-tag">I enjoy <span class="highlight">technical writing</span></div>
-                            <div class="fun-fact-tag">I'm always learning new <span class="highlight">technologies</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        
         <!-- Contact Section -->
-        <section id="contacts" class="p-6">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex items-center space-x-2 mb-8">
-                    <h2 class="section-title">#contacts</h2>
-                    <div class="flex-1 h-px bg-terminal-purple"></div>
-                </div>
+        <section class="contact-section" id="contact">
+            <div class="contact-title stagger">
+                <h2 class="display-large">Let's</h2>
+                <h2 class="display-large"><span class="serif-italic italic-gold">Work</span></h2>
+                <h2 class="display-large">Together</h2>
+            </div>
+            
+            <p style="color: var(--muted-foreground); max-width: 500px; margin-bottom: 60px;">
+                I'm interested in freelance opportunities and exciting projects. If you have a request or question, don't hesitate to reach out.
+            </p>
+            
+            <div class="contact-links">
+                <a href="mailto:kumargunjesh843@gmail.com" class="contact-link" data-hover>
+                    <div class="contact-link-content">
+                        <span class="contact-link-label">Email</span>
+                        <span class="contact-link-value">kumargunjesh843@gmail.com</span>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Contact Info -->
-                    <div data-aos="fade-right">
-                        <p class="text-terminal-text mb-6 text-lg">
-                            I'm interested in freelance opportunities. However, if you have other request or question, don't hesitate to contact me
-                        </p>
-                        
-                        <div class="terminal-window">
-                            <div class="terminal-header">
-                                <div class="terminal-dot dot-red"></div>
-                                <div class="terminal-dot dot-yellow"></div>
-                                <div class="terminal-dot dot-green"></div>
-                                <span class="ml-4 text-sm text-terminal-text">contact-info.json</span>
-                            </div>
-                            <div class="terminal-content">
-                                <div class="space-y-4">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-8 h-8 bg-terminal-purple rounded-full flex items-center justify-center">
-                                            <i data-lucide="mail" class="w-4 h-4 text-terminal-bg"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-semibold text-terminal-text">Email</h4>
-                                            <a href="mailto:kumargunjesh843@gmail.com" class="text-terminal-accent hover:text-terminal-purple">
-                                                kumargunjesh843@gmail.com
-                                            </a>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-8 h-8 bg-terminal-green rounded-full flex items-center justify-center">
-                                            <i data-lucide="map-pin" class="w-4 h-4 text-terminal-bg"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-semibold text-terminal-text">Location</h4>
-                                            <p class="text-terminal-accent">Visakhapatnam, India</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-8 h-8 bg-terminal-blue rounded-full flex items-center justify-center">
-                                            <i data-lucide="linkedin" class="w-4 h-4 text-terminal-bg"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-semibold text-terminal-text">LinkedIn</h4>
-                                            <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" class="text-terminal-accent hover:text-terminal-purple">
-                                                linkedin.com/in/gunjeshkumar
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" class="contact-link" data-hover>
+                    <div class="contact-link-content">
+                        <span class="contact-link-label">LinkedIn</span>
+                        <span class="contact-link-value">linkedin.com/in/gunjeshkumar</span>
                     </div>
-                    
-                    <!-- Contact Form -->
-                    <div class="terminal-window" data-aos="fade-left">
-                        <div class="terminal-header">
-                            <div class="terminal-dot dot-red"></div>
-                            <div class="terminal-dot dot-yellow"></div>
-                            <div class="terminal-dot dot-green"></div>
-                            <span class="ml-4 text-sm text-terminal-text">contact-form.jsx</span>
-                        </div>
-                        <div class="terminal-content">
-                            <form name="portfolio-contact" method="POST" data-netlify="true" class="space-y-4">
-                                <input type="hidden" name="form-name" value="portfolio-contact" />
-                                
-                                <div>
-                                    <input type="text" name="name" placeholder="Your Name" required
-                                           class="w-full bg-terminal-darker border border-terminal-panel rounded px-4 py-3 text-terminal-text placeholder-terminal-accent focus:border-terminal-purple outline-none transition-colors">
-                                </div>
-                                
-                                <div>
-                                    <input type="email" name="email" placeholder="Your Email" required
-                                           class="w-full bg-terminal-darker border border-terminal-panel rounded px-4 py-3 text-terminal-text placeholder-terminal-accent focus:border-terminal-purple outline-none transition-colors">
-                                </div>
-                                
-                                <div>
-                                    <textarea name="message" rows="5" placeholder="Your Message" required
-                                              class="w-full bg-terminal-darker border border-terminal-panel rounded px-4 py-3 text-terminal-text placeholder-terminal-accent focus:border-terminal-purple outline-none transition-colors resize-none"></textarea>
-                                </div>
-                                
-                                <button type="submit" 
-                                        class="w-full bg-transparent border border-terminal-purple text-terminal-purple px-6 py-3 rounded hover:bg-terminal-purple hover:text-terminal-bg transition-colors font-medium">
-                                    Send Message
-                                </button>
-                            </form>
-                        </div>
+                    <span class="arrow">→</span>
+                </a>
+                
+                <a href="https://github.com/gunjesh843" target="_blank" class="contact-link" data-hover>
+                    <div class="contact-link-content">
+                        <span class="contact-link-label">GitHub</span>
+                        <span class="contact-link-value">github.com/gunjesh843</span>
                     </div>
-                </div>
+                    <span class="arrow">→</span>
+                </a>
+                
+                <a href="https://x.com/gunjesh843" target="_blank" class="contact-link" data-hover>
+                    <div class="contact-link-content">
+                        <span class="contact-link-label">Twitter</span>
+                        <span class="contact-link-value">@gunjesh843</span>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                
+                <a href="resources/Resume.pdf" target="_blank" class="contact-link" data-hover>
+                    <div class="contact-link-content">
+                        <span class="contact-link-label">Resume</span>
+                        <span class="contact-link-value">Download CV</span>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
             </div>
         </section>
-
+        
         <!-- Footer -->
-        <footer class="p-6 border-t border-terminal-panel">
-            <div class="max-w-6xl mx-auto">
-                <div class="flex flex-col md:flex-row justify-between items-center mb-6">
-                    <div class="flex items-center space-x-2 mb-4 md:mb-0">
-                        <i data-lucide="terminal" class="w-5 h-5 text-terminal-accent"></i>
-                        <span class="text-terminal-text font-semibold">Gunjesh</span>
-                        <span class="text-terminal-accent ml-4">kumargunjesh843@gmail.com</span>
-                    </div>
-                    
-                    <div class="flex space-x-4">
-                        <a href="https://github.com/gunjesh843" target="_blank" class="social-icon">
-                            <i data-lucide="github" class="w-5 h-5"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" class="social-icon">
-                            <i data-lucide="linkedin" class="w-5 h-5"></i>
-                        </a>
-                        <a href="https://x.com/gunjesh843" target="_blank" class="social-icon">
-                            <i data-lucide="twitter" class="w-5 h-5"></i>
-                        </a>
-                        <a href="mailto:kumargunjesh843@gmail.com" class="social-icon">
-                            <i data-lucide="mail" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="text-center">
-                    <p class="text-terminal-text text-sm">Web designer and <span class="text-terminal-purple">full Stack developer</span></p>
-                    <p class="text-terminal-accent text-sm mt-2">© Copyright 2025. Made with ❤️ by Gunjesh</p>
-                </div>
+        <footer>
+            <div class="footer-left">
+                <p>© 2025 Gunjesh Kumar</p>
+                <p style="margin-top: 4px;">Made with passion</p>
+            </div>
+            <div class="footer-social">
+                <a href="https://github.com/gunjesh843" target="_blank" data-hover>GitHub</a>
+                <a href="https://www.linkedin.com/in/gunjeshkumar/" target="_blank" data-hover>LinkedIn</a>
+                <a href="https://x.com/gunjesh843" target="_blank" data-hover>Twitter</a>
+                <a href="mailto:kumargunjesh843@gmail.com" data-hover>Email</a>
             </div>
         </footer>
     </div>
-
+    
     <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 600,
-            once: true,
-            offset: 100
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
         
-        // Initialize Lucide icons
-        lucide.createIcons();
+        // Smooth cursor animation
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
         
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const closeMobileMenu = document.getElementById('close-mobile-menu');
-        
-        mobileMenuBtn?.addEventListener('click', () => {
-            mobileMenu.classList.add('active');
+        // Cursor hover effect
+        document.querySelectorAll('[data-hover]').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
         });
         
-        closeMobileMenu?.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
+        // Parallax Orbs
+        const orb1 = document.getElementById('orb1');
+        const orb2 = document.getElementById('orb2');
+        const orb3 = document.getElementById('orb3');
+        
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+            
+            orb1.style.transform = `translate(${x * 30}px, ${y * 30}px)`;
+            orb2.style.transform = `translate(${x * -50}px, ${y * -50}px)`;
+            orb3.style.transform = `translate(${x * 40}px, ${y * 40}px)`;
         });
         
-        // Close mobile menu when clicking on links
-        mobileMenu?.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
-            });
+        // Three.js Scene
+        const canvas = document.getElementById('three-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 8;
+        
+        const renderer = new THREE.WebGLRenderer({ 
+            canvas, 
+            alpha: true, 
+            antialias: window.devicePixelRatio < 2,
+            powerPreference: 'high-performance'
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(10, 10, 5);
+        scene.add(directionalLight);
+        
+        const pointLight = new THREE.PointLight(0x00d9a5, 0.5);
+        pointLight.position.set(-10, -10, -5);
+        scene.add(pointLight);
+        
+        // Animated Sphere (Gold)
+        const sphereGeometry = new THREE.SphereGeometry(1.2, 64, 64);
+        const sphereMaterial = new THREE.MeshStandardMaterial({
+            color: 0xF5A623,
+            metalness: 0.9,
+            roughness: 0.1,
+        });
+        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+        sphere.position.set(3, 0, -2);
+        scene.add(sphere);
+        
+        // Animated Torus (Teal)
+        const torusGeometry = new THREE.TorusGeometry(1, 0.4, 32, 64);
+        const torusMaterial = new THREE.MeshStandardMaterial({
+            color: 0x00D9A5,
+            metalness: 0.9,
+            roughness: 0.2,
+        });
+        const torus = new THREE.Mesh(torusGeometry, torusMaterial);
+        torus.position.set(-3, -1, -3);
+        scene.add(torus);
+        
+        // Floating Ring (Gold Emissive)
+        const ringGeometry = new THREE.TorusGeometry(2, 0.05, 16, 100);
+        const ringMaterial = new THREE.MeshBasicMaterial({
+            color: 0xF5A623,
+        });
+        const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+        ring.position.set(0, 2, -4);
+        scene.add(ring);
+        
+        // Particles (optimized count)
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 50;
+        const positions = new Float32Array(particlesCount * 3);
+        
+        for (let i = 0; i < particlesCount * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 20;
+        }
+        
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        
+        const particlesMaterial = new THREE.PointsMaterial({
+            color: 0xF5A623,
+            size: 0.05,
+            transparent: true,
+            opacity: 0.8,
         });
         
-        // Smooth scroll for navigation links
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
+        
+        // Animation
+        let time = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.01;
+            
+            // Sphere animation
+            sphere.rotation.x += 0.005;
+            sphere.rotation.y += 0.01;
+            sphere.position.y = Math.sin(time) * 0.3;
+            
+            // Torus animation
+            torus.rotation.x += 0.01;
+            torus.rotation.y += 0.005;
+            torus.position.y = -1 + Math.sin(time * 0.8) * 0.2;
+            
+            // Ring animation
+            ring.rotation.y += 0.005;
+            ring.position.y = 2 + Math.sin(time * 0.5) * 0.3;
+            
+            // Particles rotation
+            particles.rotation.y += 0.001;
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        // Resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
@@ -1154,30 +1514,29 @@
             });
         });
         
-        // Animate skill progress bars when in view
+        // Scroll-triggered animations for stagger elements
         const observerOptions = {
-            threshold: 0.5,
+            threshold: 0.1,
             rootMargin: '0px 0px -100px 0px'
         };
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const progressBars = entry.target.querySelectorAll('.skill-progress');
-                    progressBars.forEach(bar => {
-                        const width = bar.getAttribute('data-width');
-                        setTimeout(() => {
-                            bar.style.width = width;
-                        }, 200);
-                    });
+                    entry.target.classList.add('visible');
                 }
             });
         }, observerOptions);
         
-        const skillsSection = document.getElementById('skills');
-        if (skillsSection) {
-            observer.observe(skillsSection);
-        }
+        document.querySelectorAll('.stagger').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Initialize Lucide icons
+        lucide.createIcons();
     </script>
 </body>
 </html>
+
+
+
