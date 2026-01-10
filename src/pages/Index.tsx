@@ -1,27 +1,27 @@
-import { CustomCursor } from '@/components/CustomCursor';
-import { HeroExperimental } from '@/components/HeroExperimental';
-import { MarqueeSection } from '@/components/MarqueeSection';
-import { WorkSection } from '@/components/WorkSection';
-import { AboutSection } from '@/components/AboutSection';
-import { CertificatesSection } from '@/components/CertificatesSection';
-import { ContactSection } from '@/components/ContactSection';
-import { FooterMinimal } from '@/components/FooterMinimal';
-import { Scene3D } from '@/components/Scene3D';
+import { Navbar } from '@/components/Navbar';
+import { Hero } from '@/components/Hero';
+import { Experience } from '@/components/Experience';
+import { Education } from '@/components/Education';
+import { Skills } from '@/components/Skills';
+import { Projects } from '@/components/Projects';
+import { Certificates } from '@/components/Certificates';
+import { Contact } from '@/components/Contact';
+import { Footer } from '@/components/Footer';
 
 const Index = () => {
   return (
     <div className="min-h-screen noise">
-      <Scene3D />
-      <CustomCursor />
-      <main className="relative z-10">
-        <HeroExperimental />
-        <MarqueeSection />
-        <WorkSection />
-        <AboutSection />
-        <CertificatesSection />
-        <ContactSection />
+      <Navbar />
+      <main>
+        <Hero />
+        <Experience />
+        <Education />
+        <Skills />
+        <Projects />
+        <Certificates />
+        <Contact />
       </main>
-      <FooterMinimal />
+      <Footer />
     </div>
   );
 };
