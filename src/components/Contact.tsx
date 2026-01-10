@@ -42,10 +42,24 @@ export const Contact = () => {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast.success('Message sent! I\'ll get back to you soon.');
-    setFormData({ name: '', email: '', message: '' });
+    
+    const form = e.currentTarget;
+    const formDataToSend = new FormData(form);
+    
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formDataToSend as any).toString(),
+    })
+      .then(() => {
+        toast.success('Message sent! I\'ll get back to you soon.');
+        setFormData({ name: '', email: '', message: '' });
+      })
+      .catch(() => {
+        toast.error('Failed to send message. Please try again.');
+      });
   };
 
   return (
@@ -126,12 +140,24 @@ export const Contact = () => {
                       send-message.jsx
                     </span>
                   </div>
-                  <form onSubmit={handleSubmit} className="p-4 md:p-8 space-y-4 md:space-y-6">
+                  <form 
+                    name="contact" 
+                    method="POST" 
+                    data-netlify="true"
+                    data-netlify-honeypot="bot-field"
+                    onSubmit={handleSubmit} 
+                    className="p-4 md:p-8 space-y-4 md:space-y-6"
+                  >
+                    {/* Hidden fields for Netlify */}
+                    <input type="hidden" name="form-name" value="contact" />
+                    <input type="hidden" name="bot-field" />
+                    
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label className="text-xs md:text-sm font-mono text-muted-foreground">const name =</label>
                         <input
                           type="text"
+                          name="name"
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                           required
@@ -143,6 +169,7 @@ export const Contact = () => {
                         <label className="text-xs md:text-sm font-mono text-muted-foreground">const email =</label>
                         <input
                           type="email"
+                          name="email"
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                           required
@@ -154,6 +181,7 @@ export const Contact = () => {
                     <div className="space-y-2">
                       <label className="text-xs md:text-sm font-mono text-muted-foreground">const message =</label>
                       <textarea
+                        name="message"
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         required
