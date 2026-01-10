@@ -3,7 +3,7 @@ import { Github, Linkedin, Mail, Heart } from 'lucide-react';
 const socialLinks = [
   { icon: Github, href: 'https://github.com/gunjesh843', label: 'GitHub' },
   { icon: Linkedin, href: 'https://www.linkedin.com/in/gunjeshkumar/', label: 'LinkedIn' },
-  { icon: Mail, href: 'mailto:kumargunjesh843@gmail.com', label: 'Email' },
+  { icon: Mail, href: "mailto:kumargunjesh843@gmail.com", label: 'Email' },
 ];
 
 export const Footer = () => {
@@ -37,7 +37,9 @@ export const Footer = () => {
 
           {/* Copyright */}
           <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Made with <Heart className="w-4 h-4 text-red-500 fill-red-500" /> by Gunjesh
+            <a href="mailto:contact@gunjesh.in" className="hover:underline">
+              contact@gunjesh.in
+            </a>
           </p>
         </div>
       </div>

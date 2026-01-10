@@ -19,10 +19,7 @@ export const Hero = () => {
           {/* Left Content */}
           <div className="space-y-6 md:space-y-8 text-center lg:text-left order-2 lg:order-1">
             <div className="animate-slide-up opacity-0">
-              <div className="section-tag mb-4 md:mb-6 inline-flex">
-                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                Available for opportunities
-              </div>
+              
             </div>
 
             <div className="space-y-3 md:space-y-4 animate-slide-up opacity-0 delay-100">
@@ -41,7 +38,7 @@ export const Hero = () => {
 
             <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3 md:gap-4 animate-slide-up opacity-0 delay-300">
               <Button variant="hero" size="lg" className="w-full sm:w-auto" asChild>
-                <a href="https://gunjesh.in/resources/GUNJESH%20KUMAR%20%20resume.pdf" download>
+                <a href="/public/resources/Resume.pdf" download>
                   <Download className="mr-2 h-4 w-4 md:h-5 md:w-5" />
                   Download CV
                 </a>

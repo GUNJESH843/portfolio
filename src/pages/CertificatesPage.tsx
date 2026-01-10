@@ -33,7 +33,7 @@ const leetcodeBadges = [
 
 const professionalBadges = [
   {
-    image: '/images/solution_challenge.png',
+    image: '/images/Solution_challenge.png',
     title: 'Solution Challenge',
     issuer: 'Google',
     date: 'January 2025',
@@ -151,7 +151,7 @@ const certificates = [
     description: 'RESTful API design, testing, and documentation using Postman',
     skills: ['REST API', 'Postman', 'API Testing', 'Documentation'],
     credentialId: 'CxPoW1V3RQ-KbVyjBntqag',
-    image: '/images/Postman.jpeg',
+    image: '/images/postman.jpeg',
     pdfLink: 'https://gunjesh.in/resources/Postman.pdf',
     link: 'https://api.badgr.io/public/assertions/CxPoW1V3RQ-KbVyjBntqag?identity__email=gunjesh843%40gmail.com',
     verified: true
