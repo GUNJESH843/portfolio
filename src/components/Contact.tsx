@@ -57,13 +57,23 @@ export const Contact = () => {
         toast.success('Message sent! I\'ll get back to you soon.');
         setFormData({ name: '', email: '', message: '' });
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Form submission error:', error);
         toast.error('Failed to send message. Please try again.');
       });
   };
 
   return (
     <section id="contact" className="py-16 md:py-32 relative overflow-hidden">
+      {/* Hidden form for Netlify build-time detection */}
+      <form name="contact" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="contact" />
+        <input type="text" name="bot-field" />
+        <input type="text" name="name" />
+        <input type="email" name="email" />
+        <textarea name="message"></textarea>
+      </form>
+
       {/* Animated Background Elements */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[400px] md:w-[800px] h-[200px] md:h-[400px] bg-primary/10 rounded-full blur-[128px]" />
       <div className="absolute top-1/4 -right-20 w-40 h-40 bg-accent/20 rounded-full blur-[100px] animate-pulse" />
@@ -143,14 +153,16 @@ export const Contact = () => {
                   <form 
                     name="contact" 
                     method="POST" 
-                    data-netlify="true"
-                    data-netlify-honeypot="bot-field"
                     onSubmit={handleSubmit} 
                     className="p-4 md:p-8 space-y-4 md:space-y-6"
                   >
                     {/* Hidden fields for Netlify */}
                     <input type="hidden" name="form-name" value="contact" />
-                    <input type="hidden" name="bot-field" />
+                    <p hidden>
+                      <label>
+                        Don't fill this out if you're human: <input name="bot-field" />
+                      </label>
+                    </p>
                     
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
