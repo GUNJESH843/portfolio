@@ -68,36 +68,104 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Right Content - Profile Image */}
+          {/* Right Content - Animated Code Display */}
           <div className="relative flex justify-center animate-fade-in opacity-0 delay-500 order-1 lg:order-2">
-            <div className="relative">
-              {/* Glow Ring */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-accent to-primary animate-spin-slow blur-xl opacity-50" 
-                   style={{ padding: '4px' }} />
-              
-              {/* Profile Image Container */}
-              <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 rounded-full overflow-hidden border-2 border-primary/30 animate-float">
-                <img
-                  src="/images/profie.jpg"
-                  alt="Gunjesh Kumar"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Floating Badges - Hidden on small mobile */}
-              <div className="hidden sm:block absolute -top-4 -right-4 glass rounded-xl px-3 md:px-4 py-1.5 md:py-2 animate-float-delayed">
-                <div className="flex items-center gap-2">
-                  <span className="text-primary font-mono text-sm md:text-lg">&lt;/&gt;</span>
-                  <span className="text-xs md:text-sm font-medium text-foreground">Developer</span>
+            <div className="relative w-full max-w-lg">
+              {/* Floating Tech Stack Badges */}
+              <div className="hidden sm:flex absolute -top-8 left-1/2 -translate-x-1/2 gap-2 flex-wrap justify-center z-10">
+                <div className="glass rounded-lg px-3 py-1.5 animate-float">
+                  <span className="text-xs font-mono text-primary">React</span>
+                </div>
+                <div className="glass rounded-lg px-3 py-1.5 animate-float-delayed">
+                  <span className="text-xs font-mono text-accent">TypeScript</span>
+                </div>
+                <div className="glass rounded-lg px-3 py-1.5 animate-float" style={{ animationDelay: '0.5s' }}>
+                  <span className="text-xs font-mono text-primary">Node.js</span>
                 </div>
               </div>
 
-              <div className="hidden sm:block absolute -bottom-4 -left-4 glass rounded-xl px-3 md:px-4 py-1.5 md:py-2 animate-float">
-                <div className="flex items-center gap-2">
-                  <svg className="w-3 h-3 md:w-4 md:h-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                  </svg>
-                  <span className="text-xs md:text-sm font-medium text-foreground">Vizag, India</span>
+              {/* Code Terminal Display */}
+              <div className="glass rounded-2xl overflow-hidden border border-primary/20">
+                <div className="terminal-header">
+                  <div className="terminal-dot bg-red-500" />
+                  <div className="terminal-dot bg-yellow-500" />
+                  <div className="terminal-dot bg-green-500" />
+                  <span className="ml-2 text-xs text-muted-foreground font-mono">portfolio.tsx</span>
+                </div>
+                
+                <div className="p-4 md:p-6 font-mono text-xs md:text-sm space-y-3 md:space-y-4 bg-secondary/50">
+                  <div className="animate-slide-up opacity-0" style={{ animationDelay: '0.6s' }}>
+                    <span className="text-purple-400">const</span>{' '}
+                    <span className="text-blue-400">developer</span>{' '}
+                    <span className="text-foreground">= {'{'}</span>
+                  </div>
+                  
+                  <div className="pl-4 space-y-2 animate-slide-up opacity-0" style={{ animationDelay: '0.7s' }}>
+                    <div>
+                      <span className="text-blue-300">name:</span>{' '}
+                      <span className="text-green-400">"Gunjesh Kumar"</span>
+                      <span className="text-foreground">,</span>
+                    </div>
+                    <div>
+                      <span className="text-blue-300">role:</span>{' '}
+                      <span className="text-green-400">"Software Engineer"</span>
+                      <span className="text-foreground">,</span>
+                    </div>
+                    <div>
+                      <span className="text-blue-300">location:</span>{' '}
+                      <span className="text-green-400">"Vizag, India"</span>
+                      <span className="text-foreground">,</span>
+                    </div>
+                    <div>
+                      <span className="text-blue-300">skills:</span>{' '}
+                      <span className="text-foreground">{'['}</span>
+                      <span className="text-orange-400">"React"</span>
+                      <span className="text-foreground">,</span>{' '}
+                      <span className="text-orange-400">"Node.js"</span>
+                      <span className="text-foreground">,</span>{' '}
+                      <span className="text-orange-400">"AI"</span>
+                      <span className="text-foreground">{']'}</span>
+                      <span className="text-foreground">,</span>
+                    </div>
+                    <div>
+                      <span className="text-blue-300">available:</span>{' '}
+                      <span className="text-purple-400">true</span>
+                    </div>
+                  </div>
+                  
+                  <div className="animate-slide-up opacity-0" style={{ animationDelay: '0.8s' }}>
+                    <span className="text-foreground">{'}'}</span>
+                    <span className="text-muted-foreground">;</span>
+                  </div>
+
+                  <div className="pt-2 border-t border-border/50 animate-slide-up opacity-0" style={{ animationDelay: '0.9s' }}>
+                    <span className="text-muted-foreground">// Building the future</span>
+                    <div className="mt-1">
+                      <span className="text-purple-400">console</span>
+                      <span className="text-foreground">.</span>
+                      <span className="text-yellow-400">log</span>
+                      <span className="text-foreground">(</span>
+                      <span className="text-green-400">"Let's create something amazing!"</span>
+                      <span className="text-foreground">);</span>
+                      <span className="animate-pulse text-primary ml-1">_</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Achievement Badges */}
+              <div className="hidden sm:flex absolute -bottom-8 left-1/2 -translate-x-1/2 gap-3">
+                <div className="glass rounded-xl px-4 py-2 animate-float-delayed">
+                  <div className="text-center">
+                    <div className="text-primary font-bold text-lg">5+</div>
+                    <div className="text-xs text-muted-foreground">Projects</div>
+                  </div>
+                </div>
+                <div className="glass rounded-xl px-4 py-2 animate-float" style={{ animationDelay: '0.3s' }}>
+                  <div className="text-center">
+                    <div className="text-accent font-bold text-lg">1+</div>
+                    <div className="text-xs text-muted-foreground">Years</div>
+                  </div>
                 </div>
               </div>
             </div>
