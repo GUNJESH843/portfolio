@@ -6,14 +6,19 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import CertificatesPage from "./pages/CertificatesPage";
 import NotFound from "./pages/NotFound";
+import { Cursor } from "./components/Cursor";
+import { useSmoothScroll } from "./lib/anim";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  useSmoothScroll();
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <Cursor />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -24,6 +29,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;

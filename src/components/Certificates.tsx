@@ -1,7 +1,11 @@
-import { Award, ExternalLink, ChevronRight } from 'lucide-react';
+import { useRef } from 'react';
+import { ExternalLink, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { AnimatedSection } from './AnimatedSection';
+import { Rise } from './Rise';
+import { ScrollCard } from './ScrollCard';
+import { SectionLabel } from './signal/SectionLabel';
+import { useSignalScene } from '@/lib/anim';
 
 const leetcodeBadges = [
   '/images/Knight.gif',
@@ -12,124 +16,112 @@ const leetcodeBadges = [
 ];
 
 const certificates = [
-  { title: 'CS50x: Introduction to Computer Science', issuer: 'Harvard University', year: '2024', link: '#' },
-  { title: 'GitHub Foundations', issuer: 'GitHub', year: '2025', link: '#' },
-  { title: 'AWS Machine Learning Foundation', issuer: 'Amazon Web Services', year: '2025', link: '#' },
-  { title: 'Software Engineering', issuer: 'NPTEL', year: '2024', link: '#' },
-  { title: 'API Fundamentals Student Expert', issuer: 'Postman', year: '2024', link: '#' },
+  { title: 'CS50x: Introduction to Computer Science', issuer: 'Harvard University', year: '2024' },
+  { title: 'GitHub Foundations', issuer: 'GitHub', year: '2025' },
+  { title: 'AWS Machine Learning Foundation', issuer: 'Amazon Web Services', year: '2025' },
+  { title: 'Software Engineering', issuer: 'NPTEL', year: '2024' },
+  { title: 'API Fundamentals Student Expert', issuer: 'Postman', year: '2024' },
 ];
 
 export const Certificates = () => {
   const navigate = useNavigate();
-  
-  return (
-    <section className="py-16 md:py-32 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute top-1/3 -left-32 w-64 h-64 bg-accent/10 rounded-full blur-[100px]" />
-      <div className="absolute bottom-1/3 -right-32 w-64 h-64 bg-primary/10 rounded-full blur-[100px]" />
-      
-      <div className="container mx-auto px-4 md:px-6 relative">
-        {/* Section Header */}
-        <AnimatedSection className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 md:mb-16">
-          <div className="flex items-center gap-4 flex-1">
-            <span className="section-tag">
-              <Award className="w-4 h-4" />
-              #certificates
-            </span>
-            <div className="h-px flex-1 bg-gradient-to-r from-primary/50 to-transparent hidden sm:block" />
-          </div>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => navigate('/certificates')}
-            className="group"
-          >
-            View All
-            <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-          </Button>
-        </AnimatedSection>
+  const root = useRef<HTMLElement>(null);
+  useSignalScene(root, 'certificates');
 
-        <div className="grid lg:grid-cols-2 gap-4 md:gap-8">
-          {/* LeetCode Badges */}
-          <AnimatedSection animation="slide-left">
-            <div className="glass rounded-xl md:rounded-2xl overflow-hidden h-full">
+  return (
+    <section ref={root} className="py-24 md:py-36 relative overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6 relative vskew">
+        <Rise blur className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+          <SectionLabel
+            index="05"
+            label="certificates"
+            title={
+              <>
+                On <span className="text-amber">record</span>
+              </>
+            }
+            subtitle="// verified credentials & competitive milestones."
+            className="flex-1"
+          />
+          <Button variant="hero-outline" size="sm" onClick={() => navigate('/certificates')} className="group shrink-0">
+            View all
+            <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </Rise>
+
+        <div className="mt-14 md:mt-20 grid lg:grid-cols-2 gap-5 md:gap-6">
+          {/* leetcode */}
+          <ScrollCard dir={1} className="h-full">
+            <div className="glass panel-ticks rounded-lg overflow-hidden h-full">
               <div className="terminal-header">
-                <div className="terminal-dot bg-red-500" />
-                <div className="terminal-dot bg-yellow-500" />
-                <div className="terminal-dot bg-green-500" />
-                <span className="ml-2 text-xs text-muted-foreground font-mono">leetcode-badges.json</span>
+                <span className="terminal-dot bg-red-500" />
+                <span className="terminal-dot bg-yellow-500" />
+                <span className="terminal-dot bg-green-500" />
+                <span className="ml-2 font-mono text-[11px] text-muted-foreground">leetcode_badges.json</span>
               </div>
-              <div className="p-4 md:p-6 space-y-4 md:space-y-6">
-                <div className="flex items-center gap-3 md:gap-4">
-                  <img
-                    src="/images/leetcode.png"
-                    alt="LeetCode"
-                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg"
-                  />
+              <div className="p-5 md:p-7 space-y-6">
+                <div className="flex items-center gap-4">
+                  <img src="/images/leetcode.png" alt="LeetCode" className="w-11 h-11 rounded-md border border-border" />
                   <div>
-                    <h3 className="text-lg md:text-xl font-display font-bold text-foreground">LeetCode</h3>
+                    <h3 className="text-lg font-display font-semibold text-foreground">LeetCode</h3>
                     <a
                       href="https://leetcode.com/u/gunjesh843/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs md:text-sm text-primary hover:text-accent transition-colors inline-flex items-center gap-1"
+                      className="font-mono text-xs text-amber link-underline inline-flex items-center gap-1"
                     >
-                      View Profile <ExternalLink className="w-3 h-3" />
+                      view profile <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
                 </div>
-
-                <div className="flex flex-wrap gap-2 md:gap-3 justify-center">
-                  {leetcodeBadges.map((badge, index) => (
-                    <div
-                      key={index}
-                      className="relative group"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full opacity-0 group-hover:opacity-50 blur transition-opacity" />
-                      <img
-                        src={badge}
-                        alt={`LeetCode Badge ${index + 1}`}
-                        className="w-12 h-12 md:w-16 md:h-16 hover:scale-110 transition-transform duration-300 relative"
-                      />
-                    </div>
+                <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
+                  {leetcodeBadges.map((badge, i) => (
+                    <img
+                      key={i}
+                      src={badge}
+                      alt={`LeetCode badge ${i + 1}`}
+                      className="w-14 h-14 md:w-16 md:h-16 hover:scale-110 transition-transform duration-300"
+                    />
                   ))}
                 </div>
               </div>
             </div>
-          </AnimatedSection>
+          </ScrollCard>
 
-          {/* Professional Certifications */}
-          <AnimatedSection animation="slide-right">
-            <div className="glass rounded-xl md:rounded-2xl overflow-hidden h-full">
+          {/* certifications */}
+          <ScrollCard dir={-1} className="h-full">
+            <div className="glass panel-ticks rounded-lg overflow-hidden h-full">
               <div className="terminal-header">
-                <div className="terminal-dot bg-red-500" />
-                <div className="terminal-dot bg-yellow-500" />
-                <div className="terminal-dot bg-green-500" />
-                <span className="ml-2 text-xs text-muted-foreground font-mono">certificates.md</span>
+                <span className="terminal-dot bg-red-500" />
+                <span className="terminal-dot bg-yellow-500" />
+                <span className="terminal-dot bg-green-500" />
+                <span className="ml-2 font-mono text-[11px] text-muted-foreground">certificates.md</span>
               </div>
-              <div className="p-4 md:p-6 space-y-3 md:space-y-4">
-                <h3 className="text-lg md:text-xl font-display font-bold text-foreground">
-                  Professional Certifications
+              <div className="p-5 md:p-7">
+                <h3 className="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground mb-4">
+                  <span className="text-amber">#</span> professional certifications
                 </h3>
-                <div className="grid gap-2 md:gap-3">
-                  {certificates.map((cert, index) => (
+                <div className="space-y-2">
+                  {certificates.map((cert, i) => (
                     <div
-                      key={index}
-                      className="flex items-center justify-between p-2.5 md:p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors group"
+                      key={i}
+                      className="group flex items-center justify-between gap-3 p-3 rounded border border-transparent hover:border-amber/30 hover:bg-secondary/40 transition-all"
                     >
-                      <div className="min-w-0 flex-1 pr-2">
-                        <h4 className="font-medium text-foreground text-sm md:text-base group-hover:text-primary transition-colors truncate">
+                      <div className="min-w-0">
+                        <h4 className="text-sm text-foreground group-hover:text-amber transition-colors truncate">
                           {cert.title}
                         </h4>
-                        <p className="text-xs md:text-sm text-muted-foreground truncate">{cert.issuer}</p>
+                        <p className="font-mono text-xs text-muted-foreground truncate">{cert.issuer}</p>
                       </div>
-                      <span className="text-[10px] md:text-xs font-mono text-primary flex-shrink-0 px-2 py-1 bg-primary/10 rounded">{cert.year}</span>
+                      <span className="font-mono text-[11px] text-amber border border-amber/30 rounded px-2 py-1 shrink-0">
+                        {cert.year}
+                      </span>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
-          </AnimatedSection>
+          </ScrollCard>
         </div>
       </div>
     </section>

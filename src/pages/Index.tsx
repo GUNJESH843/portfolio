@@ -7,12 +7,16 @@ import { Projects } from '@/components/Projects';
 import { Certificates } from '@/components/Certificates';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
+import { SignalBackground } from '@/components/SignalBackground';
+import { SignalRail } from '@/components/SignalRail';
 
 const Index = () => {
   return (
-    <div className="min-h-screen noise">
+    <div className="min-h-screen crt">
+      <SignalBackground />
       <Navbar />
-      <main>
+      <SignalRail />
+      <main className="relative z-10">
         <Hero />
         <Experience />
         <Education />

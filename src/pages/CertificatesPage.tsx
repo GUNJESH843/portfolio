@@ -199,7 +199,7 @@ const certificates = [
 
 const CertificatesPage = () => {
   return (
-    <div className="min-h-screen noise">
+    <div className="min-h-screen crt">
       <Navbar />
       
       <main className="pt-20 md:pt-24 pb-12 md:pb-16">

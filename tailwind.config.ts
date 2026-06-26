@@ -47,6 +47,7 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        amber: "hsl(var(--amber) / <alpha-value>)",
       },
       fontFamily: {
         display: ['Space Grotesk', 'sans-serif'],
